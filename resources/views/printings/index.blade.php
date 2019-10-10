@@ -18,6 +18,7 @@
         <thead>
             <tr>
                 <th width="10%">Job ID</th>
+                <th width="10%">Data</th>
                 <th width-"10%">Páginas</th>
                 <th width="10%">Cópias</th>
                 <th width="35%">Arquivo</th>
@@ -25,10 +26,15 @@
             </tr>
         </thead>
         <tbody>
-@foreach ($printings as $printing)
+@forelse ($printings as $printing)
     @include('printings/partials/printing')
-@endforeach
+@empty
+    <tr>
+        <td colspan="5">Não há impressões</td>
+    </tr>
+@endforelse
 </tbody>
 </table>
+{{ $printings->links() }}
 </div>
 @stop

@@ -12,6 +12,11 @@ use Illuminate\Support\Str;
 
 class PrintingController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -19,24 +24,10 @@ class PrintingController extends Controller
      */
     public function index(Request $request)
     {
-        # todos printings
-        //$printings = Printing::allowed();
-        $printings = Printing::all();
-
-        // 1. query com a busca
-        if(isset($request->printer)) {
-            $printings->where('printer', 'LIKE', '%'.$request->printer.'%');
-        }
-
-        // Dica de ouro para debugar SQL gerado:
-	//dd($printings->toSql());
-	
-	$codpesuser = \Auth::user();
-	$codpesuser = $codpesuser->codpes;
-        // Executa a query
-        //$printings = $printings->orderBy('jobid')->paginate(10);
-	$printings = $printings->where('user', '=', $codpesuser)->sortBy('jobid')/*->paginate(10)*/;
-	//$printings = $printings->sortBy('jobid')/*->paginate(10)*/;
+        # printings
+        $user = \Auth::user();
+        $printings = Printing::where('user', '=', $user->codpes);
+        $printings = $printings->orderBy('jobid','DESC')->paginate(2);
 
         return view('printings/index', compact('printings'));
     }
