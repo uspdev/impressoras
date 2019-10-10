@@ -27,7 +27,7 @@ class PrintingController extends Controller
         # printings
         $user = \Auth::user();
         $printings = Printing::where('user', '=', $user->codpes);
-        $printings = $printings->orderBy('jobid','DESC')->paginate(2);
+        $printings = $printings->orderBy('jobid','DESC')->paginate(10);
 
         return view('printings/index', compact('printings'));
     }
