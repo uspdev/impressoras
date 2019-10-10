@@ -31,4 +31,11 @@ class PrintingController extends Controller
 
         return view('printings/index', compact('printings'));
     }
+
+    public function admin(Request $request)
+    {
+        $this->authorize('admin');
+        $printings =  Printing::orderBy('jobid','DESC')->paginate(10);
+        return view('printings/index', compact('printings'));
+    }
 }

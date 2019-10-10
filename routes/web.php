@@ -13,7 +13,7 @@
 
 Route::get('/', 'IndexController@index')->name('home');
 Route::get('/printings', 'PrintingController@index');
-
+Route::get('/printings/admin', 'PrintingController@admin');
 
 # Senha única USP
 Route::get('/senhaunica/login', 'Auth\LoginController@redirectToProvider')->name('login');

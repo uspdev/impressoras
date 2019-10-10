@@ -13,13 +13,15 @@
         </div><!-- /input-group -->
     </form-->
 <br>
+{{ $printings->links() }}
 <div class="table-responsive">
     <table class="table table-striped">
         <thead>
             <tr>
                 <th width="10%">Job ID</th>
+                <th width="10%">Pessoa</th>
                 <th width="10%">Data</th>
-                <th width-"10%">Páginas</th>
+                <th width="10%">Páginas</th>
                 <th width="10%">Cópias</th>
                 <th width="35%">Arquivo</th>
                 <th width="35%">Impressora</th>
@@ -30,7 +32,7 @@
     @include('printings/partials/printing')
 @empty
     <tr>
-        <td colspan="5">Não há impressões</td>
+        <td colspan="6">Não há impressões</td>
     </tr>
 @endforelse
 </tbody>

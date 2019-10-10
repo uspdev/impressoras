@@ -15,7 +15,12 @@ return [
         [
             'text' => 'Minhas Impressões',
             'url'  => '/printings',
-            'can'  => 'printings.index'
+            'can'  => ''
+        ],
+        [
+            'text' => 'Administrar impressões',
+            'url'  => '/printings/admin',
+            'can'  => 'admin'
         ],
     ],
 
