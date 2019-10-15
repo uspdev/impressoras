@@ -26,5 +26,9 @@ class AppServiceProvider extends ServiceProvider
     {
         //Fix para MariaDB ao rodar migrations
         Schema::defaultStringLength(191);
+
+        if(config('app.env') === 'production') {
+            \URL::forceScheme('https');
+        }
     }
 }
