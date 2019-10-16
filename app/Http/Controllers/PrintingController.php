@@ -14,7 +14,7 @@ class PrintingController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except(['check']);
     }
 
     /**
@@ -37,5 +37,9 @@ class PrintingController extends Controller
         $this->authorize('admin');
         $printings =  Printing::orderBy('jobid','DESC')->paginate(10);
         return view('printings/index', compact('printings'));
+    }
+
+    public function admin($user, $pages) {
+
     }
 }
