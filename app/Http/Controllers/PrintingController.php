@@ -76,7 +76,7 @@ class PrintingController extends Controller
     }
 
     public function check($user, $pages) {
-        if($user = '5385361') {
+        if($user == '5385361') {
             return 'nao';
         }
         return 'sim';
