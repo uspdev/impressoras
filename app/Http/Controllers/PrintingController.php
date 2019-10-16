@@ -76,8 +76,12 @@ class PrintingController extends Controller
     }
 
     public function check($user, $pages) {
-        /*regra 1: aluno pós pode imprimir 100 por mês */
+        if($user = '5385361') {
+            return 'nao';
+        }
         return 'sim';
+
+        /*regra 1: aluno pós pode imprimir 100 por mês */
 
         /*regra 2: aluno grad pode imprimir 30 por dia */
     }
