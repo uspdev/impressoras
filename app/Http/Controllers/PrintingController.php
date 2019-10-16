@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Gate;
 use App\Rules\Numeros_USP;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Uspdev\Replicado\Pessoa;
 
 class PrintingController extends Controller
 {
@@ -75,14 +76,29 @@ class PrintingController extends Controller
         return $quantidades;
     }
 
-    public function check($user, $printer ,$pages) {
-        if($user == '5385361') {
-            return 'nao';
+    public function check($user, $printer ,int $pages) {
+        /* Nesta fase só queremos codpes*/
+        $user = (int) $user;
+        $quantidades = $this->quantidades($user, 'user');
+
+        /* Manualmente vamos implementar controle para alunos apenas
+         * Essas regras irão para interface futuramente para ficarem mais flexíveis
+         */
+
+        $vinculos = Pessoa::vinculosSiglas($user,8);
+        foreach($vinculos as $vinculo){
+            /* regra 1: ALUNOGR pode imprimir 30 páginas por dia */
+            if ($vinculo == 'ALUNOGR') {
+                if($pages + $quantidades['hoje'] > 30)
+                    return 'nao';
+            }
+
+            /* regra 2: ALUNOPOS pode imprimir 100 páginas por mês */
+            if($vinculo == 'ALUNOPOS') {
+                if($pages + $quantidades['mes'] > 100)
+                    return 'nao';
+            }  
         }
         return 'sim';
-
-        /*regra 1: aluno pós pode imprimir 100 por mês */
-
-        /*regra 2: aluno grad pode imprimir 30 por dia */
     }
 }
