@@ -14,10 +14,13 @@
 Route::get('/', 'IndexController@index')->name('home');
 Route::get('/printings', 'PrintingController@index');
 Route::get('/printings/admin', 'PrintingController@admin');
+Route::get('/printings/{printer}', 'PrintingController@printer');
 
 # Senha única USP
 Route::get('/senhaunica/login', 'Auth\LoginController@redirectToProvider')->name('login');
 Route::get('/callback', 'Auth\LoginController@handleProviderCallback');
 Route::post('/logout', 'Auth\LoginController@logout');
 Route::get('/logout', 'Auth\LoginController@logout');
+
+Route::get('/printings/{user}/{pages}', 'PrintingController@check');
 

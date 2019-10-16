@@ -13,13 +13,21 @@
         </div><!-- /input-group -->
     </form-->
 <br>
+
+<div><b>Impressões:</b> 
+<b>Total:</b> {{ $quantidades['total'] }}
+<b>Hoje:</b> {{ $quantidades['hoje'] }} 
+<b>Neste mês:</b> {{ $quantidades['mes'] }} 
+
+ </div>
+<br>
 {{ $printings->links() }}
 <div class="table-responsive">
     <table class="table table-striped">
         <thead>
             <tr>
                 <th width="10%">Job ID</th>
-                <th width="10%">Pessoa</th>
+                @can('admin') <th width="10%">Pessoa</th> @endcan
                 <th width="10%">Data</th>
                 <th width="10%">Páginas</th>
                 <th width="10%">Cópias</th>
