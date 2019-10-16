@@ -22,5 +22,5 @@ Route::get('/callback', 'Auth\LoginController@handleProviderCallback');
 Route::post('/logout', 'Auth\LoginController@logout');
 Route::get('/logout', 'Auth\LoginController@logout');
 
-Route::get('/printings/{user}/{pages}', 'PrintingController@check');
+Route::get('/check/{user}/{pages}', 'PrintingController@check');
 
