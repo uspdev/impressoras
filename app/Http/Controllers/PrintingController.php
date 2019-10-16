@@ -75,7 +75,7 @@ class PrintingController extends Controller
         return $quantidades;
     }
 
-    public function check($user, $pages) {
+    public function check($user, $printer ,$pages) {
         if($user == '5385361') {
             return 'nao';
         }
