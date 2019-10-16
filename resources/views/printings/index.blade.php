@@ -31,8 +31,9 @@
                 <th width="10%">Data</th>
                 <th width="10%">Páginas</th>
                 <th width="10%">Cópias</th>
-                <th width="35%">Arquivo</th>
-                <th width="35%">Impressora</th>
+                <th width="30%">Arquivo</th>
+                <th width="30%">Impressora</th>
+                <th width="10%">Status</th>
             </tr>
         </thead>
         <tbody>

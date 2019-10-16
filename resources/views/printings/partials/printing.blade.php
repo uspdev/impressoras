@@ -13,5 +13,6 @@
 @else
 <td>{{ $printing->printer }}</td>
 @endcan
+<td>{{ $printing->status }}</td>
 </tr>
 
