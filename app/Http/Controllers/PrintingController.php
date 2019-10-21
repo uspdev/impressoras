@@ -89,8 +89,8 @@ class PrintingController extends Controller
         foreach($vinculos as $vinculo){
             /* Regra 0 - libera para funcionário, estagiários e docentes*/
             if (trim($vinculo) == 'ESTAGIARIORH' ||
-                trim($vinculo) == 'Servidor') ||
-                trim($vinculo) == 'Docente') ||
+                trim($vinculo) == 'Servidor' ||
+                trim($vinculo) == 'Docente' ||
                 trim($vinculo) == 'Servidor Designado') {
                 return 'sim';
             }
