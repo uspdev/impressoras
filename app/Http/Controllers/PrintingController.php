@@ -86,12 +86,13 @@ class PrintingController extends Controller
          */
 
         $vinculos = Pessoa::vinculosSiglas($user,8);
+        /* Regra 0 - libera para funcionário, estagiários e docentes*/
         foreach($vinculos as $vinculo){
-            /* Regra 0 - libera para funcionário, estagiários e docentes*/
             if (trim($vinculo) == 'ESTAGIARIORH' || trim($vinculo) == 'SERVIDOR') {
                 return 'sim';
             }
-
+        }
+        foreach($vinculos as $vinculo){
             /* regra 1: ALUNOGR pode imprimir 30 páginas por dia */
             if ($vinculo == 'ALUNOGR') {
                 if($pages + $quantidades['hoje'] > 30)
