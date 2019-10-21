@@ -88,10 +88,7 @@ class PrintingController extends Controller
         $vinculos = Pessoa::vinculosSiglas($user,8);
         foreach($vinculos as $vinculo){
             /* Regra 0 - libera para funcionário, estagiários e docentes*/
-            if (trim($vinculo) == 'ESTAGIARIORH' ||
-                trim($vinculo) == 'Servidor' ||
-                trim($vinculo) == 'Docente' ||
-                trim($vinculo) == 'Servidor Designado') {
+            if (trim($vinculo) == 'ESTAGIARIORH' || trim($vinculo) == 'SERVIDOR') {
                 return 'sim';
             }
 
