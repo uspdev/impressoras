@@ -84,6 +84,9 @@ class PrintingController extends Controller
         /* Manualmente vamos implementar controle para alunos apenas
          * Essas regras irão para interface futuramente para ficarem mais flexíveis
          */
+        if (strpos($user, 'lab') !== false) {
+            return 'nao';
+        }
 
         $vinculos = Pessoa::vinculosSiglas($user,8);
         /* Regra 0 - libera para funcionário, estagiários e docentes*/
