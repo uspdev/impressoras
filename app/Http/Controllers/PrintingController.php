@@ -77,16 +77,17 @@ class PrintingController extends Controller
     }
 
     public function check($user, $printer ,int $pages) {
-        /* Nesta fase só queremos codpes*/
-        $user = (int) $user;
-        $quantidades = $this->quantidades($user, 'user');
-
         /* Manualmente vamos implementar controle para alunos apenas
          * Essas regras irão para interface futuramente para ficarem mais flexíveis
          */
+
         if (strpos($user, 'lab') !== false) {
             return 'nao';
         }
+
+        /* Nesta fase só queremos codpes*/
+        $user = (int) $user;
+        $quantidades = $this->quantidades($user, 'user');
 
         $vinculos = Pessoa::vinculosSiglas($user,8);
         /* Regra 0 - libera para funcionário, estagiários e docentes*/
