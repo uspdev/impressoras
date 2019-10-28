@@ -55,7 +55,7 @@ class PrintingController extends Controller
     /*type dever ser null, user ou printer */
     private function quantidades($filter=null, $type=null){
         $quantidades = [];
-        $p = Printing::where('status','=','Impresso');
+        
         if($type === null){
             $quantidades['total'] = Printing::where('status','=','Impresso')->sum('pages');
 
