@@ -55,21 +55,20 @@ class PrintingController extends Controller
     /*type dever ser null, user ou printer */
     private function quantidades($filter=null, $type=null){
         $quantidades = [];
+        $p = Printing::where('status','=','Impresso');
         if($type === null){
-            $quantidades['total'] = Printing::sum('pages');
+            $quantidades['total'] = Printing::where('status','=','Impresso')->sum('pages');
 
-            $quantidades['hoje'] = Printing::whereDate('created_at', Carbon::today())
-                                ->sum('pages');
-            $quantidades['mes'] = Printing::whereMonth('created_at','=' , date('n'))
-                                ->sum('pages');
+            $quantidades['hoje'] = Printing::where('status','=','Impresso')->whereDate('created_at', Carbon::today())->sum('pages');
+            $quantidades['mes'] = Printing::where('status','=','Impresso')->whereMonth('created_at','=' , date('n'))->sum('pages');
         } else {
 
-            $quantidades['total'] = Printing::where($type, '=', $filter)->sum('pages');
+            $quantidades['total'] = Printing::where('status','=','Impresso')->where($type, '=', $filter)->sum('pages');
 
-            $quantidades['hoje'] = Printing::where($type, '=', $filter)
+            $quantidades['hoje'] = Printing::where('status','=','Impresso')->where($type, '=', $filter)
                                 ->whereDate('created_at', Carbon::today())
                                 ->sum('pages');
-            $quantidades['mes'] = Printing::where($type, '=', $filter)
+            $quantidades['mes'] = Printing::where('status','=','Impresso')->where($type, '=', $filter)
                                 ->whereMonth('created_at','=' , date('n'))
                                 ->sum('pages');
         }
