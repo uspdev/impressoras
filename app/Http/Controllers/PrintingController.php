@@ -55,7 +55,7 @@ class PrintingController extends Controller
     /*type dever ser null, user ou printer */
     private function quantidades($filter=null, $type=null){
         $quantidades = [];
-        
+
         if($type === null){
             $quantidades['total'] = Printing::where('status','=','Impresso')->sum('pages');
 
@@ -79,6 +79,12 @@ class PrintingController extends Controller
         /* Manualmente vamos implementar controle para alunos apenas
          * Essas regras irão para interface futuramente para ficarem mais flexíveis
          */
+
+        /* impressoras sem controle de quota */
+        $noquota = ['fcs_samsung_cor_x7500lx_dcp'];
+        if (in_array(trim($printer), $noquota)) {
+            return "sim";
+        }
 
         if (strpos($user, 'lab') !== false) {
             return 'nao';
