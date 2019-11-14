@@ -30,5 +30,9 @@ class AuthServiceProvider extends ServiceProvider
             $admins = explode(',', trim(config('quota.admins')));
             return ( in_array($user->codpes, $admins) and $user->codpes );
         });
+        
+        Gate::define('logado', function ($user) {
+            return true;
+        });
     }
 }
