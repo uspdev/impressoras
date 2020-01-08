@@ -75,6 +75,12 @@ class PrintingController extends Controller
         return $quantidades;
     }
 
+    public function pagesToday($user) {
+        $user = (int) $user;
+        $quantidades = $this->quantidades($user, 'user');
+        return $quantidades['hoje'];
+    }
+
     public function check($user, $printer ,int $pages) {
         /* Manualmente vamos implementar controle para alunos apenas
          * Essas regras irão para interface futuramente para ficarem mais flexíveis
