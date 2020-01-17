@@ -52,6 +52,22 @@ class PrintingController extends Controller
         return view('printings/index', compact('printings','quantidades'));
     }
 
+    /* Retorna quantidade de documentos na fila de uma usuário */
+    /*
+    public function minhafila($codpes) {
+        return Printing::where('status','=','Fila')->where('user', '=', $codpes)->count();
+    }
+
+    public function fila($printer == null) {
+        if($printer != null) {
+            $printings = Printing::where('status','=','Fila')->where('printer', '=', $printer)->get();
+            return view('printings/fila', compact('printings'));
+        }
+        $printings = Printing::where('status','=','Fila')->get();
+        return view('printings/fila', compact('printings'));
+    }
+    */
+
     /*type dever ser null, user ou printer */
     private function quantidades($filter=null, $type=null){
         $quantidades = [];

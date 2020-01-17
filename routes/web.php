@@ -25,3 +25,6 @@ Route::get('/logout', 'Auth\LoginController@logout');
 Route::get('/check/{user}/{printer}/{pages}', 'PrintingController@check');
 Route::get('/pages/today/{user}/', 'PrintingController@pagesToday');
 
+/* Fila de impressão */
+//Route::get('/fila/printers/{printer}/', 'PrintingController@fila');
+
