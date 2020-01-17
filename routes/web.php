@@ -26,5 +26,6 @@ Route::get('/check/{user}/{printer}/{pages}', 'PrintingController@check');
 Route::get('/pages/today/{user}/', 'PrintingController@pagesToday');
 
 /* Fila de impressão */
-//Route::get('/fila/printers/{printer}/', 'PrintingController@fila');
+Route::get('/pendentes', 'PrintingController@pendentes');
+Route::get('/pendentes/{printer}/', 'PrintingController@pendentes');
 

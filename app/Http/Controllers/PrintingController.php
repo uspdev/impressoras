@@ -16,7 +16,7 @@ class PrintingController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except(['check','pagesToday']);
+        $this->middleware('auth')->except(['check','pagesToday','pendentes']);
     }
 
     /**
@@ -51,22 +51,6 @@ class PrintingController extends Controller
         $quantidades = $this->quantidades($printer, 'printer');
         return view('printings/index', compact('printings','quantidades'));
     }
-
-    /* Retorna quantidade de documentos na fila de uma usuário */
-    /*
-    public function minhafila($codpes) {
-        return Printing::where('status','=','Fila')->where('user', '=', $codpes)->count();
-    }
-
-    public function fila($printer == null) {
-        if($printer != null) {
-            $printings = Printing::where('status','=','Fila')->where('printer', '=', $printer)->get();
-            return view('printings/fila', compact('printings'));
-        }
-        $printings = Printing::where('status','=','Fila')->get();
-        return view('printings/fila', compact('printings'));
-    }
-    */
 
     /*type dever ser null, user ou printer */
     private function quantidades($filter=null, $type=null){
@@ -137,5 +121,18 @@ class PrintingController extends Controller
             }
         }
         return 'sim';
+    }
+
+    public function pendentes($printer = null) {
+        /*$printers = Printing::select('printer')->get()->unique();*/
+
+        if($printer != null) {
+            $fila = Printing::where('status','=','Fila')->where('printer', '=', $printer)->get();
+            $processando = Printing::where('status','=','Processando')->where('printer', '=', $printer)->get();
+            return view('printings/pendentes', compact('fila','processando'));
+        }
+        $fila = Printing::where('status','=','Fila')->get();
+        $processando = Printing::where('status','=','Processando')->get();
+        return view('printings/pendentes', compact('fila','processando'));
     }
 }

@@ -18,6 +18,6 @@
 @stop
 
 @section('footer')
-FFLCH
+
 @stop
 
