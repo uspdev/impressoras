@@ -22,6 +22,10 @@ return [
             'url'  => '/printings/admin',
             'can'  => 'admin'
         ],
+        [
+            'text' => 'Fila',
+            'url'  => '/pendentes',
+        ],
     ],
 
 ];
