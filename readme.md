@@ -8,14 +8,14 @@ O fluxo do arquivo impresso é controlado em 4 estágios usando rotas do laravel
 hooks do tea4cups, na seguinte sequência:
 
  1. *Processando*: O servidor cups recebe o arquivo e imediatamente o registra 
-    como *Processando*. O script *quota_check* faz a contagem de páginas e
+    como *Processando*. O script [quota_check](https://raw.githubusercontent.com/fflch/quota/master/tea4cups/quota_check.j2) faz a contagem de páginas e
     verifica se o usuário em questão tem permissão para continuar com a impressão
  2. *Cancelado*: Ainda no *quota_check*, se verificado que o usuário não pode imprimir 
     o referido arquivo, o status será gravado como *Cancelado*
  3. *Fila*: Se o usuário puder imprimir, o *quota_check* envia o arquivo para a impressora
     e registra o status como *Fila*
  4. *Impresso*: Quando a impressora responde ok para a impressão do arquivo, o script 
-    *quota_save* muda o status do mesmo para *Impresso*
+    [quota_save](https://raw.githubusercontent.com/fflch/quota/master/tea4cups/quota_save.j2) muda o status do mesmo para *Impresso*
 
 Deploy básico para desenvolvimento:
 
