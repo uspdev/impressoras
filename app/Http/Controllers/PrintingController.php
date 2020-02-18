@@ -147,12 +147,22 @@ class PrintingController extends Controller
         /*$printers = Printing::select('printer')->get()->unique();*/
 
         if($printer != null) {
-            $fila = Printing::where('status','=','Fila')->where('printer', '=', $printer)->get();
-            $processando = Printing::where('status','=','Processando')->where('printer', '=', $printer)->get();
+            $fila = Printing::where('status','=','Fila')
+                        ->where('printer', '=', $printer)
+                        ->whereDate('created_at', Carbon::today())
+                        ->get();
+            $processando = Printing::where('status','=','Processando')
+                            ->where('printer', '=', $printer)
+                            ->whereDate('created_at', Carbon::today())
+                            ->get();
             return view('printings/pendentes', compact('fila','processando'));
         }
-        $fila = Printing::where('status','=','Fila')->get();
-        $processando = Printing::where('status','=','Processando')->get();
+        $fila = Printing::where('status','=','Fila')
+                            ->whereDate('created_at', Carbon::today())
+                            ->get();
+        $processando = Printing::where('status','=','Processando')
+                                    ->whereDate('created_at', Carbon::today())
+                                    ->get();
         return view('printings/pendentes', compact('fila','processando'));
     }
 }
