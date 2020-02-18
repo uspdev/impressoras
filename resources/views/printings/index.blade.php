@@ -4,14 +4,18 @@
 @stop
 @section('content')
 @parent
-    <!--form method="get" action="/printings">
+
+<!--
+<form method="get" action="/printings">
         <div class="input-group">
-            <input type="text" class="form-control" placeholder="Impressora ..." name="printer">
+            <input type="text" class="form-control" placeholder="Impressora ..." name="user">
             <span class="input-group-btn">
                 <button type="submit" class="btn btn-success"> Buscar </button>
             </span>
-        </div><!-- /input-group -->
-    </form-->
+        </div>
+</form>
+-->
+
 <br>
 
 <table width="100%" border="0">
