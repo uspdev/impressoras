@@ -25,7 +25,20 @@ Deploy básico para desenvolvimento:
 
 Exemplo de query para simular ambiente de produção:
 
-    INSERT INTO printings (jobid, user, filename, copies, pages, printer, created_at, updated_at, status) VALUES (100, 'fulano', 'cv.odt', 10, 2, 'hp', '2020-02-01 10:00:00', '2020-02-01 10:00:00', 'Impresso');
+    INSERT INTO printings (jobid, user, filename, copies, pages, printer, created_at, updated_at, status) VALUES (100, 'fulano', 'cv.odt', 1, 2, 'gh_samsung_pb_k7500lx_proaluno', '2020-02-18 10:00:00', '2020-02-18 10:00:00', 'Impresso');
+
+    INSERT INTO printings (jobid, user, filename, copies, pages, printer, created_at, updated_at, status) VALUES (101, 'fulano', 'cv.odt', 2, 2, 'let_samsung_pb_k7500lx_proaluno', '2020-02-18 10:00:00', '2020-02-18 10:00:00', 'Impresso');
+
+    INSERT INTO printings (jobid, user, filename, copies, pages, printer, created_at, updated_at, status) VALUES (102, 'fulano', 'cv.odt', 1, 4, 'fcs_samsung_pb_k7500lx_proaluno', '2020-02-18 10:00:00', '2020-02-18 10:00:00', 'Impresso');
+
+    INSERT INTO printings (jobid, user, filename, copies, pages, printer, created_at, updated_at, status) VALUES (100, 'fulano', 'cv.odt', 3, 5, 'fcs_samsung_cor_x7500lx_dcp', '2020-02-18 10:00:00', '2020-02-18 10:00:00', 'Impresso');
+
+    INSERT INTO printings (jobid, user, filename, copies, pages, printer, created_at, updated_at, status) VALUES (100, 'fulano', 'cv.odt', 3, 50, 'fcs_samsung_pb_m4080fx_dflab103', '2020-02-18 10:00:00', '2020-02-18 10:00:00', 'Impresso');
+
+Endpoins:
+
+ - http://127.0.0.1:8000/check/fulano/let_samsung_pb_k7500lx_proaluno/3
+ - http://127.0.0.1:8000/pages/today/fulano/
 
 # Agradecimentos
 

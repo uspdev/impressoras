@@ -11,9 +11,17 @@ use App\Rules\Numeros_USP;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Uspdev\Replicado\Pessoa;
+use Illuminate\Support\Facades\DB;
 
 class PrintingController extends Controller
 {
+    private $noquota = ['fcs_samsung_cor_x7500lx_dcp'];
+    private $proaluno = [
+        'gh_samsung_pb_k7500lx_proaluno',
+        'let_samsung_pb_k7500lx_proaluno',
+        'fcs_samsung_pb_k7500lx_proaluno'
+    ];
+    
     public function __construct()
     {
         $this->middleware('auth')->except(['check','pagesToday','pendentes']);
@@ -52,74 +60,86 @@ class PrintingController extends Controller
         return view('printings/index', compact('printings','quantidades'));
     }
 
-    /*type dever ser null, user ou printer */
+    /** O método quantidades retorna quantidade impressas, ou seja, 
+      * com status: Impresso.
+      * Argumentos, usado na estrutura: where($type, '=', $filter)
+      * type: null, user ou printer 
+      * filter: o valor em si do type usado no filtro
+      * Retorna um array com paǵinas impressas: hoje, mes e total 
+      **/
     private function quantidades($filter=null, $type=null){
         $quantidades = [];
 
         if($type === null){
-            $quantidades['total'] = Printing::where('status','=','Impresso')->sum('pages');
+            $quantidades['total'] = Printing::where('status','=','Impresso')->sum(DB::raw('pages*copies'));
 
-            $quantidades['hoje'] = Printing::where('status','=','Impresso')->whereDate('created_at', Carbon::today())->sum('pages');
-            $quantidades['mes'] = Printing::where('status','=','Impresso')->whereMonth('created_at','=' , date('n'))->sum('pages');
+            $quantidades['hoje'] = Printing::where('status','=','Impresso')->whereDate('created_at', Carbon::today())->sum(DB::raw('pages*copies'));
+            $quantidades['mes'] = Printing::where('status','=','Impresso')->whereMonth('created_at','=' , date('n'))->sum(DB::raw('pages*copies'));
         } else {
 
-            $quantidades['total'] = Printing::where('status','=','Impresso')->where($type, '=', $filter)->sum('pages');
+            $quantidades['total'] = Printing::where('status','=','Impresso')->where($type, '=', $filter)->sum(DB::raw('pages*copies'));
 
             $quantidades['hoje'] = Printing::where('status','=','Impresso')->where($type, '=', $filter)
                                 ->whereDate('created_at', Carbon::today())
-                                ->sum('pages');
+                                ->sum(DB::raw('pages*copies'));
             $quantidades['mes'] = Printing::where('status','=','Impresso')->where($type, '=', $filter)
                                 ->whereMonth('created_at','=' , date('n'))
-                                ->sum('pages');
+                                ->sum(DB::raw('pages*copies'));
         }
         return $quantidades;
     }
 
-    public function pagesToday($user) {
-        $user = (int) $user;
-        $quantidades = $this->quantidades($user, 'user');
-        return $quantidades['hoje'];
+    /* Por enquanto esse método só é usado na próaluno */
+    public function pagesToday($user) {   
+        $proaluno_hoje = 0;
+        foreach($this->proaluno as $sala) {
+            $proaluno_hoje += Printing::where('status','=','Impresso')
+                                ->where('user', $user)
+                                ->where('printer', $sala)
+                                ->whereDate('created_at', Carbon::today())
+                                ->sum(DB::raw('pages*copies'));
+        }
+        return $proaluno_hoje;
     }
 
+    /** Regras implementadas manualemnte.
+      * Essas regras devem ir interface para ficarem mais flexíveis
+      */
     public function check($user, $printer ,int $pages) {
-        /* Manualmente vamos implementar controle para alunos apenas
-         * Essas regras irão para interface futuramente para ficarem mais flexíveis
-         */
-
-        /* impressoras sem controle de quota */
-        $noquota = ['fcs_samsung_cor_x7500lx_dcp'];
-        if (in_array(trim($printer), $noquota)) {
+        /* Impressoras sem controle de quota */
+        if (in_array(trim($printer), $this->noquota)) {
             return "sim";
         }
 
+        /* Qualuer usuário que começa com lab não pode imprimir */
         if (strpos($user, 'lab') !== false) {
             return 'nao';
         }
 
-        /* Nesta fase só queremos codpes*/
-        $user = (int) $user;
-        $quantidades = $this->quantidades($user, 'user');
-
-        $vinculos = Pessoa::vinculosSiglas($user,8);
-        /* Regra 0 - libera para funcionário, estagiários e docentes*/
-        foreach($vinculos as $vinculo){
-            if (trim($vinculo) == 'ESTAGIARIORH' || trim($vinculo) == 'SERVIDOR' || trim($vinculo) == 'ALUNOPD') {
-                return 'sim';
+        /* Regra da sala pró-aluno: 30 por dia */
+        if (in_array(trim($printer), $this->proaluno)) {
+            $proaluno_hoje = 0;
+            foreach($this->proaluno as $sala) {
+                $proaluno_hoje += Printing::where('status','=','Impresso')
+                                    ->where('user', $user)
+                                    ->where('printer', $sala)
+                                    ->whereDate('created_at', Carbon::today())
+                                    ->sum(DB::raw('pages*copies'));
             }
+            if($pages + $proaluno_hoje > 30) return 'nao';
         }
-        foreach($vinculos as $vinculo){
-            /* regra 1: ALUNOGR pode imprimir 30 páginas por dia */
-            if ($vinculo == 'ALUNOGR') {
-                if($pages + $quantidades['hoje'] > 30)
-                    return 'nao';
-            }
 
-            /* regra 2: ALUNOPOS pode imprimir 100 páginas por mês */
-            if($vinculo == 'ALUNOPOS') {
-                if($pages + $quantidades['mes'] > 100)
-                    return 'nao';
-            }
+        /* Regra DF lab 103: 100 por mês */
+        if ( trim($printer) == 'fcs_samsung_pb_m4080fx_dflab103') {
+            $df103_mes = Printing::where('status','=','Impresso')
+                           ->where('user', $user)
+                           ->where('printer', 'fcs_samsung_pb_m4080fx_dflab103')
+                           ->whereMonth('created_at','=' , date('n'))
+                           ->sum(DB::raw('pages*copies'));
+            if($pages + $df103_mes > 100) return 'nao';
         }
+
+        /* Para todos outros casos, liberar impressão */
         return 'sim';
     }
 
