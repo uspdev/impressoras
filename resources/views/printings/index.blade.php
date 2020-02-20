@@ -36,7 +36,8 @@
         <thead>
             <tr>
                 <th width="5%">Job ID</th>
-                @can('admin') <th width="10%">Pessoa</th> @endcan
+                @can('admin') <th width="5%">Pessoa</th> @endcan
+                @can('admin') <th width="5%">Host</th> @endcan
                 <th width="10%">Data</th>
                 <th width="5%">Páginas</th>
                 <th width="5%">Cópias</th>
@@ -50,7 +51,7 @@
     @include('printings/partials/printing')
 @empty
     <tr>
-        <td colspan="6">Não há impressões</td>
+        <td colspan="7">Não há impressões</td>
     </tr>
 @endforelse
 </tbody>
