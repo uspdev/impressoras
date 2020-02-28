@@ -14,6 +14,7 @@
 Route::get('/', 'IndexController@index')->name('home');
 Route::get('/printings', 'PrintingController@index');
 Route::get('/printings/admin', 'PrintingController@admin');
+Route::get('/printings/user/{user}', 'PrintingController@user');
 Route::get('/printings/{printer}', 'PrintingController@printer');
 
 # Senha única USP

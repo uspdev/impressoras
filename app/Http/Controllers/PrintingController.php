@@ -22,7 +22,7 @@ class PrintingController extends Controller
         'let_samsung_pb_k7500lx_proaluno',
         'fcs_samsung_pb_k7500lx_proaluno'
     ];
-    
+
     public function __construct()
     {
         $this->middleware('auth')->except(['check','pagesToday','pendentes']);
@@ -48,7 +48,7 @@ class PrintingController extends Controller
     public function admin(Request $request)
     {
         $this->authorize('admin');
-        $printings =  Printing::orderBy('jobid','DESC')->paginate(10);
+        $printings =  Printing::orderBy('jobid','DESC')->paginate(30);
         $quantidades = $this->quantidades();
         return view('printings/index', compact('printings','quantidades'));
     }
@@ -56,17 +56,26 @@ class PrintingController extends Controller
     public function printer($printer) {
         $this->authorize('admin');
         $printings = Printing::where('printer', '=', $printer);
-        $printings = $printings->orderBy('jobid','DESC')->paginate(10);
+        $printings = $printings->orderBy('jobid','DESC')->paginate(30);
         $quantidades = $this->quantidades($printer, 'printer');
         return view('printings/index', compact('printings','quantidades'));
     }
 
-    /** O método quantidades retorna quantidade impressas, ou seja, 
+    public function user($user) {
+        $this->authorize('admin');
+        $printings = Printing::where('user', '=', $user);
+        $printings = $printings->orderBy('jobid','DESC')->paginate(30);
+        $quantidades = $this->quantidades($user, 'user');
+        return view('printings/index', compact('printings','quantidades'));
+    }
+
+
+    /** O método quantidades retorna quantidade impressas, ou seja,
       * com status: Impresso.
       * Argumentos, usado na estrutura: where($type, '=', $filter)
-      * type: null, user ou printer 
+      * type: null, user ou printer
       * filter: o valor em si do type usado no filtro
-      * Retorna um array com paǵinas impressas: hoje, mes e total 
+      * Retorna um array com paǵinas impressas: hoje, mes e total
       **/
     private function quantidades($filter=null, $type=null){
         $quantidades = [];
@@ -91,7 +100,7 @@ class PrintingController extends Controller
     }
 
     /* Por enquanto esse método só é usado na próaluno */
-    public function pagesToday($user) {   
+    public function pagesToday($user) {
         $proaluno_hoje = 0;
         foreach($this->proaluno as $sala) {
             $proaluno_hoje += Printing::where('status','=','Impresso')
@@ -116,7 +125,7 @@ class PrintingController extends Controller
         if (in_array(trim($user), $this->users_noquota)) {
             return "sim";
         }
-       
+
         /* Qualuer usuário que começa com lab não pode imprimir */
         if (strpos($user, 'lab') !== false) {
             return 'nao';
