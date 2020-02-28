@@ -69,6 +69,14 @@ class PrintingController extends Controller
         return view('printings/index', compact('printings','quantidades'));
     }
 
+    public function jobid($jobid) {
+        $this->authorize('admin');
+        $printings = Printing::where('jobid', '=', $jobid);
+        $printings = $printings->orderBy('jobid','DESC')->paginate(30);
+        $quantidades = $this->quantidades($jobid);
+        return view('printings/index', compact('printings','quantidades'));
+    }
+
 
     /** O método quantidades retorna quantidade impressas, ou seja,
       * com status: Impresso.
