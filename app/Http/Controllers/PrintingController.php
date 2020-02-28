@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 class PrintingController extends Controller
 {
     private $noquota = ['fcs_samsung_cor_x7500lx_dcp'];
+    private $users_noquota = ['5385361'];
     private $proaluno = [
         'gh_samsung_pb_k7500lx_proaluno',
         'let_samsung_pb_k7500lx_proaluno',
@@ -111,6 +112,11 @@ class PrintingController extends Controller
             return "sim";
         }
 
+        /* pessoas sem controle de quota */
+        if (in_array(trim($user), $this->users_noquota)) {
+            return "sim";
+        }
+       
         /* Qualuer usuário que começa com lab não pode imprimir */
         if (strpos($user, 'lab') !== false) {
             return 'nao';
