@@ -20,7 +20,16 @@ class PrintingController extends Controller
     private $proaluno = [
         'gh_samsung_pb_k7500lx_proaluno',
         'let_samsung_pb_k7500lx_proaluno',
-        'fcs_samsung_pb_k7500lx_proaluno'
+        'fcs_samsung_pb_k7500lx_proaluno',
+        'proaluno_letras_simplex',
+        'proaluno_letras_duplex',
+        'proaluno_letras_duplex_borda_menor',
+        'proaluno_fcs_simplex',
+        'proaluno_fcs_duplex',
+        'proaluno_fcs_duplex_borda_menor',
+        'proaluno_gh_simplex',
+        'proaluno_gh_duplex',
+        'proaluno_gh_duplex_borda_menor'
     ];
 
     public function __construct()
