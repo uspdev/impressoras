@@ -39,6 +39,10 @@ Endpoins:
 
  - http://127.0.0.1:8000/check/fulano/let_samsung_pb_k7500lx_proaluno/3
  - http://127.0.0.1:8000/pages/today/fulano/
+ 
+ Limpar banco:
+ 
+     DELETE FROM printings WHERE created_at < '2020-03-08 08:00:00';
 
 # Agradecimentos
 
