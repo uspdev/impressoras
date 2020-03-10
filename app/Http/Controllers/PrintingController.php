@@ -29,7 +29,11 @@ class PrintingController extends Controller
         'proaluno_fcs_duplex_borda_menor',
         'proaluno_gh_simplex',
         'proaluno_gh_duplex',
-        'proaluno_gh_duplex_borda_menor'
+        'proaluno_gh_duplex_borda_menor',
+        'proaluno_letras_ppd',
+        'proaluno_fcs_ppd',
+        'proaluno_gh_ppd'
+
     ];
 
     public function __construct()
