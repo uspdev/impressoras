@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Socialite;
-use App\User;
+use App\Models\User;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -54,7 +54,7 @@ class LoginController extends Controller
         if (is_null($user)) {
             $user = new User;
         }
-                
+
         // bind do dados retornados
         $user->codpes = $userSenhaUnica->codpes;
         $user->email = $userSenhaUnica->email;

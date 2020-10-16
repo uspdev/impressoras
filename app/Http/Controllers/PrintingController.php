@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Printing;
-use App\User;
+use App\Models\Printing;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Auth;
 use Illuminate\Support\Facades\Gate;
