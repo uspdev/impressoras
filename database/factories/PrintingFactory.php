@@ -21,15 +21,16 @@ class PrintingFactory extends Factory
      */
     public function definition()
     {
+        $status = ['Fila', 'Impresso', 'Cancelado', 'Problema'];
         return [
-            jobid    bigint(20)
-            pages    bigint(20)
-            copies   bigint(20)
-            filename varchar(191)
-            user     varchar(191)
-            printer  varchar(191)
-            status   varchar(1024)
-            host     varchar(191)
+            'jobid' => $this->faker->randomNumber($nbDigits=5, $strict=false),
+            'pages' => $this->faker->numberBetween($min=1, $max=100),
+            'copies' => $this->faker->randomDigit(),
+            'filename' => $this->faker->word() . '.pdf',
+            'user' => $this->faker->graduacao(),
+            'printer'=> $this->faker->numerify('printer #'),
+            'status' => $status[array_rand($status)],
+            'host' => $this->faker->localIpv4(),
         ];
     }
 }
