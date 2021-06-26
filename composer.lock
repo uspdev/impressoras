@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "afc8471d28621f998cb2cc855dceae44",
+    "content-hash": "7a135c4f14c5a383d6a595b866a3a691",
     "packages": [
         {
             "name": "brick/math",
@@ -1069,16 +1069,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v8.48.1",
+            "version": "v8.48.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "edc138060a13c9e5f15c005fad5f6a39b4ccf5fa"
+                "reference": "4c50ebbb7d1a66c5f3511261413cd499d30ba4cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/edc138060a13c9e5f15c005fad5f6a39b4ccf5fa",
-                "reference": "edc138060a13c9e5f15c005fad5f6a39b4ccf5fa",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/4c50ebbb7d1a66c5f3511261413cd499d30ba4cd",
+                "reference": "4c50ebbb7d1a66c5f3511261413cd499d30ba4cd",
                 "shasum": ""
             },
             "require": {
@@ -1233,7 +1233,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2021-06-23T13:41:59+00:00"
+            "time": "2021-06-25T23:57:38+00:00"
         },
         {
             "name": "laravel/socialite",
@@ -5186,16 +5186,16 @@
         },
         {
             "name": "uspdev/laravel-usp-theme",
-            "version": "1.0.21",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/uspdev/laravel-usp-theme.git",
-                "reference": "50e4e50e804be01779458629763ad3cdcbffeec9"
+                "reference": "df40ef29283f8c1f2eab4f44e7dde56cdda77132"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/uspdev/laravel-usp-theme/zipball/50e4e50e804be01779458629763ad3cdcbffeec9",
-                "reference": "50e4e50e804be01779458629763ad3cdcbffeec9",
+                "url": "https://api.github.com/repos/uspdev/laravel-usp-theme/zipball/df40ef29283f8c1f2eab4f44e7dde56cdda77132",
+                "reference": "df40ef29283f8c1f2eab4f44e7dde56cdda77132",
                 "shasum": ""
             },
             "type": "library",
@@ -5203,7 +5203,10 @@
                 "laravel": {
                     "providers": [
                         "Uspdev\\UspTheme\\ServiceProvider"
-                    ]
+                    ],
+                    "aliases": {
+                        "UspTheme": "Uspdev\\UspTheme\\Facades\\UspTheme"
+                    }
                 }
             },
             "autoload": {
@@ -5224,22 +5227,22 @@
             "description": "usp theme for laravel",
             "support": {
                 "issues": "https://github.com/uspdev/laravel-usp-theme/issues",
-                "source": "https://github.com/uspdev/laravel-usp-theme/tree/1.0.21"
+                "source": "https://github.com/uspdev/laravel-usp-theme/tree/2.1.0"
             },
-            "time": "2020-10-26T14:33:59+00:00"
+            "time": "2021-06-16T15:14:11+00:00"
         },
         {
             "name": "uspdev/replicado",
-            "version": "1.7.13",
+            "version": "1.7.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/uspdev/replicado.git",
-                "reference": "9eb7934403ad4bb2597cac6bb9f2ae93aba56fe8"
+                "reference": "31c484350cb456fe133ebacd2006b5cec6ecc861"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/uspdev/replicado/zipball/9eb7934403ad4bb2597cac6bb9f2ae93aba56fe8",
-                "reference": "9eb7934403ad4bb2597cac6bb9f2ae93aba56fe8",
+                "url": "https://api.github.com/repos/uspdev/replicado/zipball/31c484350cb456fe133ebacd2006b5cec6ecc861",
+                "reference": "31c484350cb456fe133ebacd2006b5cec6ecc861",
                 "shasum": ""
             },
             "require": {
@@ -5274,9 +5277,9 @@
             "homepage": "https://github.com/uspdev/replicado",
             "support": {
                 "issues": "https://github.com/uspdev/replicado/issues",
-                "source": "https://github.com/uspdev/replicado/tree/1.7.13"
+                "source": "https://github.com/uspdev/replicado/tree/1.7.14"
             },
-            "time": "2021-06-02T17:00:11+00:00"
+            "time": "2021-06-26T00:09:02+00:00"
         },
         {
             "name": "uspdev/senhaunica-socialite",

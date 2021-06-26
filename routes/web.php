@@ -23,10 +23,9 @@ Route::get('/printings/jobid/{jobid}', [PrintingController::class, 'jobid']);
 Route::get('/printings/{printer}', [PrintingController::class, 'printer']);
 
 # Senha única USP
-Route::get('/senhaunica/login', [LoginController::class, 'redirectToProvider'])->name('login');
+Route::get('/login', [LoginController::class, 'redirectToProvider'])->name('login');
 Route::get('/callback', [LoginController::class, 'handleProviderCallback']);
 Route::post('/logout', [LoginController::class, 'logout']);
-Route::get('/logout', [LoginController::class, 'logout']);
 
 Route::get('/check/{user}/{printer}/{pages}', [PrintingController::class, 'check']);
 Route::get('/pages/today/{user}/', [PrintingController::class, 'pagesToday']);
