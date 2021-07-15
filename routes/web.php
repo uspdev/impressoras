@@ -34,3 +34,5 @@ Route::get('/pages/today/{user}/', [PrintingController::class, 'pagesToday']);
 Route::get('/pendentes', [PrintingController::class, 'pendentes']);
 Route::get('/pendentes/{printer}/', [PrintingController::class, 'pendentes']);
 
+# Logs  
+Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->middleware('can:admin');
