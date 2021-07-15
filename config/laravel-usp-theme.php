@@ -1,5 +1,16 @@
 <?php
 
+$right_menu = [     
+    [
+        'text' => '<i class="fas fa-hard-hat"></i>',
+        'title' => 'Logs',
+        'target' => '_blank',
+        'url' => config('app.url') . '/logs',
+        'align' => 'right',
+        'can' => 'admin',
+    ],
+];
+
 return [
 
     'title' => config('app.name'),
@@ -35,5 +46,5 @@ return [
             'url'  => '/pendentes',
         ],
     ],
-
+    'right_menu' => $right_menu,
 ];
