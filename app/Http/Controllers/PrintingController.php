@@ -52,9 +52,11 @@ class PrintingController extends Controller
         $user = \Auth::user();
         $printings = Printing::where('user', '=', $user->codpes);
         $quantidades = $this->quantidades($user->codpes, 'user');
-
         $printings = $printings->orderBy('jobid','DESC')->paginate(10);
-
+        if($request->has('route')) {
+          return view('printings/partials/printing',
+                       compact('printings', 'quantidades'));
+        }
         return view('printings/index', compact('printings','quantidades'));
     }
 
@@ -63,6 +65,10 @@ class PrintingController extends Controller
         $this->authorize('admin');
         $printings =  Printing::orderBy('jobid','DESC')->paginate(30);
         $quantidades = $this->quantidades();
+        if($request->has('route')) {
+          return view('printings/partials/printing',
+                       compact('printings', 'quantidades'));
+        }
         return view('printings/index', compact('printings','quantidades'));
     }
 
