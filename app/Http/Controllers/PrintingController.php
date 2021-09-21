@@ -137,7 +137,11 @@ class PrintingController extends Controller
       * Essas regras devem ir interface para ficarem mais flexíveis
       */
     public function check($user, $printer ,int $pages) {
-        /* Impressoras sem controle de quota */
+	
+	/* Impressoras sem controle de quota */
+	
+	return "pendente";
+
         if (in_array(trim($printer), $this->noquota)) {
             return "sim";
         }

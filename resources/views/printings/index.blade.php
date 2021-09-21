@@ -40,9 +40,10 @@
                 @can('admin') <th width="5%">Host</th> @endcan
                 <th width="10%">Data</th>
                 <th width="5%">Páginas</th>
-                <th width="5%">Cópias</th>
+		<th width="5%">Cópias</th>
+		<th width="5%">Tamanho</th>
                 <th width="30%">Arquivo</th>
-                <th width="30%">Impressora</th>
+                <th width="25%">Impressora</th>
                 <th width="10%">Status</th>
             </tr>
         </thead>
