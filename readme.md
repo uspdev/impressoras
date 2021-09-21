@@ -1,6 +1,33 @@
 Sistema quota
 =============
 
+Model Impressora: Controle Manual de Fila, 
+
+Se a impressora tem Controle Manual de Fila toda impressão cairá como pendente,
+se não não tiver o documento irá para Processando diretamente
+
+Model Status: 
+
+- waiting_for_authorization   : está aguardando autorização
+- checking_user_quota         : está contanto página e verificando se usuário tem quota disponível
+- cancelled_user_out_of_quota : usuário não tem quota disponível
+- sent_to_printer_queue       : arquivo foi para impressora
+- print_success               : a impressora respondeu que imprimiu com sucesso
+- printer_problem             : quando a impressora não respondeu
+
+Model Printing:
+
+Fluxo de impressão: Pendente , Processando
+
+1) O quota_check inseri na tabela printings um registro com status 'Processando'
+2) O quota_check conta as páginas e verifica numa rota se o usuário pode imprimir o documento
+3) Se pode, o quota_check atualiza o registro em printings para o status 'Fila'.
+Após a impressora responder:
+ 3.1) o quota_save atualiza o registro em printings para o status 'Impresso'
+ 3.2) o quota_save atualiza o registro em printings para o status 'Problema'
+4) Se não pode, o quota_check atualiza o registro em printings para o status 'Cancelado'
+
+
 Sistema desenvolvido em *laravel* + *tea4cups* para gestão de impressões no contexto 
 da Universidade de São Paulo.
 
@@ -8,14 +35,14 @@ O fluxo do arquivo impresso é controlado em 4 estágios usando rotas do laravel
 hooks do tea4cups, na seguinte sequência:
 
  1. *Processando*: O servidor cups recebe o arquivo e imediatamente o registra 
-    como *Processando*. O script [quota_check](https://raw.githubusercontent.com/fflch/quota/master/tea4cups/quota_check.j2) faz a contagem de páginas e
+    como *Processando*. O script quota_check faz a contagem de páginas e
     verifica se o usuário em questão tem permissão para continuar com a impressão
  2. *Cancelado*: Ainda no *quota_check*, se verificado que o usuário não pode imprimir 
     o referido arquivo, o status será gravado como *Cancelado*
  3. *Fila*: Se o usuário puder imprimir, o *quota_check* envia o arquivo para a impressora
     e registra o status como *Fila*
  4. *Impresso*: Quando a impressora responde ok para a impressão do arquivo, o script 
-    [quota_save](https://raw.githubusercontent.com/fflch/quota/master/tea4cups/quota_save.j2) muda o status do mesmo para *Impresso*
+    quota_save muda o status do mesmo para *Impresso*
 
 Deploy básico para desenvolvimento:
 

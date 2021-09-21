@@ -63,6 +63,7 @@ class PrintingController extends Controller
     public function admin(Request $request)
     {
         $this->authorize('admin');
+        sleep(10);
         $printings =  Printing::orderBy('jobid','DESC')->paginate(30);
         $quantidades = $this->quantidades();
         if($request->has('route')) {
