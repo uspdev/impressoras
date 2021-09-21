@@ -1,3 +1,4 @@
+@forelse ($printings as $printing)
 <tr>
 <td>{{ $printing->jobid }}</td>
 @can('admin')
@@ -8,12 +9,12 @@
 <td>{{ $printing->pages }}</td>
 <td>{{ $printing->copies }}</td>
 <td>
-@php 
+@php
 if (strpos($printing->filename, 'smbprn.') !== false) {
   $filename = substr(explode(' ', $printing->filename, 2)[1],0,28);
 }
 else {
-  $filename = substr($printing->filename,0,28);                    
+  $filename = substr($printing->filename,0,28);
 }
 echo utf8_decode($filename) . " ...";
 @endphp
@@ -24,6 +25,11 @@ echo utf8_decode($filename) . " ...";
 @else
 <td>{{ $printing->printer }}</td>
 @endcan
-<td>{{ $printing->status }}</td>
+<td class="{{ $printing->status }}">{{ $printing->status }}</td>
 </tr>
+@empty
+    <tr>
+        <td colspan="7">Não há impressões</td>
+    </tr>
+@endforelse
 
