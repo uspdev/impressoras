@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use App\Models\Printer;
+use App\Models\Status;
 
 class Printing extends Model
 {
@@ -23,8 +25,19 @@ class Printing extends Model
         return $query;
     }
 
-    public function user(){
-        return $this->belongsTo('App\User');
+    public function printer()
+    {
+        return $this->belongsTo(Printer::class);
+    }
+
+    public function status()
+    {
+    	return $this->hasMany(Status::class);
+    }
+
+    public function latest_status()
+    {
+    	return $this->hasOne(Status::class)->latest();
     }
 }
 

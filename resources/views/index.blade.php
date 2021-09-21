@@ -11,7 +11,7 @@
         @auth
             <script>window.location = "/printings";</script>
         @else
-            Você ainda não fez seu login com a senha única USP <a href="/senhaunica/login"> Faça seu Login! </a>
+            Você ainda não fez seu login com a senha única USP <a href="/login"> Faça seu Login! </a>
             <br><br>
             Consulte a <a href="/pendentes"> fila de impressão</a> 
         @endauth

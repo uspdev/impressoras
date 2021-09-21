@@ -25,7 +25,7 @@
 <tr style="border-bottom: 1px solid #cdd0d4;">
 <td width="33%"><b>Total:</b> {{ $quantidades['total'] }}</td>
 <td width="34%" align="center"><b>Hoje:</b> {{ $quantidades['hoje'] }}</td>
-<td width="33%" align="right"><b>Neste mês:</b> {{ $quantidades['mes'] }}</td> 
+<td width="33%" align="right"><b>Neste mês:</b> {{ $quantidades['mes'] }}</td>
 </tr>
 </table>
 
@@ -45,18 +45,44 @@
                 <th width="30%">Arquivo</th>
                 <th width="25%">Impressora</th>
                 <th width="10%">Status</th>
+                <th width="30%">Impressora</th>
+                <th width="10%" style="min-width:120px">Status</th>
             </tr>
         </thead>
         <tbody>
-@forelse ($printings as $printing)
     @include('printings/partials/printing')
-@empty
-    <tr>
-        <td colspan="7">Não há impressões</td>
-    </tr>
-@endforelse
 </tbody>
 </table>
 {{ $printings->links() }}
 </div>
 @stop
+
+@section('javascripts_bottom')
+<script type="text/javascript">
+  $(document).ready(function(){
+    function verificaStatus(route) {
+      $.ajax({
+        url: route,
+        type: 'get',
+        dataType: "html",
+        data: {
+          route: route,
+        },
+        beforeSend: function() {
+          var loading = '<div class="spinner-border spinner-border-sm text-muted"></div>';
+          $("td.Fila,td.Processando").html(loading);
+        },
+        success: function( data ) {
+          $('.table tbody').html(data);
+        }
+      });
+    };
+
+    setInterval(function(){
+      var route = $(location).attr("pathname");
+      verificaStatus(route)
+    }, 5000);
+
+  });
+</script>
+@endsection

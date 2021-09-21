@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddFilesizeColumnInPrintings extends Migration
+class CreatePrintersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,13 @@ class AddFilesizeColumnInPrintings extends Migration
      */
     public function up()
     {
-        Schema::table('printings', function (Blueprint $table) {
-            $table->string('filesize')->nullable();
+        Schema::create('printers', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+	    $table->boolean('quota_control')->default(0);
+	    $table->boolean('authorization_control')->default(0);
+	    $table->string('name');
+	    $
         });
     }
 
@@ -25,8 +30,6 @@ class AddFilesizeColumnInPrintings extends Migration
      */
     public function down()
     {
-        Schema::table('printings', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('printers');
     }
 }
