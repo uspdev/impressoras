@@ -16,10 +16,9 @@ class CreatePrintersTable extends Migration
         Schema::create('printers', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-	    $table->boolean('quota_control')->default(0);
-	    $table->boolean('authorization_control')->default(0);
-	    $table->string('name');
-	    $
+	        $table->boolean('quota_control')->default(0);
+	        $table->boolean('authorization_control')->default(0);
+	        $table->string('name');
         });
     }
 
