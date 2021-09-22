@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePrintersTable extends Migration
+class CreateRemainingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,14 @@ class CreatePrintersTable extends Migration
      */
     public function up()
     {
-        Schema::create('printers', function (Blueprint $table) {
+        Schema::create('remainings', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('machine_name');
-            $table->string('name');
-            $table->foreignId('rule_id')->nullable()->constrained();
+            
+            $table->string('user');
+            $table->foreignId('rule_id')->constrained();
 
+            $table->integer('remaining');
         });
     }
 
@@ -30,6 +31,6 @@ class CreatePrintersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('printers');
+        Schema::dropIfExists('remainings');
     }
 }
