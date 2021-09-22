@@ -22,6 +22,9 @@ class CreatePrintingsTable extends Migration
             $table->string('filename');
             $table->string('user');
             $table->string('printer');
+            $table->string('host');
+            $table->string('filesize');
+	    $table->foreignId('printer_id')->constrained();
         });
     }
 

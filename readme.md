@@ -8,12 +8,12 @@ se não não tiver o documento irá para Processando diretamente
 
 Model Status: 
 
-- waiting_for_authorization   : está aguardando autorização
-- checking_user_quota         : está contanto página e verificando se usuário tem quota disponível
-- cancelled_user_out_of_quota : usuário não tem quota disponível
-- sent_to_printer_queue       : arquivo foi para impressora
-- print_success               : a impressora respondeu que imprimiu com sucesso
-- printer_problem             : quando a impressora não respondeu
+- waiting_job__authorization (IF ENABLED)  : está aguardando autorização
+- checking_user_quota (IF ENABLED) 	   : está contanto página e verificando se usuário tem quota disponível
+- cancelled_user_out_of_quota  		   : usuário não tem quota disponível
+- sent_to_printer_queue        		   : arquivo foi para impressora
+- print_success               		   : a impressora respondeu que imprimiu com sucesso
+- printer_problem             		   : quando a impressora não respondeu
 
 Model Printing:
 

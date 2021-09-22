@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddFieldsToUsers extends Migration
+class CreateStatusTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class AddFieldsToUsers extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('codpes');
-            $table->string('password')->nullable()->change();
+        Schema::create('status', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+	    $table->foreignId('printing_id')->constrained();
         });
     }
 
@@ -26,8 +27,6 @@ class AddFieldsToUsers extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('status');
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddStatusToPrintings extends Migration
+class CreatePrintersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,14 @@ class AddStatusToPrintings extends Migration
      */
     public function up()
     {
-        Schema::table('printings', function (Blueprint $table) {
-            $table->enum('status', ['Cancelado', 'Impresso'])->nullable();
+        Schema::create('printers', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+	    $table->boolean('quota_control')->default(0);
+	    $table->boolean('authorization_control')->default(0);
+	    $table->string('name');
+	    $
         });
-        \DB::statement('UPDATE printings SET status="Impresso";');
     }
 
     /**
@@ -26,8 +30,6 @@ class AddStatusToPrintings extends Migration
      */
     public function down()
     {
-        Schema::table('printings', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('printers');
     }
 }
