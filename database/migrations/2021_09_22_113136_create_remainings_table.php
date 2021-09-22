@@ -21,6 +21,9 @@ class CreateRemainingsTable extends Migration
             $table->foreignId('rule_id')->constrained();
 
             $table->integer('remaining');
+
+            /* Possibitar que o usuário solicite quota extra */
+            $table->integer('extra_quota')->nullable();
         });
     }
 
