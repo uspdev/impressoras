@@ -74,3 +74,9 @@ Endpoins:
 # Agradecimentos
 
  - [Will Gnann](https://github.com/wgnann) do IME-USP pela ajuda com a parte do framework *tea4cups*
+
+# Rotas Api
+
+Registrar uma tentativa de impressão
+
+   curl --header "Authorization: 123" -d '{"jobid":"10", "pages":"5", "copies": "2", "filename": "arquivo.pdf", "filesize": "89876", "user": "5385361", "host": "10.0.25.5", "printer": "profcs"}' -H "Content-Type: application/json" -X POST http://127.0.0.1:8000/api/printings

@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\PrintingController;
-use App\Http\Controllers\Api\PrintingController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\PrinterController;
 use App\Http\Controllers\RuleController;
