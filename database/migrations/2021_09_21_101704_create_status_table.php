@@ -16,7 +16,8 @@ class CreateStatusTable extends Migration
         Schema::create('status', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-	    $table->foreignId('printing_id')->constrained();
+            $table->string('name');
+	        $table->foreignId('printing_id')->constrained();
         });
     }
 

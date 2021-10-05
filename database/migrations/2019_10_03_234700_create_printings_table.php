@@ -20,10 +20,9 @@ class CreatePrintingsTable extends Migration
             $table->unsignedBigInteger('pages');
             $table->unsignedBigInteger('copies');
             $table->string('filename');
-            $table->string('user');
-            $table->string('printer');
-            $table->string('host');
             $table->string('filesize');
+            $table->string('user');
+            $table->string('host');
 	        $table->foreignId('printer_id')->constrained();
         });
     }

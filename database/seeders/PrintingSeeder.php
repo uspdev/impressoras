@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Printing;
+use App\Models\Printer;
 
 class PrintingSeeder extends Seeder
 {
@@ -15,16 +16,16 @@ class PrintingSeeder extends Seeder
     public function run()
     {
         $printing = [
-            'jobid' => 1,
-            'pages' => 10,
-            'copies' => 1,
-            'filename' => 'ofício.pdf',
-            'user' => '000001',
-            'printer'=> 'printer_colorida',
-            'status' => 'Impresso',
-            'host' => '10.0.0.5',
+            'jobid'     => 1,
+            'pages'     => 10,
+            'copies'    => 1,
+            'filename'  => 'ofício.pdf',
+            'filesize'  => '20000',
+            'user'      => '5385361',
+            'host'      => '10.0.0.5',
+            'printer_id'=> 1,
         ];
+
         Printing::create($printing);
-        Printing::factory()->count(30)->create();
     }
 }
