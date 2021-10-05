@@ -42,6 +42,16 @@ return [
             'can'  => 'admin'
         ],
         [
+            'text' => 'Impressoras',
+            'url'  => '/printers',
+            'can'  => 'admin'
+        ],
+        [
+            'text' => 'Regras',
+            'url'  => '/rules',
+            'can'  => 'admin'
+        ],
+        [
             'text' => 'Fila',
             'url'  => '/pendentes',
         ],
