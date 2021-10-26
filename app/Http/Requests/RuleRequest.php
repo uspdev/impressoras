@@ -28,6 +28,7 @@ class RuleRequest extends FormRequest
             'authorization_control' => 'required',
             'type_of_control'       => 'nullable',
             'quota'                 => 'nullable|integer|min:0',
+            'categorias'            => 'nullable'
         ];
     }
 

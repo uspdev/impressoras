@@ -58,6 +58,11 @@ class PrinterController extends Controller
     {
         $this->authorize('admin');
 
+        if($printer->printings->isNotEmpty()) {
+            request()->session()->flash('alert-danger','Há impressões nessa Impressora. Não é possível deletar');
+            return redirect('/rules');
+        }
+
         $printer->delete();
         return redirect('/printers');
 	}

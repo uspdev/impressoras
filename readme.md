@@ -77,6 +77,12 @@ Endpoins:
 
 # Rotas Api
 
+Rota para verificar se uma pessoa (user) pode imprimir numa dada 
+impressora (printer) uma certa quantidade de páginas (pages) - 
+as páginas devem considerar as cópias:
+
+   curl --header "Authorization: 123" -d '{"user":"5385361", "pages": "5", "printer": "profcs"}' -H "Content-Type: application/json" -X POST http://127.0.0.1:8000/api/check
+
 Registrar uma tentativa de impressão
 
    curl --header "Authorization: 123" -d '{"jobid":"10", "pages":"5", "copies": "2", "filename": "arquivo.pdf", "filesize": "89876", "user": "5385361", "host": "10.0.25.5", "printer": "profcs"}' -H "Content-Type: application/json" -X POST http://127.0.0.1:8000/api/printings

@@ -28,6 +28,9 @@ class CreateRulesTable extends Migration
             /* quota para o tipo escolhido (monthly or daily) */
             $table->integer('quota')->nullable();
 
+            /* categorias */
+            $table->text('categorias')->nullable();
+
         });
     }
 

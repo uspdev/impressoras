@@ -31,6 +31,7 @@ class RuleController extends Controller
 
 	public function store(RuleRequest $request)
     {
+       
         $this->authorize('admin');
 
 		$rule = Rule::create($request->validated());
@@ -59,6 +60,11 @@ class RuleController extends Controller
 	public function destroy(Rule $rule)
     {
         $this->authorize('admin');
+
+        if($rule->printers->isNotEmpty()) {
+            request()->session()->flash('alert-danger','Há impressoras nessa regra. Não é possível deletar');
+            return redirect('/rules');
+        }
 
         $rule->delete();
 

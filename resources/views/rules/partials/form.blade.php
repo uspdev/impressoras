@@ -47,6 +47,26 @@
                     <br>
                     <input type="number" name="quota" value="{{old('quota',$rule->quota)}}">
                 </div>
+
+                <div class="form-group">
+                    <label for="" class=""><b>Categorias permitidas</b></label>
+                    <small> Se nenhuma opção for selecionada, as impressoras nessa regra estão liberadas para todos </small>
+
+                    @foreach($rule::categorias() as $categoria)
+                        <div class="form-check">
+                            <input class="form-check-input" name="categorias[]" type="checkbox" value="{{$categoria}}" 
+
+                                @if(in_array($categoria,$rule->categorias))
+                                    checked
+                                @endif
+                                >
+                                <label class="form-check-label" for="">
+                                {{$categoria}}
+                                </label>
+                        </div>
+                    @endforeach
+                </div>
+
             </div>
         </div>
 
