@@ -26,6 +26,8 @@ class PrintingController extends Controller
             $printer->name = $request->printer;
             $printer->save();
         }
+        
+        return response()->json($request); 
 
         // 0. Se a impressora não estiver em nenhuma regra, então qualquer impressão está liberada
         
@@ -34,15 +36,28 @@ class PrintingController extends Controller
 
         
         // 1. usuário pode imprimir nessa impressora?
-        return Pessoa::obterSiglasVinculosAtivos($request->user);
+
+        $permissao = array_intersect(Pessoa::obterSiglasVinculosAtivos($request->user),$printer->rule->categorias) ? true : false;
+
+        if ($permissao){
 
         // 2. Ele tem quota suficiente para a quantidade de páginas requerida dada a regra da impressora?
-        $ja_impressas = Printing::where('user', $request->user)->get();
+        $impressoes = Printing::where('user', $request->user)->get();
+        
         // Detalhe:
         // 1. Se a regra for mensal, pegar só as desse mês de $ja_impressas
+        if ($printer->rule->type_of_control == "Mensal") {
+            $impressoes_mes = $impressoes->whereMonth('created_at','=' , date('n'))->sum(DB::raw('pages*copies'));
+            return $impressoes_mes;
+            }
+        
         // 2. Se a regra for diária, pegar só as de hoje $ja_impressas
+        elseif ($printer->rule->type_of_control == "Diário") {
+            $impressoes_dia = $impressoes->whereDate('created_at', Carbon::today())->sum(DB::raw('pages*copies'));
+            return $impressoes_dia;
+            }
 
-        return response()->json(false);
+        } else return response()->json(false);
     }
 
     public function store(Request $request){
