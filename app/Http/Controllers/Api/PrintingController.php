@@ -7,10 +7,11 @@ use Illuminate\Http\Request;
 use App\Models\Printing;
 use App\Models\Printer;
 use Uspdev\Replicado\Pessoa;
+use Carbon\Carbon;
+use DB;
 
 class PrintingController extends Controller
 {
-    // A pessoa em questão pode imprimir nessa impressora? 
     public function check(Request $request){
         
         if($request->header('Authorization') != env('API_KEY') ){
@@ -27,8 +28,6 @@ class PrintingController extends Controller
             $printer->save();
         }
         
-        return response()->json($request); 
-
         // 0. Se a impressora não estiver em nenhuma regra, então qualquer impressão está liberada
         
         if(!$printer->rule)
@@ -36,25 +35,27 @@ class PrintingController extends Controller
 
         
         // 1. usuário pode imprimir nessa impressora?
-
-        $permissao = array_intersect(Pessoa::obterSiglasVinculosAtivos($request->user),$printer->rule->categorias) ? true : false;
+        // Pessoa::obterSiglasVinculosAtivos($request->user)
+        $permissao = array_intersect(['ALUNOCEU'],$printer->rule->categorias) ? true : false;
 
         if ($permissao){
 
-        // 2. Ele tem quota suficiente para a quantidade de páginas requerida dada a regra da impressora?
-        $impressoes = Printing::where('user', $request->user)->get();
-        
-        // Detalhe:
-        // 1. Se a regra for mensal, pegar só as desse mês de $ja_impressas
-        if ($printer->rule->type_of_control == "Mensal") {
-            $impressoes_mes = $impressoes->whereMonth('created_at','=' , date('n'))->sum(DB::raw('pages*copies'));
-            return $impressoes_mes;
-            }
-        
-        // 2. Se a regra for diária, pegar só as de hoje $ja_impressas
-        elseif ($printer->rule->type_of_control == "Diário") {
-            $impressoes_dia = $impressoes->whereDate('created_at', Carbon::today())->sum(DB::raw('pages*copies'));
-            return $impressoes_dia;
+            // 2. Ele tem quota suficiente para a quantidade de páginas requerida dada a regra da impressora?
+            if (empty($printer->rule->type_of_control)) return response()->json(true);
+            
+            else {
+
+                $impressoes = Printing::where('user', $request->user);
+                
+                // 2.1. Se a regra for mensal, pegar só as desse mês 
+                if ($printer->rule->type_of_control == "Mensal") $quantidade = $impressoes->whereMonth('created_at','=' , date('n'))->sum(DB::raw('pages*copies'));
+                       
+                // 2.2 Se a regra for diária, pegar só as de hoje 
+                elseif ($printer->rule->type_of_control == "Diário") $quantidade = $impressoes->whereDate('created_at', Carbon::today())->sum(DB::raw('pages*copies'));
+
+                if ($quantidade + $request->pages <= $printer->rule->quota) return response()->json(true);
+                else return response()->json(false);          
+
             }
 
         } else return response()->json(false);
@@ -83,8 +84,7 @@ class PrintingController extends Controller
         # status?
         
         
-        return response()->json(['teste']);
+        return response()->json(true);
 
-        dd('ok');
     }
 }
