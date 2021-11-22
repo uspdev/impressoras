@@ -35,12 +35,13 @@ class PrintingController extends Controller
 
         
         // 1. usuário pode imprimir nessa impressora?
-        // Pessoa::obterSiglasVinculosAtivos($request->user)
-        $permissao = array_intersect(['ALUNOCEU'],$printer->rule->categorias) ? true : false;
+
+        $permissao = array_intersect(Pessoa::obterSiglasVinculosAtivos($request->user),$printer->rule->categorias) ? true : false;
 
         if ($permissao){
 
             // 2. Ele tem quota suficiente para a quantidade de páginas requerida dada a regra da impressora?
+
             if (empty($printer->rule->type_of_control)) return response()->json(true);
             
             else {
