@@ -15,7 +15,7 @@ class PrintingController extends Controller
     public function check(Request $request){
         
         if($request->header('Authorization') != env('API_KEY') ){
-            return response('Acesso não autorizado',403);
+            return response('Acesso nao autorizado',403);
         }
         // o que esperamos no $request: {user}, {printer} e {pages}
         
@@ -28,44 +28,56 @@ class PrintingController extends Controller
             $printer->save();
         }
         
-        // 0. Se a impressora não estiver em nenhuma regra, então qualquer impressão está liberada
+        // 0. Se a impressora nao estiver em nenhuma regra, entao qualquer impressao esta liberada
         
         if(!$printer->rule)
-            return response()->json(true);
+            return response()->json([true, 'Autorizado. Impressora sem regra de impressao.']);
 
         
-        // 1. usuário pode imprimir nessa impressora?
+        // 1. usuario pode imprimir nessa impressora?
 
-        $permissao = array_intersect(Pessoa::obterSiglasVinculosAtivos($request->user),$printer->rule->categorias) ? true : false;
-
+        $permissao = array_intersect(Pessoa::obterSiglasVinculosAtivos($request->user), $printer->rule->categorias) ? true : false;
+        
         if ($permissao){
 
-            // 2. Ele tem quota suficiente para a quantidade de páginas requerida dada a regra da impressora?
+            // 2. Ele tem quota suficiente para a quantidade de paginas requerida dada a regra da impressora?
 
-            if (empty($printer->rule->type_of_control)) return response()->json(true);
-            
-            else {
+            if (empty($printer->rule->type_of_control)) {
 
-                $impressoes = Printing::where('user', $request->user);
+                return response()->json([true, 'Autorizado. Impressora sem controle de quota']);
+
+            }
                 
-                // 2.1. Se a regra for mensal, pegar só as desse mês 
-                if ($printer->rule->type_of_control == "Mensal") $quantidade = $impressoes->whereMonth('created_at','=' , date('n'))->sum(DB::raw('pages*copies'));
-                       
-                // 2.2 Se a regra for diária, pegar só as de hoje 
-                elseif ($printer->rule->type_of_control == "Diário") $quantidade = $impressoes->whereDate('created_at', Carbon::today())->sum(DB::raw('pages*copies'));
+            // 2.1. Se a regra for mensal, pegar só as desse mês 
+            if ($printer->rule->type_of_control == "Mensal") {
 
-                if ($quantidade + $request->pages <= $printer->rule->quota) return response()->json(true);
-                else return response()->json(false);          
+                $quantidade = Printing::where('user', $request->user)->whereMonth('created_at','=' , date('n'))->sum(DB::raw('pages*copies'));
+
+            }                       
+
+            // 2.2 Se a regra for diaria, pegar só as de hoje 
+            elseif ($printer->rule->type_of_control == "Diario") {
+
+                $quantidade = Printing::where('user', $request->user)->whereDate('created_at', Carbon::today())->sum(DB::raw('pages*copies'));
 
             }
 
-        } else return response()->json(false);
+            if ($quantidade + $request->pages <= $printer->rule->quota) {
+
+                return response()->json([true, 'Autorizado; Razao: Usuario possui quota disponivel. Quantidade de impressoes ja feitas: ' . $quantidade . '; Impressoes solicitadas: ' . $request->pages]);
+
+            } else return response()->json([false, 'Nao autorizado. Razao: Quota excedida. Quantidade de impressoes ja feitas: ' . $quantidade . '; Impressoes solicitadas: ' . $request->pages]);
+
+        }
+
+        return response()->json([false,'Nao autorizado. Razao: Usuario sem permissao para utilizar esta impressora.']);
+
     }
 
     public function store(Request $request){
 
         if($request->header('Authorization') != env('API_KEY') ){
-            return response('Acesso não autorizado',403);
+            return response('Acesso nao autorizado',403);
         }
 
         $printing = new Printing;
