@@ -62,7 +62,7 @@ class PrintingController extends Controller
 
             }
 
-            if ($quantidade + $request->pages <= $printer->rule->quota) {
+            if ($quantidade + $request->pages <= $printer->rule->quota) :
 
                 return response()->json([true, 'Autorizado; Razao: Usuario possui quota disponivel. Quantidade de impressoes ja feitas: ' . $quantidade . '; Impressoes solicitadas: ' . $request->pages]);
 
@@ -81,7 +81,6 @@ class PrintingController extends Controller
         }
 
         $printing = new Printing;
-
         $printing->jobid = $request->jobid;
         $printing->pages = $request->pages;
         $printing->copies = $request->copies;
@@ -91,12 +90,14 @@ class PrintingController extends Controller
         $printing->host = $request->host;
         $printing->save();
 
+        $status = new Status;
+        $status->name = "sent_to_printer_queue"
+        $status->printing_id = $printing->id;
+        $status->save();
+
         # printer machine_name 
         # $printing->printer_id = null;
 
-        # status?
-        
-        
         return response()->json(true);
 
     }

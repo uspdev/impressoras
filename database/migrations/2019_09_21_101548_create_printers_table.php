@@ -19,7 +19,6 @@ class CreatePrintersTable extends Migration
             $table->string('machine_name');
             $table->string('name');
             $table->foreignId('rule_id')->nullable()->constrained();
-
         });
     }
 

@@ -8,7 +8,7 @@ se não não tiver o documento irá para Processando diretamente
 
 Model Status: 
 
-- waiting_job__authorization (IF ENABLED)  : está aguardando autorização
+- waiting_job_authorization (IF ENABLED)  : está aguardando autorização
 - checking_user_quota (IF ENABLED) 	   : está contanto página e verificando se usuário tem quota disponível
 - cancelled_user_out_of_quota  		   : usuário não tem quota disponível
 - sent_to_printer_queue        		   : arquivo foi para impressora
@@ -19,7 +19,7 @@ Model Printing:
 
 Fluxo de impressão: Pendente , Processando
 
-1) O quota_check inseri na tabela printings um registro com status 'Processando'
+1) O quota_check insere na tabela printings um registro com status 'Processando'
 2) O quota_check conta as páginas e verifica numa rota se o usuário pode imprimir o documento
 3) Se pode, o quota_check atualiza o registro em printings para o status 'Fila'.
 Após a impressora responder:
