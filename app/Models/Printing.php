@@ -13,6 +13,7 @@ class Printing extends Model
 {
     use HasFactory;
 
+    /*
     public function scopeAllowed($query)
     {
         $user = Auth::user();
@@ -23,7 +24,7 @@ class Printing extends Model
             return $query;
         }
         return $query;
-    }
+    }*/
 
     public function printer()
     {

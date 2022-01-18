@@ -52,80 +52,62 @@ class PrintingController extends Controller
         // 0. Se a impressora nao estiver em nenhuma regra, entao qualquer impressao esta liberada
         
         if(!$printer->rule) {
-
             $this->createStatus("sent_to_printer_queue", $printing->id);
-
-            return response()->json([true, $printing->id]);
+            return response()->json([true, $printing->id, $printing->latest_status->name]);
         }
-        
+
         // 1. usuario pode imprimir nessa impressora?
-
-        $permissao = array_intersect(Pessoa::obterSiglasVinculosAtivos($request->user), $printer->rule->categorias) ? true : false;
+        // se nenhuma categoria estiver selecionada na Regra, todas estão permitidas:
+        if(empty($printer->rule->categorias)){
+            $permissao = true;
+        } else {
+            $vinculos = Pessoa::obterSiglasVinculosAtivos($request->user);
+            $permissao = array_intersect($vinculos, $printer->rule->categorias) ? true : false;
+        }
         
-        if ($permissao) {
-
-            // 2. Ele tem quota suficiente para a quantidade de paginas requerida dada a regra da impressora?
-            
-            $this->createStatus("checking_user_quota", $printing->id);
-
-            if (empty($printer->rule->type_of_control)) {
-                
-                if($printer->rule->authorization_control) {
-
-                    $this->createStatus("waiting_job_authorization", $printing->id);
-                    return response()->json([true, $printing->id]);
-                }                    
-
-                $this->createStatus("sent_to_printer_queue", $printing->id);
-                return response()->json([true, $printing->id]);
-                
-
-                return response()->json([true, 'Autorizado. Impressora sem controle de quota']);
-
-            }
-                
-            // 2.1. Se a regra for mensal, pegar só as desse mês 
-            if ($printer->rule->type_of_control == "Mensal") {
-
-                $quantidade = Printing::where('user', $request->user)->whereMonth('created_at','=' , date('n'))->sum(DB::raw('pages*copies'));
-
-            }                       
-
-            // 2.2 Se a regra for diaria, pegar só as de hoje 
-            elseif ($printer->rule->type_of_control == "Diário") {
-
-                $quantidade = Printing::where('user', $request->user)->whereDate('created_at', Carbon::today())->sum(DB::raw('pages*copies'));
-
-            }
-
-            if ($quantidade + $request->pages <= $printer->rule->quota) :
-
-                $status = new Status;
-                $status->name = "waiting_job_authorization";
-                $status->printing_id = $printing->id; 
-                $status->save();
-
-                return response()->json([true, 'Autorizado; Razao: Usuario possui quota disponivel. Quantidade de impressoes ja feitas: ' . $quantidade . '; Impressoes solicitadas: ' . $request->pages]);
-
-            } else {
-
-            
-            $status = new Status;
-            $status->name = "cancelled_user_out_of_quota";
-            $status->printing_id = $printing->id; 
-            $status->save();
-            
-            return response()->json([false, 'Nao autorizado. Razao: Quota excedida. Quantidade de impressoes ja feitas: ' . $quantidade . '; Impressoes solicitadas: ' . $request->pages]);
-
-            }
+        if (!$permissao) {
+            $this->createStatus("cancelled_not_authorized", $printing->id);
+            return response()->json([false, $printing->id, $printing->latest_status->name]);
         }
 
-        $status = new Status;
-        $status->name = "cancelled_not_authorized";
-        $status->printing_id = $printing->id; 
-        $status->save();
+        // 2. Cálculo da quantidade que a pessoa imprimiu no mês
+        // 2.1. Se a regra for mensal, pegar só as desse mês 
+        $quantidade = 0;
+        if ($printer->rule->type_of_control == "Mensal") {
+
+            $quantidade = Printing::where('user', $request->user)
+                                   ->whereMonth('created_at','=' , date('n'))
+                                   ->sum(DB::raw('pages*copies'));
+
+        }                       
+
+        // Cálculo da quantidade que a pessoa imprimiu no dia
+        // 2.2 Se a regra for diaria, pegar só as de hoje 
+        if ($printer->rule->type_of_control == "Diário") {
+            $quantidade = Printing::where('user', $request->user)
+                                    ->whereDate('created_at', Carbon::today())
+                                    ->sum(DB::raw('pages*copies'));
+
+        }
+
+        if (!empty($printer->rule->type_of_control)) {
+            $ultrapassou = $quantidade + $request->pages*$request->copies <= $printer->rule->quota;
+        } else {
+            $ultrapassou = false;
+        }
         
-        return response()->json([false,'Nao autorizado. Razao: Usuario sem permissao para utilizar esta impressora.']);
+        if ($ultrapassou){
+            $this->createStatus("cancelled_user_out_of_quota", $printing->id);
+            return response()->json([false, $printing->id, $printing->latest_status->name]);
+        }
+       
+        if($printer->rule->authorization_control) {
+            $this->createStatus("waiting_job_authorization", $printing->id);
+            return response()->json([false, $printing->id, $printing->latest_status->name]);
+        }
+
+        $this->createStatus("sent_to_printer_queue", $printing->id);
+        return response()->json([true, $printing->id, $printing->latest_status->name]);
 
     }
 
@@ -145,22 +127,8 @@ class PrintingController extends Controller
         $printing->host = $request->host;
         $printing->save();
 
-        $status = new Status;
-        $status->name = "sent_to_printer_queue"
-        $status->printing_id = $printing->id;
-        $status->save();
+        $this->createStatus("sent_to_printer_queue", $printing->id);
 
-        # printer machine_name 
-        # $printing->printer_id = null;
-
-<<<<<<< HEAD
-        $status = new Status;
-        $status->name = "sent_to_printer_queue";
-        $status->printing_id = $printing->id; 
-        $status->save();
-        
-=======
->>>>>>> 4afb6031684673e44122dff6ed81d099ad8f54fb
         return response()->json(true);
 
     }
