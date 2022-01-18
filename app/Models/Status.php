@@ -17,6 +17,7 @@ class Status extends Model
             'waiting_job_authorization',
             'checking_user_quota',
             'cancelled_user_out_of_quota',
+            'cancelled_not_authorized',
             'sent_to_printer_queue',
             'print_success',
             'printer_problem',

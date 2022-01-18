@@ -8,13 +8,33 @@ se não não tiver o documento irá para Processando diretamente
 
 Model Status: 
 
+<<<<<<< HEAD
+=======
+- waiting_job_authorization (IF ENABLED)  : está aguardando autorização
+>>>>>>> 4afb6031684673e44122dff6ed81d099ad8f54fb
 - checking_user_quota (IF ENABLED) 	   : está contanto página e verificando se usuário tem quota disponível
 - waiting_job_authorization (IF ENABLED)  : está aguardando autorização
 - cancelled_user_out_of_quota  		   : usuário não tem quota disponível
 - sent_to_printer_queue        		   : arquivo foi para impressora
 - print_success               		   : a impressora respondeu que imprimiu com sucesso
 - printer_problem             		   : quando a impressora não respondeu
+<<<<<<< HEAD
 - cancelled_not_authorized             : job cancelado pelo administrador 
+=======
+
+Model Printing:
+
+Fluxo de impressão: Pendente , Processando
+
+1) O quota_check insere na tabela printings um registro com status 'Processando'
+2) O quota_check conta as páginas e verifica numa rota se o usuário pode imprimir o documento
+3) Se pode, o quota_check atualiza o registro em printings para o status 'Fila'.
+Após a impressora responder:
+ 3.1) o quota_save atualiza o registro em printings para o status 'Impresso'
+ 3.2) o quota_save atualiza o registro em printings para o status 'Problema'
+4) Se não pode, o quota_check atualiza o registro em printings para o status 'Cancelado'
+
+>>>>>>> 4afb6031684673e44122dff6ed81d099ad8f54fb
 
 Sistema desenvolvido em *laravel* + *tea4cups* para gestão de impressões no contexto 
 da Universidade de São Paulo.
