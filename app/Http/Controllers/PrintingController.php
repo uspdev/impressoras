@@ -23,9 +23,14 @@ class PrintingController extends Controller
    
     public function autorizacao()
     {
-        $printings = Printing::all();
-        dd($printings);
-   
+        $this->authorize('admin');
+        $allPrintings = Printing::all();
+        $printings = collect();
+        foreach ($allPrintings as $printing) {
+            if ($printing->latest_status()->first()->name == 'waiting_job_authorization') {
+                    $printings->push($printing);
+                }
+        }
         return view('printings.autorizacao', [
             'printings'=> $printings,
         ]);
