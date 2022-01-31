@@ -12,9 +12,15 @@
             justify-content: start;
         }
 
-        #i-trash
+        #i-ban
         {
             margin-left: 80%;
+        }
+
+        button
+        {
+            background-color: transparent; 
+            border: none;
         }
 
     </style>
@@ -44,13 +50,8 @@
 						<td>{{ $printing->host }}</td>
                         <td>
                             <div id="actions">
-                                <a href=""><i class="fas fa-check"></i></a>
-                                ">
-                                    @csrf
-                                    @method('delete')
-                                    <button type="submit" onclick="return confirm('Tem certeza que deseja excluir?');" style="background-color: transparent; border: none;">
-                                        <a><i class="fas fa-ban"></i></a>
-                                    </button>    
+                                <a href="/printings/autorizar/{{ $printing->id }}" onclick="return confirm('Tem certeza que deseja autorizar?');"><i class="fas fa-check"></i></a>
+                                <a href="/printings/cancelar/{{ $printing->id }}" onclick="return confirm('Tem certeza que deseja cancelar?');"><i class="fas fa-ban" id="i-ban"></i></a>
                                 </form>
                             </div>
                         </td>

@@ -29,6 +29,8 @@ Route::get('/check/{user}/{printer}/{pages}', [PrintingController::class, 'check
 Route::get('/pages/today/{user}/', [PrintingController::class, 'pagesToday']);
 */
 Route::get('/printings/autorizacao', [PrintingController::class, 'autorizacao']);
+Route::get('/printings/cancelar/{printing}', [PrintingController::class, 'cancelar']);
+Route::get('/printings/autorizar/{printing}', [PrintingController::class, 'autorizar']);
 
 // Senha única USP
 Route::get('/login', [LoginController::class, 'redirectToProvider'])->name('login');
