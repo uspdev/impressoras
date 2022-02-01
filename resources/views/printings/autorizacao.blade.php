@@ -50,8 +50,8 @@
 						<td>{{ $printing->host }}</td>
                         <td>
                             <div id="actions">
-                                <a href="/printings/autorizar/{{ $printing->id }}" onclick="return confirm('Tem certeza que deseja autorizar?');"><i class="fas fa-check"></i></a>
-                                <a href="/printings/cancelar/{{ $printing->id }}" onclick="return confirm('Tem certeza que deseja cancelar?');"><i class="fas fa-ban" id="i-ban"></i></a>
+                                <a href="/printings/acao/{{ $printing->id }}?acao=autorizada" onclick="return confirm('Tem certeza que deseja autorizar?');"><i class="fas fa-check"></i></a>
+                                <a href="/printings/acao/{{ $printing->id }}?acao=cancelada" onclick="return confirm('Tem certeza que deseja cancelar?');"><i class="fas fa-ban" id="i-ban"></i></a>
                                 </form>
                             </div>
                         </td>

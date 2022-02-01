@@ -21,7 +21,43 @@ class PrintingController extends Controller
      
      * @return \Illuminate\Http\Response
      */
-   
+
+    public function index(Request $request)
+    {
+        # printings
+        $user = \Auth::user();
+        $printings = Printing::where('user', '=', $user->codpes);
+        $printings = $printings->orderBy('jobid','DESC')->paginate(10);
+        if($request->has('route')) {
+          return view('printings/partials/printing',
+                       compact('printings'));
+        }
+        return view('printings/index', compact('printings'));
+    }
+
+    public function admin(Request $request)
+    {
+        $this->authorize('admin');
+        sleep(10);
+        $printings =  Printing::orderBy('jobid','DESC')->paginate(30);
+        $quantidades = Printing::quantidades("impressas");
+        if($request->has('route')) {
+          return view('printings/partials/printing',
+                       compact('printings', 'quantidades'));
+        }
+        return view('printings/index', compact('printings','quantidades'));
+    }  
+    
+    public function status(Printing $printing)
+    {
+        $this->authorize('admin');
+        $statuses = $printing->status->all();
+        return view('printings.status', [
+            'printing' => $printing,
+            'statuses' => $statuses,
+        ]);
+    }
+
     public function autorizacao()
     {
         $this->authorize('admin');
@@ -37,25 +73,19 @@ class PrintingController extends Controller
         ]);
     }
 
-    public function cancelar(Printing $printing)
+    public function acao(Request $request, Printing $printing)
     {
         $this->authorize('admin');
         $status = new Status;
-        $status->name = 'cancelled_not_authorized';
+        if ($request->acao == "autorizada") {
+            $status->name = 'sent_to_printer_queue';
+        } elseif ($request->acao == "cancelada") {
+            $status->name = 'cancelled_not_authorized';
+        }
         $status->printing_id = $printing->id;    
         $status->save();
-        request()->session()->flash('alert-success', 'Impressão cancelada com sucesso.');
+        request()->session()->flash('alert-success', 'Impressão ' . $request->acao . ' com sucesso.');
         return redirect("/printings/autorizacao");
     }
 
-    public function autorizar(Printing $printing)
-    {
-        $this->authorize('admin');
-        $status = new Status;
-        $status->name = 'sent_to_printer_queue';
-        $status->printing_id = $printing->id;    
-        $status->save();
-        request()->session()->flash('alert-success', 'Impressão autorizada com sucesso.');
-        return redirect("/printings/autorizacao");
-    }
 }

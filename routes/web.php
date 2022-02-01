@@ -20,17 +20,15 @@ use App\Http\Controllers\RuleController;
 // Printings
 Route::get('/', [IndexController::class, 'index'])->name('home');
 
-/*Route::get('/printings', [PrintingController::class, 'index']);
+Route::get('/printings', [PrintingController::class, 'index']);
 Route::get('/printings/admin', [PrintingController::class, 'admin']);
-Route::get('/printings/user/{user}', [PrintingController::class, 'user']);
-Route::get('/printings/jobid/{jobid}', [PrintingController::class, 'jobid']);
-Route::get('/printings/{printer}', [PrintingController::class, 'printer']);
-Route::get('/check/{user}/{printer}/{pages}', [PrintingController::class, 'check']);
-Route::get('/pages/today/{user}/', [PrintingController::class, 'pagesToday']);
-*/
+//Route::get('/printings/user/{user}', [PrintingController::class, 'user']);
+//Route::get('/printings/jobid/{jobid}', [PrintingController::class, 'jobid']);
+//Route::get('/printings/{printer}', [PrintingController::class, 'printer']);
+//Route::get('/pages/today/{user}/', [PrintingController::class, 'pagesToday']);
+Route::get('/printings/status/{printing}', [PrintingController::class, 'status']);
 Route::get('/printings/autorizacao', [PrintingController::class, 'autorizacao']);
-Route::get('/printings/cancelar/{printing}', [PrintingController::class, 'cancelar']);
-Route::get('/printings/autorizar/{printing}', [PrintingController::class, 'autorizar']);
+Route::get('/printings/acao/{printing}', [PrintingController::class, 'acao']);
 
 // Senha única USP
 Route::get('/login', [LoginController::class, 'redirectToProvider'])->name('login');
