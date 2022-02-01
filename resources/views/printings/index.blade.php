@@ -3,7 +3,6 @@
 @section('content_header')
 @stop
 @section('content')
-@parent
 
 <!--
 <form method="get" action="/printings">
