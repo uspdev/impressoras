@@ -34,7 +34,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				@foreach ($rules as $rule)
+				@forelse ($rules as $rule)
 					<tr>
 						<td>{{ $rule->name }}</td>
                         <td>
@@ -60,7 +60,11 @@
                             </div>
                         </td>
 					</tr>
-				@endforeach
+                @empty     
+                    <tr>
+                        <td colspan="6">Não há regras cadastradas</td>
+                    </tr>
+				@endforelse
 			</tbody>
 		</table>
 

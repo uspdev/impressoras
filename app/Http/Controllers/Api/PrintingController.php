@@ -91,14 +91,14 @@ class PrintingController extends Controller
         }
 
         if (!empty($printer->rule->type_of_control)) {
-            $ultrapassou = $quantidade + $request->pages*$request->copies <= $printer->rule->quota;
+            $ultrapassou = $quantidade + $request->pages*$request->copies > $printer->rule->quota;
         } else {
             $ultrapassou = false;
         }
         
         if ($ultrapassou){
             $this->createStatus("cancelled_user_out_of_quota", $printing->id);
-            return response()->json([false, $printing->id, $printing->latest_status->name]);
+            return response()->json([false, $printing->id, $printing->latest_status->name, $quantidade]);
         }
        
         if($printer->rule->authorization_control) {

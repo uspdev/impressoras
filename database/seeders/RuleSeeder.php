@@ -16,7 +16,6 @@ class RuleSeeder extends Seeder
     {
         $rule = [
             'name' => "30 impressões diárias",
-
         ];
 
         Rule::create($rule);

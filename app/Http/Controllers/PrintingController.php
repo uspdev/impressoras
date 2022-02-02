@@ -58,17 +58,16 @@ class PrintingController extends Controller
         ]);
     }
 
-    public function autorizacao()
+    public function fila()
     {
-        $this->authorize('admin');
         $allPrintings = Printing::all();
         $printings = collect();
         foreach ($allPrintings as $printing) {
-            if ($printing->latest_status()->first()->name == 'waiting_job_authorization') {
+            if (in_array($printing->latest_status()->first()->name, ['waiting_job_authorization', 'sent_to_printer_queue', 'checking_user_quota'])) {
                     $printings->push($printing);
                 }
         }
-        return view('printings.autorizacao', [
+        return view('printings.fila', [
             'printings'=> $printings,
         ]);
     }
@@ -85,7 +84,11 @@ class PrintingController extends Controller
         $status->printing_id = $printing->id;    
         $status->save();
         request()->session()->flash('alert-success', 'Impressão ' . $request->acao . ' com sucesso.');
-        return redirect("/printings/autorizacao");
+        return redirect("/printings/fila");
     }
 
+    public function pendentes()
+    {
+    
+    }
 }

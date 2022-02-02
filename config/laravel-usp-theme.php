@@ -11,19 +11,6 @@ $right_menu = [
     ],
 ];
 
-$administracao = [
-    [
-        'text' => 'Administrar impressões',
-        'url' =>  '/printings/admin',
-        'can' => 'admin',
-    ],
-    [
-        'text' => 'Autorizar impressões',
-        'url' =>  '/printings/autorizacao',
-        'can' => 'admin',
-    ],
-];
-
 return [
 
     'title' => config('app.name'),
@@ -51,8 +38,12 @@ return [
         ],
         [
             'text' => 'Administrar impressões',
-            'submenu'  => $administracao,
+            'url'  => '/printings/admin',
             'can'  => 'admin'
+        ],
+        [
+            'text' => 'Fila',
+            'url'  => '/printings/fila',
         ],
         [
             'text' => 'Impressoras',
@@ -63,10 +54,6 @@ return [
             'text' => 'Regras',
             'url'  => '/rules',
             'can'  => 'admin'
-        ],
-        [
-            'text' => 'Fila',
-            'url'  => '/pendentes',
         ],
     ],
     'right_menu' => $right_menu,
