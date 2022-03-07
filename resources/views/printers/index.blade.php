@@ -32,7 +32,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				@foreach ($printers as $printer)
+				@forelse ($printers as $printer)
 					<tr>
 						<td>{{ $printer->name }}</td>
 						<td>{{ $printer->machine_name }}</td>
@@ -50,7 +50,11 @@
                             </div>
                         </td>
 					</tr>
-				@endforeach
+                @empty
+                    <tr>
+                        <td colspan="4">Não há impressoras cadastradas</td>
+                    </tr>
+				@endforelse
 			</tbody>
 		</table>
 

@@ -26,14 +26,15 @@
 			<thead>
 				<tr>
 					<th width="20%">Nome</th>
-					<th width="25%">Controle de autorização</th>
-                    <th width="25%">Período do controle de quota</th>
-                    <th widht="50%">Quota para o período</th>
+					<th width="20%">Controle de autorização</th>
+                    <th width="20%">Período do controle de quota</th>
+                    <th widht="20%">Quota</th>
+                    <th widht="20%">Restrito para</th>
                     <th widht="20%">Ações</th>
 				</tr>
 			</thead>
 			<tbody>
-				@foreach ($rules as $rule)
+				@forelse ($rules as $rule)
 					<tr>
 						<td>{{ $rule->name }}</td>
                         <td>
@@ -45,6 +46,7 @@
                         </td>
 						<td>{{ $rule->type_of_control }}</td>
 						<td>{{ $rule->quota }}</td>
+                        <td>{{ $rule->categorias ? implode(", ", $rule->categorias) : "Sem restrições" }}</td>
                         <td>
                             <div id="actions">
                                 <a href="/rules/{{$rule->id}}/edit"><i class="fas fa-edit"></i></a>
@@ -58,7 +60,11 @@
                             </div>
                         </td>
 					</tr>
-				@endforeach
+                @empty     
+                    <tr>
+                        <td colspan="6">Não há regras cadastradas</td>
+                    </tr>
+				@endforelse
 			</tbody>
 		</table>
 

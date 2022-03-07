@@ -42,6 +42,10 @@ return [
             'can'  => 'admin'
         ],
         [
+            'text' => 'Fila',
+            'url'  => '/printings/fila',
+        ],
+        [
             'text' => 'Impressoras',
             'url'  => '/printers',
             'can'  => 'admin'
@@ -50,10 +54,6 @@ return [
             'text' => 'Regras',
             'url'  => '/rules',
             'can'  => 'admin'
-        ],
-        [
-            'text' => 'Fila',
-            'url'  => '/pendentes',
         ],
     ],
     'right_menu' => $right_menu,

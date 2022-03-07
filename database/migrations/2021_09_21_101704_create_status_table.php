@@ -17,7 +17,7 @@ class CreateStatusTable extends Migration
             $table->id();
             $table->timestamps();
             $table->string('name');
-            $table->string('descricao');
+            $table->string('descricao')->nullable();
 	        $table->foreignId('printing_id')->constrained();
         });
     }

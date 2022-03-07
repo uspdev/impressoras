@@ -3,7 +3,6 @@
 @section('content_header')
 @stop
 @section('content')
-@parent
 
 <!--
 <form method="get" action="/printings">
@@ -23,9 +22,9 @@
 <td width="100%" align="center" colspan="3"><b><font size="+1">Impressões</font></b></td>
 </tr>
 <tr style="border-bottom: 1px solid #cdd0d4;">
-<td width="33%"><b>Total:</b> </td>
-<td width="34%" align="center"><b>Hoje:</b></td>
-<td width="33%" align="right"><b>Neste mês:</b></td>
+<td width="33%"><b>Total:</b> {{ $quantidades['total'] ?? '' }}</td>
+<td width="34%" align="center"><b>Hoje:</b> {{ $quantidades['hoje'] ?? '' }}</td>
+<td width="33%" align="right"><b>Neste mês:</b> {{ $quantidades['mes'] ?? '' }}</td>
 </tr>
 </table>
 
@@ -36,15 +35,15 @@
         <thead>
             <tr>
                 <th width="5%">Job ID</th>
-                @can('admin') <th width="5%">Pessoa</th> @endcan
-                @can('admin') <th width="5%">Host</th> @endcan
+                @can('admin') <th width="10%">Pessoa</th> @endcan
+                @can('admin') <th width="10%">Host</th> @endcan
                 <th width="10%">Data</th>
                 <th width="5%">Páginas</th>
                 <th width="5%">Cópias</th>
-                <th width="5%">Tamanho</th>
-                <th width="30%">Arquivo</th>
-                <th width="25%">Impressora</th>
-                <th width="10%">Status</th>
+                <th width="10%">Tamanho</th>
+                <th width="15%">Arquivo</th>
+                <th width="15%">Impressora</th>
+                <th width="15%">Status</th>
             </tr>
         </thead>
         <tbody>
