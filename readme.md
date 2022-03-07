@@ -57,11 +57,40 @@ Endpoins:
 
 # Rotas Api
 
-Rota para verificar se uma pessoa (user) pode imprimir numa dada 
-impressora (printer) uma certa quantidade de páginas (pages) - 
-as páginas devem considerar as cópias:
+## api/check
 
-   curl --header "Authorization: 123" -d '{"user": "5385361", "pages": "5", "copies": "2", "printer": "profcs", "jobid": "1", "host": "03.3094.2", "filename": "mamute.pdf", "filesize": "192045"}' -H "Content-Type: application/json" -X POST http://127.0.0.1:8000/api/check
+Rota para verificar se uma pessoa (user) pode imprimir, deve receber os seguintes parâmetros POST obrigatoriamente:
+
+- jobid: job id gerado na impressora para motivos de log
+- user: número USP da pessoa
+- pages: quantidade de páginas do arquivo
+- copies: cópias
+- printer: nome da impressora (machine name)
+- host: ip ou hostname da máquina que disparou a impressão
+- filename: nome do arquivo
+- filesize: tamanho do arquivo em KB
+
+Importante: A impressora passada na variável printer será criada dinamincamente caso não exista.
+
+Retorno:
+
+- yes: se o usuário puder imprimir
+- no: se o usuário não puder imprimir
+
+Exemplo de requisição POST no rota /api/check:
+
+   curl --header "Authorization: 123"         \
+     -H "Content-Type: application/json"      \
+     -X POST http://127.0.0.1:8000/api/check  \
+     -d '{"user": "5385361",                  
+          "pages": "5",                       
+          "copies": "2",                      
+          "printer": "impressora_proaluno_letras",                
+          "jobid": "1",                       
+          "host": "10.89.9.5",                
+          "filename": "mamute.pdf",           
+          "filesize": "192045"}'              
+
 
 Registrar uma tentativa de impressão
 

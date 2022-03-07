@@ -21,13 +21,7 @@ class PrintingController extends Controller
         // o que esperamos no $request: {user}, {printer}, {pages}, {copies}
         
         // Carregamento da impressora
-        $printer = Printer::where('machine_name',$request->printer)->first();
-        if(!$printer) {
-            $printer = new Printer;
-            $printer->machine_name = $request->printer;
-            $printer->name = $request->printer;
-            $printer->save();
-        }
+        $printer = $this->loadPrinter($request->printer);
         
         $printing = new Printing;
         $printing->pages      = $request->pages;
@@ -52,7 +46,7 @@ class PrintingController extends Controller
         // 0. Se a impressora nao estiver em nenhuma regra, entao qualquer impressao esta liberada
         
         if(!$printer->rule) {
-            $this->createStatus("sent_to_printer_queue", $printing->id);
+            $this->createStatus("sent_to_printer_queue", $printing->id, "");
             return response()->json([true, $printing->id, $printing->latest_status->name]);
         }
 
@@ -131,6 +125,19 @@ class PrintingController extends Controller
 
         return response()->json(true);
 
+    }
+
+    /************* Métodos privados auxiliares ***************/
+    private function loadPrinter($request_printer)
+    {
+        $printer = Printer::where('machine_name',$request_printer)->first();
+        if(!$printer) {
+            $printer = new Printer;
+            $printer->machine_name = $request_printer;
+            $printer->name = $request_printer;
+            $printer->save();
+        }
+        return $printer;
     }
 
     private function createStatus($name, $printing_id)
