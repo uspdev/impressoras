@@ -46,7 +46,7 @@
                         </td>
 						<td>{{ $rule->type_of_control }}</td>
 						<td>{{ $rule->quota }}</td>
-                        <td>{{ $rule->categorias ? implode(", ", $rule->categorias) : "Sem restrições" }}</td>
+                        <td>{{ $rule->categories ? implode(", ", $rule->categories) : "Sem restrições" }}</td>
                         <td>
                             <div id="actions">
                                 <a href="/rules/{{$rule->id}}/edit"><i class="fas fa-edit"></i></a>

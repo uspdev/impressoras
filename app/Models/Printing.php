@@ -45,14 +45,10 @@ class Printing extends Model
     {
         $quantidades = collect(['total'=> 0, 'hoje'=> 0, 'mes'=> 0]);
         $total = Printing::all();
-
         foreach ($total as $printing) {
             if (!is_null($tipo) && $printing->latest_status()->first()->name == 'print_success') {
                 $quantidades['total'] = $quantidades['total'] + (int)$printing->pages*(int)$printing->copies;
-                 
-            } else {
-                $quantidades['total'] = $quantidades['total'] + (int)$printing->pages*(int)$printing->copies;
-                }
+                } 
             }
         return $quantidades;
     }    

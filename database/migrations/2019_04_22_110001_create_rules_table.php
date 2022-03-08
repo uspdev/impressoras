@@ -29,7 +29,7 @@ class CreateRulesTable extends Migration
             $table->integer('quota')->nullable();
 
             /* categorias */
-            $table->text('categorias')->nullable();
+            $table->text('categories')->nullable();
 
         });
     }

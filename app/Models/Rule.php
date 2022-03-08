@@ -21,7 +21,7 @@ class Rule extends Model
         ];
     }
 
-    public static function categorias()
+    public static function categories()
     {
         $sql = "SELECT DISTINCT (tipvin) FROM LOCALIZAPESSOA ORDER BY tipvin";
         $result = ReplicadoDB::fetchAll($sql);
@@ -34,11 +34,11 @@ class Rule extends Model
 		return $this->hasMany(Printer::class);
 	}
 
-    public function setCategoriasAttribute($value){
-        $this->attributes['categorias'] = implode(',',$value);
+    public function setCategoriesAttribute($value){
+        $this->attributes['categories'] = implode(',',$value);
     }
     
-    public function getCategoriasAttribute($value){
+    public function getCategoriesAttribute($value){
         if($value) return explode(',',$value);
         return [];
     }

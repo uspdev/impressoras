@@ -7,19 +7,20 @@ use Illuminate\Http\Request;
 use App\Models\Printing;
 use App\Models\Printer;
 use App\Models\Status;
+use App\Http\Requests\PrintingRequest;
 use Uspdev\Replicado\Pessoa;
 use Carbon\Carbon;
 use DB;
 
 class PrintingController extends Controller
 {
-    public function check(Request $request){
+    public function check(PrintingRequest $request){
         
         if($request->header('Authorization') != env('API_KEY') ){
             return response('Acesso nao autorizado',403);
         }
         // o que esperamos no $request: {user}, {printer}, {pages}, {copies}
-        
+
         // Carregamento da impressora
         $printer = $this->loadPrinter($request->printer);
         
@@ -46,22 +47,22 @@ class PrintingController extends Controller
         // 0. Se a impressora nao estiver em nenhuma regra, entao qualquer impressao esta liberada
         
         if(!$printer->rule) {
-            $this->createStatus("sent_to_printer_queue", $printing->id, "");
-            return response()->json([true, $printing->id, $printing->latest_status->name]);
+            $this->createStatus("sent_to_printer_queue", $printing->id);
+            return response()->json(["yes", $printing->id, $printing->latest_status->name]);
         }
 
         // 1. usuario pode imprimir nessa impressora?
         // se nenhuma categoria estiver selecionada na Regra, todas estão permitidas:
-        if(empty($printer->rule->categorias)){
+        if(empty($printer->rule->categories)){
             $permissao = true;
         } else {
             $vinculos = Pessoa::obterSiglasVinculosAtivos($request->user);
-            $permissao = array_intersect($vinculos, $printer->rule->categorias) ? true : false;
+            $permissao = array_intersect($vinculos, $printer->rule->categories) ? true : false;
         }
         
         if (!$permissao) {
             $this->createStatus("cancelled_not_authorized", $printing->id);
-            return response()->json([false, $printing->id, $printing->latest_status->name]);
+            return response()->json(["no", $printing->id, $printing->latest_status->name]);
         }
 
         // 2. Cálculo da quantidade que a pessoa imprimiu no mês
@@ -92,16 +93,16 @@ class PrintingController extends Controller
         
         if ($ultrapassou){
             $this->createStatus("cancelled_user_out_of_quota", $printing->id);
-            return response()->json([false, $printing->id, $printing->latest_status->name, $quantidade]);
+            return response()->json(["no", $printing->id, $printing->latest_status->name, $quantidade]);
         }
        
         if($printer->rule->authorization_control) {
             $this->createStatus("waiting_job_authorization", $printing->id);
-            return response()->json([false, $printing->id, $printing->latest_status->name]);
+            return response()->json(["no", $printing->id, $printing->latest_status->name]);
         }
 
         $this->createStatus("sent_to_printer_queue", $printing->id);
-        return response()->json([true, $printing->id, $printing->latest_status->name]);
+        return response()->json(["yes", $printing->id, $printing->latest_status->name]);
 
     }
 
@@ -128,9 +129,10 @@ class PrintingController extends Controller
     }
 
     /************* Métodos privados auxiliares ***************/
+
     private function loadPrinter($request_printer)
     {
-        $printer = Printer::where('machine_name',$request_printer)->first();
+        $printer = Printer::where('machine_name', $request_printer)->first();
         if(!$printer) {
             $printer = new Printer;
             $printer->machine_name = $request_printer;
