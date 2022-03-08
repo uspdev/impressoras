@@ -138,6 +138,10 @@ Registrar uma tentativa de impressão
         }'  
 ```
 
+# Guidelines para o desenvolvimento
+
+- Escrever o código em inglês.
+
 # Agradecimentos
 
  - [Will Gnann](https://github.com/wgnann) do IME-USP pela ajuda com a parte do framework *tea4cups*
