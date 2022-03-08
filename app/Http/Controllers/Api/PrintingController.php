@@ -7,19 +7,20 @@ use Illuminate\Http\Request;
 use App\Models\Printing;
 use App\Models\Printer;
 use App\Models\Status;
+use App\Http\Requests\PrintingRequest;
 use Uspdev\Replicado\Pessoa;
 use Carbon\Carbon;
 use DB;
 
 class PrintingController extends Controller
 {
-    public function check(Request $request){
+    public function check(PrintingRequest $request){
         
         if($request->header('Authorization') != env('API_KEY') ){
             return response('Acesso nao autorizado',403);
         }
         // o que esperamos no $request: {user}, {printer}, {pages}, {copies}
-        
+
         // Carregamento da impressora
         $printer = $this->loadPrinter($request->printer);
         
@@ -130,7 +131,7 @@ class PrintingController extends Controller
     /************* Métodos privados auxiliares ***************/
     private function loadPrinter($request_printer)
     {
-        $printer = Printer::where('machine_name',$request_printer)->first();
+        $printer = Printer::where('machine_name', $request_printer)->first();
         if(!$printer) {
             $printer = new Printer;
             $printer->machine_name = $request_printer;
