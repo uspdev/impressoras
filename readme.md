@@ -50,7 +50,7 @@ Para limpar banco:
 - authorization_control [bool]: controle de fila ativado ou não
 - type_of_control [str]: tipo de quota: diária ou mensal
 - quota [int]: quantidade de quota disponível para o período
-- categorias [str]: categorias autorizadas para a impressão
+- categories [str]: categorias autorizadas para a impressão
 
 ### Model Status
 
