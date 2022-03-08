@@ -52,16 +52,16 @@
                     <label for="" class=""><b>Categorias permitidas</b></label>
                     <small> Se nenhuma opção for selecionada, as impressoras nessa regra estão liberadas para todos </small>
 
-                    @foreach($rule::categorias() as $categoria)
+                    @foreach($rule::categories() as $category)
                         <div class="form-check">
-                            <input class="form-check-input" name="categorias[]" type="checkbox" value="{{$categoria}}" 
+                            <input class="form-check-input" name="categories[]" type="checkbox" value="{{$category}}" 
 
-                                @if(in_array($categoria,$rule->categorias))
+                                @if(in_array($category, $rule->categories))
                                     checked
                                 @endif
                                 >
                                 <label class="form-check-label" for="">
-                                {{$categoria}}
+                                {{$category}}
                                 </label>
                         </div>
                     @endforeach

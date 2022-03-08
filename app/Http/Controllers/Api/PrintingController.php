@@ -53,11 +53,11 @@ class PrintingController extends Controller
 
         // 1. usuario pode imprimir nessa impressora?
         // se nenhuma categoria estiver selecionada na Regra, todas estão permitidas:
-        if(empty($printer->rule->categorias)){
+        if(empty($printer->rule->categories)){
             $permissao = true;
         } else {
             $vinculos = Pessoa::obterSiglasVinculosAtivos($request->user);
-            $permissao = array_intersect($vinculos, $printer->rule->categorias) ? true : false;
+            $permissao = array_intersect($vinculos, $printer->rule->categories) ? true : false;
         }
         
         if (!$permissao) {
