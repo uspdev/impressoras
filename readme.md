@@ -59,7 +59,6 @@ Para limpar banco:
 #### Status disponíveis
 
 - "waiting_job_authorization"   : está aguardando autorização
-- "checking_user_quota"   	    : está contanto página e verificando se usuário tem quota disponível
 - "cancelled_not_authorized"    : usuário sem permissão na impressora
 - "cancelled_user_out_of_quota" : usuário não tem quota disponível
 - "sent_to_printer_queue"       : arquivo foi para impressora
@@ -79,7 +78,7 @@ Para limpar banco:
 
 # Rotas Api
 
-## api/check
+## api/printings
 
 Rota para verificar se uma pessoa (user) pode imprimir, deve receber os seguintes parâmetros POST obrigatoriamente:
 
@@ -99,12 +98,12 @@ Retorno:
 - "yes": se o usuário puder imprimir
 - "no": se o usuário não puder imprimir
 
-Exemplo de requisição POST no rota /api/check:
+Exemplo de requisição POST no rota api/printings:
 
 ```sh
    curl --header "Authorization: 123"         \
      -H "Content-Type: application/json"      \
-     -X POST http://127.0.0.1:8000/api/check  \
+     -X POST http://127.0.0.1:8000/api/printings  \
      -d '{
             "user": "5385361",
             "pages": "5",
@@ -115,26 +114,6 @@ Exemplo de requisição POST no rota /api/check:
             "filename": "mamute.pdf",
             "filesize": "192045"
           }'              
-```
-
-## api/store
-
-Registrar uma tentativa de impressão
-
-```sh
-   curl --header "Authorization: 123"           \
-   -H "Content-Type: application/json"          \
-   -X POST http://127.0.0.1:8000/api/printings  \
-   -d '{
-            "jobid":"10",
-            "pages":"5",
-            "copies": "2",
-            "filename": "arquivo.pdf",
-            "filesize": "89876",
-            "user": "5385361",
-            "host": "10.0.25.5",
-            "printer": "profcs"
-        }'  
 ```
 
 # Guidelines para o desenvolvimento

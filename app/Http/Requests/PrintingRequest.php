@@ -33,7 +33,7 @@ class PrintingRequest extends FormRequest
             'filesize' => 'required|integer',
             'user'     => 'required',
             'host'     => 'required',
-            'printer'  => 'required|alpha_num',
+            'printer'  => 'required|alpha_dash',
         ];
     }
     public function failedValidation(Validator $validator)

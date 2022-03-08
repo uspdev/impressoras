@@ -12,6 +12,7 @@ use App\Models\Status;
 class Printing extends Model
 {
     use HasFactory;
+    protected $guarded = ['id','created_at'];
 
     /*
     public function scopeAllowed($query)
