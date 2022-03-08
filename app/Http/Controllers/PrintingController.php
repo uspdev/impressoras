@@ -2,17 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
+
 use App\Models\Printing;
 use App\Models\User;
 use App\Models\Status;
-use Illuminate\Http\Request;
-use Auth;
-use Illuminate\Support\Facades\Gate;
 use App\Rules\Numeros_USP;
-use Illuminate\Support\Str;
+
 use Carbon\Carbon;
-use Uspdev\Replicado\Pessoa;
+
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Http\Request;
+
+use Uspdev\Replicado\Pessoa;
+
 
 class PrintingController extends Controller
 {
@@ -38,8 +43,8 @@ class PrintingController extends Controller
     public function admin(Request $request)
     {
         $this->authorize('admin');
-        sleep(10);
-        $printings =  Printing::orderBy('jobid','DESC')->paginate(30);
+        sleep(5);
+        $printings =  Printing::orderBy('created_at','DESC')->paginate(30);
         $quantidades = Printing::quantidades("impressas");
         if($request->has('route')) {
           return view('printings/partials/printing',
@@ -67,6 +72,7 @@ class PrintingController extends Controller
                     $printings->push($printing);
                 }
         }
+        $printings = $printings->sortByDesc('created_at');
         return view('printings.fila', [
             'printings'=> $printings,
         ]);
