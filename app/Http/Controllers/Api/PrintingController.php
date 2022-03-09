@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Printing;
-use App\Models\Printer;
-use App\Models\Status;
-use App\Http\Requests\PrintingRequest;
-use Uspdev\Replicado\Pessoa;
-use Carbon\Carbon;
 use DB;
+
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\PrintingRequest;
+use App\Models\Printer;
+use App\Models\Printing;
+use App\Models\Status;
+
+use Uspdev\Replicado\Pessoa;
+
 
 class PrintingController extends Controller
 {
@@ -47,7 +51,6 @@ class PrintingController extends Controller
         }
         
         // 3. Cálculo da quantidade que a pessoa imprimiu no mês
-        // 2.1. Se a regra for mensal, pegar só as desse mês 
         $quantidade = 0;
         if ($printer->rule->type_of_control == "Mensal") {
 
@@ -57,8 +60,7 @@ class PrintingController extends Controller
 
         }                       
 
-        // Cálculo da quantidade que a pessoa imprimiu no dia
-        // 2.2 Se a regra for diaria, pegar só as de hoje 
+        // 4. Cálculo da quantidade que a pessoa imprimiu no dia
         if ($printer->rule->type_of_control == "Diário") {
             $quantidade = Printing::where('user', $request->user)
                                     ->whereDate('created_at', Carbon::today())
@@ -66,6 +68,7 @@ class PrintingController extends Controller
 
         }
 
+        // 5. Verifica se ultrapassou da quota disponível ou não
         if (!empty($printer->rule->type_of_control)) {
             $ultrapassou = $quantidade + $request->pages*$request->copies > $printer->rule->quota;
         } else {
@@ -77,13 +80,13 @@ class PrintingController extends Controller
             return response()->json(["no", $printing->id, $printing->latest_status->name, $quantidade]);
         }
        
+        // 6. Verifica se a impressora tem controle de fila
         if($printer->rule->authorization_control) {
             $this->createStatus("waiting_job_authorization", $printing->id);
             return response()->json(["no", $printing->id, $printing->latest_status->name]);
-        }
+        } else {
 
-        $this->createStatus("sent_to_printer_queue", $printing->id);
-        return response()->json(["yes", $printing->id, $printing->latest_status->name]);
+        }
 
     }
 
