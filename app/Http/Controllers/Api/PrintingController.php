@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use DB;
+use Illuminate\Support\Facades\DB;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -51,6 +51,9 @@ class PrintingController extends Controller
         }
         
         // 3. Cálculo da quantidade que a pessoa imprimiu no mês
+        $this_month = Printing::getPrintings($request->user,$printer,'month');
+        return response()->json($this_month);
+
         $quantidade = 0;
         if ($printer->rule->type_of_control == "Mensal") {
 
@@ -87,7 +90,11 @@ class PrintingController extends Controller
         } else {
 
         }
+    }
 
+    public function update(Request $request, Printing $printing){
+        $this->createStatus("print_success", $printing->id);
+        return response()->json([]);
     }
 
     /************* Métodos privados auxiliares ***************/
@@ -111,4 +118,5 @@ class PrintingController extends Controller
         $status->printing_id = $printing_id; 
         $status->save();
     }
+
 }

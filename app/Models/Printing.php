@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+
 use App\Models\Printer;
 use App\Models\Status;
 
@@ -15,19 +18,6 @@ class Printing extends Model
 {
     use HasFactory;
     protected $guarded = ['id','created_at'];
-
-    /*
-    public function scopeAllowed($query)
-    {
-        $user = Auth::user();
-        if (!Gate::allows('admin')) {
-            $query->OrWhere('owner', '=', $user->codpes);
-            // melhorar essa query!!! está insegura
-            $query->OrWhere('numeros_usp', 'LIKE', '%'.$user->codpes.'%');
-            return $query;
-        }
-        return $query;
-    }*/
 
     public function printer()
     {
@@ -43,25 +33,32 @@ class Printing extends Model
     {
     	return $this->hasOne(Status::class)->latest();
     }
+    /**
+     * $period: month or day
+     */
     
-    public function printing_quantities($type, $subject=null, $id=null)
-    {
-        // subject: pode ser user ou de todo o banco (na função antiga tinha por impressora tb)
-        // type: total, hoje ou mes
-        
-        $quantities = collect([$type => 0]);
-        // if (!$subject): $all = Printing::all();
-        // if ($subject == "user"): $all =  Printing::where('user', $user)->all()
-        // if ($subject == "printer"): $all = Printing::where('printer_id', $id)->all()
+    public static function getPrintings($user, $printer, $period){
+        $query = DB::table('printings')
 
-        // total de impressoes
-        foreach ($total as $printing) {
-            if ($printing->latest_status()->first()->name == 'print_success') {
-                $quantities[$type] = $quantities[$type] + (int)$printing->pages*(int)$printing->copies;
-                }
-            }
+            // somente as impressões do usuário em questão
+            ->where('printings.user',$user)
+
+            // considerando impressões das impressoras pertencentes a mesma regra
+            ->join('printers', 'printings.printer_id', '=', 'printers.id')
+            ->where('printers.rule_id',$printer->rule->id)
+
+            // considerando somente impressões com status de impresso
+            ->join('status', 'printings.id', '=', 'status.printing_id')
+            ->where('status.name','print_success');
+        
+            // somente impressões do mês ou do dia
+            if($period == 'month')
+                $query->whereMonth('printings.created_at','=', date('n'));
             
-        return $quantities;
-    }    
+            if($period == 'day')
+                $query->whereDate('printings.created_at', Carbon::today());
+
+        return $query->sum(DB::raw('printings.pages*printings.copies'));
+    }   
 }
 
