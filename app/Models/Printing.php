@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+
 use App\Models\Printer;
 use App\Models\Status;
+
 
 class Printing extends Model
 {
@@ -42,16 +44,24 @@ class Printing extends Model
     	return $this->hasOne(Status::class)->latest();
     }
     
-    public function quantidades($tipo=null)
+    public function printing_quantities($type, $subject=null, $id=null)
     {
-        $quantidades = collect(['total'=> 0, 'hoje'=> 0, 'mes'=> 0]);
-        $total = Printing::all();
+        // subject: pode ser user ou de todo o banco (na função antiga tinha por impressora tb)
+        // type: total, hoje ou mes
+        
+        $quantities = collect([$type => 0]);
+        // if (!$subject): $all = Printing::all();
+        // if ($subject == "user"): $all =  Printing::where('user', $user)->all()
+        // if ($subject == "printer"): $all = Printing::where('printer_id', $id)->all()
+
+        // total de impressoes
         foreach ($total as $printing) {
-            if (!is_null($tipo) && $printing->latest_status()->first()->name == 'print_success') {
-                $quantidades['total'] = $quantidades['total'] + (int)$printing->pages*(int)$printing->copies;
-                } 
+            if ($printing->latest_status()->first()->name == 'print_success') {
+                $quantities[$type] = $quantities[$type] + (int)$printing->pages*(int)$printing->copies;
+                }
             }
-        return $quantidades;
+            
+        return $quantities;
     }    
 }
 
