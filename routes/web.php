@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\IndexController;
-use App\Http\Controllers\PrintingController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\IndexController;
 use App\Http\Controllers\PrinterController;
+use App\Http\Controllers\PrintingController;
 use App\Http\Controllers\RuleController;
 
 /*
@@ -22,28 +22,20 @@ Route::get('/', [IndexController::class, 'index'])->name('home');
 
 Route::get('/printings', [PrintingController::class, 'index']);
 Route::get('/printings/admin', [PrintingController::class, 'admin']);
-//Route::get('/printings/user/{user}', [PrintingController::class, 'user']);
-//Route::get('/printings/jobid/{jobid}', [PrintingController::class, 'jobid']);
-//Route::get('/printings/{printer}', [PrintingController::class, 'printer']);
-//Route::get('/pages/today/{user}/', [PrintingController::class, 'pagesToday']);
 Route::get('/printings/status/{printing}', [PrintingController::class, 'status']);
-Route::get('/printings/fila', [PrintingController::class, 'fila']);
 Route::get('/printings/acao/{printing}', [PrintingController::class, 'acao']);
+
+// Printers
+Route::resource('/printers', PrinterController::class);
+Route::get('/printers/fila/{printer}', [PrinterController::class, 'fila']);
+
+// Rules
+Route::resource('/rules', RuleController::class);
 
 // Senha única USP
 Route::get('/login', [LoginController::class, 'redirectToProvider'])->name('login');
 Route::get('/callback', [LoginController::class, 'handleProviderCallback']);
 Route::post('/logout', [LoginController::class, 'logout']);
 
-// Fila de impressão 
-Route::get('/pendentes', [PrintingController::class, 'pendentes']);
-Route::get('/pendentes/{printer}/', [PrintingController::class, 'pendentes']);
-
-// Logs  
+// Logs
 Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->middleware('can:admin');
-
-// Printers
-Route::resource('/printers', PrinterController::class);
-
-// Rules
-Route::resource('/rules', RuleController::class);

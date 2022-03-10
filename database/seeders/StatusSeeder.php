@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Status;
+use Illuminate\Database\Seeder;
 
 class StatusSeeder extends Seeder
 {
@@ -15,8 +15,8 @@ class StatusSeeder extends Seeder
     public function run()
     {
         $status = [
-            'name'       => 'sent_to_printer_queue',
-            'printing_id'=> 1,
+            'name' => 'sent_to_printer_queue',
+            'printing_id' => 1,
         ];
 
         Status::create($status);

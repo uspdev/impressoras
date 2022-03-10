@@ -46,8 +46,8 @@ Para limpar banco:
 ### Model Rule
 
 - name [str]: Nome da regra
-- authorization_control [bool]: controle de fila ativado ou não
-- type_of_control [str]: tipo de quota: diária ou mensal
+- queue_control [bool]: controle da fila para autorização de impressões ativado ou não
+- quota_period [str]: tipo de quota: diária ou mensal
 - quota [int]: quantidade de quota disponível para o período
 - categories [str]: categorias autorizadas para a impressão
 

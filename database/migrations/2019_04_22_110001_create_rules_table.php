@@ -20,10 +20,10 @@ class CreateRulesTable extends Migration
             $table->string('name');
 
             /* Habilita o recurso de liberação a cada impressão */
-	        $table->boolean('authorization_control')->default(0);
+	        $table->boolean('queue_control')->default(0);
 
             /* atualmente apenas: monthly or daily */
-            $table->string('type_of_control')->nullable();
+            $table->string('quota_period')->nullable();
 
             /* quota para o tipo escolhido (monthly or daily) */
             $table->integer('quota')->nullable();

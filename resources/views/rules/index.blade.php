@@ -26,8 +26,8 @@
 			<thead>
 				<tr>
 					<th width="20%">Nome</th>
-					<th width="20%">Controle de autorização</th>
-                    <th width="20%">Período do controle de quota</th>
+					<th width="20%">Controle da fila para autorização de impressões</th>
+                    <th width="20%">Período da quota</th>
                     <th widht="20%">Quota</th>
                     <th widht="20%">Restrito para</th>
                     <th widht="20%">Ações</th>
@@ -38,13 +38,13 @@
 					<tr>
 						<td>{{ $rule->name }}</td>
                         <td>
-                            @if ($rule->authorization_control  == 0)
+                            @if ($rule->queue_control  == 0)
                                 Não
                             @else
                                 Sim
                             @endif
                         </td>
-						<td>{{ $rule->type_of_control }}</td>
+						<td>{{ $rule->quota_period }}</td>
 						<td>{{ $rule->quota }}</td>
                         <td>{{ $rule->categories ? implode(", ", $rule->categories) : "Sem restrições" }}</td>
                         <td>

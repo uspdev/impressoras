@@ -26,7 +26,7 @@
     </style>
 
 	<div class="card-header">
-		<h4><b>Fila</b></h4>
+		<h4><b>Fila de {{ $name }}</b></h4>
 	</div>
 	<div class="table-responsive">
 		<table class="table table-striped">
@@ -54,13 +54,11 @@
 						<td>{{ $printing->latest_status()->first()->name }}</td>
                         @can('admin')
                             <td>
-                                @if ($printing->latest_status()->first()->name == "waiting_job_authorization")
                                 <div id="actions">
                                     <a href="/printings/acao/{{ $printing->id }}?acao=autorizada" onclick="return confirm('Tem certeza que deseja autorizar?');"><i class="fas fa-check"></i></a>
                                     <a href="/printings/acao/{{ $printing->id }}?acao=cancelada" onclick="return confirm('Tem certeza que deseja cancelar?');"><i class="fas fa-ban" id="i-ban"></i></a>
                                     </form>
                                 </div>
-                                @endif
                             </td>
                         @endcan 
 					</tr>

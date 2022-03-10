@@ -34,7 +34,11 @@
 			<tbody>
 				@forelse ($printers as $printer)
 					<tr>
-						<td>{{ $printer->name }}</td>
+                        @if ($printer->rule->queue_control)
+						<td><a href="/printers/fila/{{ $printer->id }}">{{ $printer->name }}</a></td>
+                        @else
+                        <td>{{ $printer->name }}</td>
+                        @endif
 						<td>{{ $printer->machine_name }}</td>
 						<td>{{ $printer->rule->name ?? '' }}</td>
                         <td>
