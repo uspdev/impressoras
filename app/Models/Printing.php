@@ -36,27 +36,26 @@ class Printing extends Model
      *
      * @return int quantidade de impressões para o contexto
      */
-    public static function getPrintingsQuantitiesUser($user = null, $printer = null, $period = null)
+    public static function getPrintingsQuantitiesUser($user, $printer = null, $period = null)
     {
         $query = DB::table('printings')
-
             // somente as impressões do usuário em questão
-            ->where('printings.user', $user)
+            ->where('printings.user', $user);
 
+        if ($printer) {
             // considerando impressões das impressoras pertencentes a mesma regra
-            ->join('printers', 'printings.printer_id', '=', 'printers.id')
-            ->where('printers.rule_id', $printer->rule->id)
+            $query->join('printers', 'printings.printer_id', '=', 'printers.id')
+                ->where('printers.rule_id', $printer->rule->id);
+        }
 
-            // considerando somente impressões com status de impresso
-            ->join('status', 'printings.id', '=', 'status.printing_id')
+        // considerando somente impressões com status de impresso
+        $query->join('status', 'printings.id', '=', 'status.printing_id')
             ->where('status.name', 'print_success');
 
         // somente impressões do mês ou do dia
         if ($period == 'Mensal') {
             $query->whereMonth('printings.created_at', '=', date('n'));
-        }
-
-        if ($period == 'Diário') {
+        } elseif ($period == 'Diário') {
             $query->whereDate('printings.created_at', Carbon::today());
         }
 

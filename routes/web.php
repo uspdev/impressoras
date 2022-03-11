@@ -23,11 +23,12 @@ Route::get('/', [IndexController::class, 'index'])->name('home');
 Route::get('/printings', [PrintingController::class, 'index']);
 Route::get('/printings/admin', [PrintingController::class, 'admin']);
 Route::get('/printings/status/{printing}', [PrintingController::class, 'status']);
-Route::get('/printings/acao/{printing}', [PrintingController::class, 'acao']);
+Route::get('/printings/action/{printing}', [PrintingController::class, 'action']);
 
 // Printers
 Route::resource('/printers', PrinterController::class);
-Route::get('/printers/fila/{printer}', [PrinterController::class, 'fila']);
+Route::get('/printers/queue/{printer}', [PrinterController::class, 'printer_queue']);
+Route::get('/printers/auth_queue/{printer}', [PrinterController::class, 'authorization_queue']);
 
 // Rules
 Route::resource('/rules', RuleController::class);

@@ -11,8 +11,6 @@ class PrinterController extends Controller
 {
     public function index()
     {
-        $this->authorize('admin');
-
         $printers = Printer::all();
 
         return view('printers.index', [
@@ -71,16 +69,34 @@ class PrinterController extends Controller
         return redirect('/printers');
     }
 
-    public function fila(Printer $printer)
+    public function printer_queue(Printer $printer)
     {
-        $printings_id = Printing::getPrintingsFromScope($printer, 'waiting_job_authorization');
-        $printings = Printing::findMany($printings_id);
-
+        $printings = $printer->printings()->get();
         $name = $printer->name;
 
         return view('printings.fila', [
             'printings' => $printings,
             'name' => $name,
+            'auth' => false,
+        ]);
+    }
+
+    public function authorization_queue(Printer $printer)
+    {
+        if (!$printer->rule || !$printer->rule->queue_control) {
+            return response('', 403);
+        }
+
+        $this->authorize('admin');
+
+        $printings_id = Printing::getPrintingsFromScope($printer, 'waiting_job_authorization');
+        $printings = Printing::findMany($printings_id);
+        $name = $printer->name;
+
+        return view('printings.fila', [
+            'printings' => $printings,
+            'name' => $name,
+            'auth' => true,
         ]);
     }
 }

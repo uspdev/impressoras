@@ -26,8 +26,20 @@
     </style>
 
 	<div class="card-header">
-		<h4><b>Fila de {{ $name }}</b></h4>
+		<h4><b>Fila de 
+            @if ($auth)
+                autorização de
+            @endif
+            {{ $name }}</b>
+        </h4>
 	</div>
+
+    <br>
+    
+    @if(!$auth)
+    @include('printings.partials.printing_quantities')
+    @endif
+
 	<div class="table-responsive">
 		<table class="table table-striped">
 			<thead>
@@ -38,9 +50,11 @@
 					<th width="14%">Usuário (N.USP)</th>
                     <th width="14%">Host</th>
                     <th width="15%">Status</th>
-                    @can('admin')
+                    @if ($auth)
+                        @can('admin')
                         <th width="14%">Ação</th>
-                    @endcan
+                        @endcan
+                    @endif
 				</tr>
 			</thead>
 			<tbody>
@@ -51,16 +65,24 @@
 						<td>{{ (int)$printing->pages*(int)$printing->copies }}</td>
 						<td>{{ $printing->user }}</td>
 						<td>{{ $printing->host }}</td>
-						<td>{{ $printing->latest_status()->first()->name }}</td>
-                        @can('admin')
-                            <td>
-                                <div id="actions">
-                                    <a href="/printings/acao/{{ $printing->id }}?acao=autorizada" onclick="return confirm('Tem certeza que deseja autorizar?');"><i class="fas fa-check"></i></a>
-                                    <a href="/printings/acao/{{ $printing->id }}?acao=cancelada" onclick="return confirm('Tem certeza que deseja cancelar?');"><i class="fas fa-ban" id="i-ban"></i></a>
-                                    </form>
-                                </div>
-                            </td>
-                        @endcan 
+						<td>
+                            @can('admin')
+                            <a href="/printings/status/{{ $printing->id }}">{{ $printing->latest_status()->first()->name }}</a>
+                            @else
+                            {{ $printing->latest_status()->first()->name }}
+                            @endcan
+                        </td>
+                        @if ($auth)
+                            @can('admin')
+                                <td>
+                                    <div id="actions">
+                                        <a href="/printings/action/{{ $printing->id }}?action=authorized" onclick="return confirm('Tem certeza que deseja autorizar?');"><i class="fas fa-check"></i></a>
+                                        <a href="/printings/action/{{ $printing->id }}?action=cancelled" onclick="return confirm('Tem certeza que deseja cancelar?');"><i class="fas fa-ban" id="i-ban"></i></a>
+                                        </form>
+                                    </div>
+                                </td>
+                            @endcan 
+                        @endif
 					</tr>
                 @empty
                     <tr>

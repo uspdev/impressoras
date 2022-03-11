@@ -20,32 +20,22 @@ class PrintingController extends Controller
         $user = \Auth::user();
         $printings = Printing::where('user', '=', $user->codpes);
         $printings = $printings->orderBy('jobid', 'DESC')->paginate(10);
+        $quantities['Mensal'] = Printing::getPrintingsQuantitiesUser($user, null, 'Mensal');
+        $quantities['Diário'] = Printing::getPrintingsQuantitiesUser($user, null, 'Diário');
+        $quantities['Total'] = Printing::getPrintingsQuantitiesUser($user);
+
         if ($request->has('route')) {
             return view('printings/partials/printing',
-                       compact('printings'));
+                       compact('printings', 'quantities'));
         }
 
-        return view('printings/index', compact('printings'));
-    }
-
-    public function admin(Request $request)
-    {
-        $this->authorize('admin');
-        sleep(5);
-        $printings = Printing::orderBy('created_at', 'DESC')->paginate(30);
-        $quantidades = Printing::quantidades('impressas');
-        if ($request->has('route')) {
-            return view('printings/partials/printing',
-                       compact('printings', 'quantidades'));
-        }
-
-        return view('printings/index', compact('printings', 'quantidades'));
+        return view('printings/index', compact('printings', 'quantities'));
     }
 
     public function status(Printing $printing)
     {
         $this->authorize('admin');
-        $statuses = $printing->status->all();
+        $statuses = $printing->status->sortByDesc('created_at')->all();
 
         return view('printings.status', [
             'printing' => $printing,
@@ -53,25 +43,23 @@ class PrintingController extends Controller
         ]);
     }
 
-    public function acao(Request $request, Printing $printing)
+    public function action(Request $request, Printing $printing)
     {
         $this->authorize('admin');
 
         $printer = $printing->printer;
         $status = new Status();
-        if ($request->acao == 'autorizada') {
+        if ($request->action == 'authorized') {
             $status->name = 'sent_to_printer_queue';
-        } elseif ($request->acao == 'cancelada') {
+            $action = 'autorizada';
+        } elseif ($request->action == 'cancelled') {
             $status->name = 'cancelled_not_authorized';
+            $action = 'cancelada';
         }
         $status->printing_id = $printing->id;
         $status->save();
-        request()->session()->flash('alert-success', 'Impressão '.$request->acao.' com sucesso.');
+        request()->session()->flash('alert-success', 'Impressão '.$action.' com sucesso.');
 
-        return redirect("/printers/fila/{$printer->id}");
-    }
-
-    public function pendentes()
-    {
+        return redirect("/printers/auth_queue/{$printer->id}");
     }
 }
