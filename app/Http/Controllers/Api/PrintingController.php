@@ -34,9 +34,9 @@ class PrintingController extends Controller
                 $vinculos = Pessoa::obterSiglasVinculosAtivos($codpes);
                 $permissao = array_intersect($vinculos, $printer->rule->categories) ? true : false;
                 if (!$permissao) {
-                    $this->createStatus('cancelled_not_authorized', $printing->id);
+                    Status::createStatus('cancelled_not_authorized', $printing);
 
-                    return response()->json(['no', $printing->id, $printing->latest_status->name]);
+                    return response()->json(['no', $printing->id, $printing->latest_status]);
                 }
             }
 
@@ -48,29 +48,29 @@ class PrintingController extends Controller
                 $out_of_quota = $quantities + $request->pages * $request->copies > $printer->rule->quota;
 
                 if ($out_of_quota) {
-                    $this->createStatus('cancelled_user_out_of_quota', $printing->id);
+                    Status::createStatus('cancelled_user_out_of_quota', $printing);
 
-                    return response()->json(['no', $printing->id, $printing->latest_status->name, $quantities]);
+                    return response()->json(['no', $printing->id, $printing->latest_status, $quantities]);
                 }
             }
 
             // 3. Verifica se a impressora tem controle de fila
             if ($printer->rule->queue_control) {
-                $this->createStatus('waiting_job_authorization', $printing->id);
+                Status::createStatus('waiting_job_authorization', $printing);
 
-                return response()->json(['no', $printing->id, $printing->latest_status->name]);
+                return response()->json(['no', $printing->id, $printing->latest_status]);
             }
         }
 
         // 4. Se a impressora não tem regra, então qualquer impressão esta liberada
-        $this->createStatus('sent_to_printer_queue', $printing->id);
+        Status::createStatus('sent_to_printer_queue', $printing);
 
-        return response()->json(['yes', $printing->id, $printing->latest_status->name]);
+        return response()->json(['yes', $printing->id, $printing->latest_status]);
     }
 
     public function update(Request $request, Printing $printing)
     {
-        $this->createStatus('print_success', $printing->id);
+        Status::createStatus('print_success', $printing);
 
         return response()->json(['ok']);
     }
@@ -90,11 +90,4 @@ class PrintingController extends Controller
         return $printer;
     }
 
-    private function createStatus($name, $printing_id)
-    {
-        $status = new Status();
-        $status->name = $name;
-        $status->printing_id = $printing_id;
-        $status->save();
-    }
 }

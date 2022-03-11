@@ -67,9 +67,9 @@
 						<td>{{ $printing->host }}</td>
 						<td>
                             @can('admin')
-                            <a href="/printings/status/{{ $printing->id }}">{{ $printing->latest_status()->first()->name }}</a>
+                            <a href="/printings/status/{{ $printing->id }}">{{ $printing->latest_status }}</a>
                             @else
-                            {{ $printing->latest_status()->first()->name }}
+                            {{ $printing->latest_status }}
                             @endcan
                         </td>
                         @if ($auth)

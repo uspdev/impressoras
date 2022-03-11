@@ -83,14 +83,14 @@ class PrinterController extends Controller
 
     public function authorization_queue(Printer $printer)
     {
+        $this->authorize('admin');
+
         if (!$printer->rule || !$printer->rule->queue_control) {
             return response('', 403);
         }
 
-        $this->authorize('admin');
+        $printings = $printer->printings->where('latest_status','waiting_job_authorization');
 
-        $printings_id = Printing::getPrintingsFromScope($printer, 'waiting_job_authorization');
-        $printings = Printing::findMany($printings_id);
         $name = $printer->name;
 
         return view('printings.fila', [

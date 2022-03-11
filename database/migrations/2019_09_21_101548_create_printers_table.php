@@ -16,7 +16,7 @@ class CreatePrintersTable extends Migration
         Schema::create('printers', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('machine_name');
+            $table->string('machine_name')->unique();
             $table->string('name');
             $table->foreignId('rule_id')->nullable()->constrained();
         });

@@ -11,7 +11,7 @@
         <td>{{ round((float)$printing->filesize/1024) }} MB</td>
         <td>{{ $printing->filename }}</td>
         <td>{{ $printing->printer->name ?? '' }}</td>
-        <td>@can('admin')<a href="/printings/status/{{ $printing->id }}">{{ $printing->latest_status->name ?? '' }}</a>@else{{ $printing->latest_status->name ?? '' }} @endcan</td>
+        <td>@can('admin')<a href="/printings/status/{{ $printing->id }}">{{ $printing->latest_status ?? '' }}</a>@else{{ $printing->latest_status ?? '' }} @endcan</td>
 
     </tr>
 @empty

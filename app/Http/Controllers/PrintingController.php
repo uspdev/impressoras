@@ -20,9 +20,9 @@ class PrintingController extends Controller
         $user = \Auth::user();
         $printings = Printing::where('user', '=', $user->codpes);
         $printings = $printings->orderBy('jobid', 'DESC')->paginate(10);
-        $quantities['Mensal'] = Printing::getPrintingsQuantitiesUser($user, null, 'Mensal');
-        $quantities['Diário'] = Printing::getPrintingsQuantitiesUser($user, null, 'Diário');
-        $quantities['Total'] = Printing::getPrintingsQuantitiesUser($user);
+        $quantities['Mensal'] = Printing::getPrintingsQuantitiesUser($user->codpes, null, 'Mensal');
+        $quantities['Diário'] = Printing::getPrintingsQuantitiesUser($user->codpes, null, 'Diário');
+        $quantities['Total'] = Printing::getPrintingsQuantitiesUser($user->codpes);
 
         if ($request->has('route')) {
             return view('printings/partials/printing',
@@ -48,16 +48,15 @@ class PrintingController extends Controller
         $this->authorize('admin');
 
         $printer = $printing->printer;
-        $status = new Status();
+
         if ($request->action == 'authorized') {
-            $status->name = 'sent_to_printer_queue';
+            Status::createStatus('sent_to_printer_queue',$printing);
             $action = 'autorizada';
         } elseif ($request->action == 'cancelled') {
-            $status->name = 'cancelled_not_authorized';
+            Status::createStatus('cancelled_not_authorized',$printing);
             $action = 'cancelada';
         }
-        $status->printing_id = $printing->id;
-        $status->save();
+
         request()->session()->flash('alert-success', 'Impressão '.$action.' com sucesso.');
 
         return redirect("/printers/auth_queue/{$printer->id}");

@@ -27,4 +27,15 @@ class Status extends Model
     {
         return $this->belongsTo(Printing::class);
     }
+
+    public static function createStatus($name, $printing)
+    {
+        $status = new Status();
+        $status->name = $name;
+        $status->printing_id = $printing->id;
+        $status->save();
+
+        $printing->latest_status = $name;
+        $printing->save();
+    }
 }
