@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Socialite;
 use App\Models\User;
 use Auth;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Socialite;
 
 class LoginController extends Controller
 {
@@ -49,10 +49,10 @@ class LoginController extends Controller
     public function handleProviderCallback()
     {
         $userSenhaUnica = Socialite::driver('senhaunica')->user();
-        $user = User::where('codpes',$userSenhaUnica->codpes)->first();
+        $user = User::where('codpes', $userSenhaUnica->codpes)->first();
 
         if (is_null($user)) {
-            $user = new User;
+            $user = new User();
         }
 
         // bind do dados retornados
@@ -62,11 +62,14 @@ class LoginController extends Controller
         $user->save();
 
         Auth::login($user, true);
+
         return redirect('/');
     }
 
-    public function logout(Request $request) {
+    public function logout(Request $request)
+    {
         Auth::logout();
+
         return redirect('/');
     }
 }

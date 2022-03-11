@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Contracts\Validation\Validator;
 
 class PrintingRequest extends FormRequest
 {
@@ -26,22 +26,23 @@ class PrintingRequest extends FormRequest
     public function rules()
     {
         return [
-            'jobid'    => 'required|integer',
-            'pages'    => 'required|integer',
-            'copies'   => 'required|integer',
+            'jobid' => 'required|integer',
+            'pages' => 'required|integer',
+            'copies' => 'required|integer',
             'filename' => 'required',
             'filesize' => 'required|integer',
-            'user'     => 'required',
-            'host'     => 'required',
-            'printer'  => 'required|alpha_dash',
+            'user' => 'required',
+            'host' => 'required',
+            'printer' => 'required|alpha_dash',
         ];
     }
+
     public function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json([
-            'success'   => false,
-            'message'   => 'Validation errors',
-            'data'      => $validator->errors()
+            'success' => false,
+            'message' => 'Validation errors',
+            'data' => $validator->errors(),
             ]));
     }
 }
