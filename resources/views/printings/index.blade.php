@@ -17,16 +17,7 @@
 
 <br>
 
-<table width="100%" border="0">
-<tr>
-<td width="100%" align="center" colspan="3"><b><font size="+1">Impressões</font></b></td>
-</tr>
-<tr style="border-bottom: 1px solid #cdd0d4;">
-<td width="33%"><b>Total:</b> {{ $quantidades['total'] ?? '' }}</td>
-<td width="34%" align="center"><b>Hoje:</b> {{ $quantidades['hoje'] ?? '' }}</td>
-<td width="33%" align="right"><b>Neste mês:</b> {{ $quantidades['mes'] ?? '' }}</td>
-</tr>
-</table>
+@include('printings.partials.printing_quantities')
 
 <br>
 {{ $printings->links() }}

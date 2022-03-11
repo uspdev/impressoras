@@ -19,22 +19,40 @@
 
 	<div class="card-header">
 		<h4><b>Impressoras</b></h4>
+        @can('admin')
         <a href="/printers/create"><i class="fas fa-plus"></i> Adicionar impressora</a>
+        @endcan
 	</div>
 	<div class="table-responsive">
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th width="30%">Nome</th>
-					<th width="30%">Nome de Máquina</th>
-					<th width="30%">Regra</th>
-                    <th widht="30%">Ações</th>
+					<th width="20%">Nome</th>
+                    <th width="20%">Acessar fila</th>
+                    @can('admin')
+					<th width="20%">Nome de Máquina</th>
+					<th width="20%">Regra</th>
+                    <th widht="20%">Ações</th>
+                    @endcan
 				</tr>
 			</thead>
 			<tbody>
 				@forelse ($printers as $printer)
 					<tr>
 						<td>{{ $printer->name }}</td>
+                        <td>
+                            <div class="d-grid gap-2 d-md-block">
+                                <a href="/printers/queue/{{ $printer->id }}"><button class="btn btn-primary" type="button">Impressora</button></a>
+                                @can('admin')
+                                @if ($printer->rule)
+                                    @if ($printer->rule->queue_control)
+                                        <a href="/printers/auth_queue/{{ $printer->id }}"><button class="btn btn-secondary" type="button">Autorização</button></a>
+                                    @endif
+                                @endif
+                                @endcan
+                            </div>
+                        </td>
+                        @can('admin')
 						<td>{{ $printer->machine_name }}</td>
 						<td>{{ $printer->rule->name ?? '' }}</td>
                         <td>
@@ -49,6 +67,7 @@
                                 </form>
                             </div>
                         </td>
+                        @endcan
 					</tr>
                 @empty
                     <tr>
