@@ -38,10 +38,10 @@ class Printing extends Model
      */
     
     public static function getPrintings($user, $printer, $period){
-        $query = DB::table('printings')
+        $query = DB::table('printings');
 
             // somente as impressões do usuário em questão
-            ->where('printings.user',$user)
+            $query->where('printings.user',$user)
 
             // considerando impressões das impressoras pertencentes a mesma regra
             ->join('printers', 'printings.printer_id', '=', 'printers.id')
