@@ -20,9 +20,9 @@ class PrintingController extends Controller
         $user = \Auth::user();
         $printings = Printing::where('user', '=', $user->codpes);
         $printings = $printings->orderBy('jobid', 'DESC')->paginate(10);
-        $quantities['Mensal'] = Printing::getPrintingsQuantitiesUser($user->codpes, null, 'Mensal');
-        $quantities['Diário'] = Printing::getPrintingsQuantitiesUser($user->codpes, null, 'Diário');
-        $quantities['Total'] = Printing::getPrintingsQuantitiesUser($user->codpes);
+        $quantities['Mensal'] = Printing::getPrintingsQuantities($user->codpes, null, 'Mensal');
+        $quantities['Diário'] = Printing::getPrintingsQuantities($user->codpes, null, 'Diário');
+        $quantities['Total'] = Printing::getPrintingsQuantities($user->codpes);
 
         if ($request->has('route')) {
             return view('printings/partials/printing',

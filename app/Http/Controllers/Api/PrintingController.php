@@ -48,7 +48,7 @@ class PrintingController extends Controller
             $quota_period = $printer->rule->quota_period;
 
             if (!empty($quota_period)) {
-                $quantities = Printing::getPrintingsQuantitiesUser($request->user, $printer, $quota_period);
+                $quantities = Printing::getPrintingsQuantities($request->user, $printer, $quota_period);
                 $out_of_quota = $quantities + $request->pages * $request->copies > $printer->rule->quota;
 
                 if ($out_of_quota) {
