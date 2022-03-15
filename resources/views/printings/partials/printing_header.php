@@ -1,0 +1,10 @@
+<th width="5%">Job ID</th>
+<th width="10%">Usuário (N.USP)</th>
+<th width="10%">Host</th> 
+<th width="10%">Data</th>
+<th width="5%">Páginas</th>
+<th width="5%">Cópias</th>
+<th width="10%">Tamanho</th>
+<th width="15%">Arquivo</th>
+<th width="15%">Impressora</th>
+<th width="15%">Status</th>

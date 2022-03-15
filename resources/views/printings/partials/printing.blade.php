@@ -1,9 +1,11 @@
 @forelse ($printings as $printing)
     <tr>
-        <td>{{ $printing->jobid }}</td>
         @can('admin')
-          <td>{{ $printing->user }}</td>
-          <td>{{ $printing->host }}</td>
+        <td><a href="/printings/status/{{ $printing->id }}">{{ $printing->jobid }}</a></td>
+        <td>{{ $printing->user }}</td>
+        <td>{{ $printing->host }}</td>
+        @else
+        <td>{{ $printing->jobid }}</td>      
         @endcan
         <td>{{ \Carbon\Carbon::CreateFromFormat('Y-m-d H:i:s', $printing->created_at)->format('d/m/Y H:i') }} </td>
         <td>{{ $printing->pages }}</td>
@@ -11,7 +13,7 @@
         <td>{{ round((float)$printing->filesize/1024) }} MB</td>
         <td>{{ $printing->filename }}</td>
         <td>{{ $printing->printer->name ?? '' }}</td>
-        <td>@can('admin')<a href="/printings/status/{{ $printing->id }}">{{ $printing->latest_status ?? '' }}</a>@else{{ $printing->latest_status ?? '' }} @endcan</td>
+        <td>{{ $printing->latest_status ?? '' }}</td>
 
     </tr>
 @empty
