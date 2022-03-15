@@ -36,7 +36,11 @@ class PrintingController extends Controller
                 if (!$permissao) {
                     Status::createStatus('cancelled_not_authorized', $printing);
 
-                    return response()->json(['no', $printing->id, $printing->latest_status]);
+                    return response()->json([
+                        'response' => 'no',
+                        'printing_id' => $printing->id,
+                        'latest_status' => $printing->latest_status,
+                    ]);
                 }
             }
 
@@ -50,7 +54,12 @@ class PrintingController extends Controller
                 if ($out_of_quota) {
                     Status::createStatus('cancelled_user_out_of_quota', $printing);
 
-                    return response()->json(['no', $printing->id, $printing->latest_status, $quantities]);
+                    return response()->json([
+                        'response' => 'no',
+                        'printing_id' => $printing->id,
+                        'latest_status' => $printing->latest_status,
+                        'quantities' => $quantities,
+                    ]);
                 }
             }
 
@@ -58,21 +67,31 @@ class PrintingController extends Controller
             if ($printer->rule->queue_control) {
                 Status::createStatus('waiting_job_authorization', $printing);
 
-                return response()->json(['no', $printing->id, $printing->latest_status]);
+                return response()->json([
+                    'response' => 'no',
+                    'printing_id' => $printing->id,
+                    'latest_status' => $printing->latest_status,
+                ]);
             }
         }
 
         // 4. Se a impressora não tem regra, então qualquer impressão esta liberada
         Status::createStatus('sent_to_printer_queue', $printing);
 
-        return response()->json(['yes', $printing->id, $printing->latest_status]);
+        return response()->json([
+            'response' => 'yes',
+            'printing_id' => $printing->id,
+            'latest_status' => $printing->latest_status,
+        ]);
     }
 
-    public function show(Request $request, Printing $printing){
+    public function show(Request $request, Printing $printing)
+    {
         if ($request->header('Authorization') != env('API_KEY')) {
             return response('Acesso nao autorizado', 403);
         }
-        return response()->json([$printing->latest_status]);
+
+        return response()->json(['latest_status' => $printing->latest_status]);
     }
 
     public function update(Request $request, Printing $printing)
@@ -80,9 +99,11 @@ class PrintingController extends Controller
         if ($request->header('Authorization') != env('API_KEY')) {
             return response('Acesso nao autorizado', 403);
         }
-        Status::createStatus('print_success', $printing);
 
-        return response()->json(['ok']);
+        $status = $request->status;
+        Status::createStatus($status, $printing);
+
+        return response()->json(['latest_status' => $printing->latest_status]);
     }
 
     /************* Métodos privados auxiliares ***************/
@@ -99,5 +120,4 @@ class PrintingController extends Controller
 
         return $printer;
     }
-
 }
