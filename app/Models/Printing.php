@@ -22,6 +22,11 @@ class Printing extends Model
         return $this->hasMany(Status::class);
     }
 
+    public function authorizedBy()
+    {
+        return $this->hasOne(User::class);
+    }
+
     /**
      * Função para retornar a quantidade de impressões em determinado contexto.
      *
@@ -54,26 +59,4 @@ class Printing extends Model
 
         return $query->sum(DB::raw('printings.pages*printings.copies'));
     }
-
-    /*
-    public static function getPrintingsFromScope($printer, $status)
-    {
-        $printings = DB::table('printings')
-
-            // considerando somente as impressões da impressora em questão
-            //->join('printers', 'printings.printer_id', '=', 'printers.id')
-            //->where('printers.id', $printer->id)
-
-            // considerando somente impressões com $status
-            ->join('status', 'printings.id', '=', 'status.printing_id')
-            ->where('status.name','=', $status)->latest('status.created_at')
-            ->select('printings.id')
-
-            ->get();
-
-        $printings = $printings->pluck('id');
-
-        return $printings;
-    }
-    */
 }

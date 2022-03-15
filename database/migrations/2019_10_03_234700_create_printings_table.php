@@ -24,7 +24,8 @@ class CreatePrintingsTable extends Migration
             $table->string('user');
             $table->string('host');
             $table->string('latest_status')->nullable();
-	        $table->foreignId('printer_id')->nullable()->constrained();
+            $table->foreignId('printer_id')->nullable()->constrained();
+            $table->foreignId('authorized_by_user_id')->nullable();
         });
     }
 

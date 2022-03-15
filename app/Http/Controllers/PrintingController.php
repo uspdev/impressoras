@@ -48,12 +48,15 @@ class PrintingController extends Controller
         $this->authorize('admin');
 
         $printer = $printing->printer;
+        $user = \Auth::user();
+        $printing->authorized_by_user_id = $user->id;
+        $printing->save();
 
         if ($request->action == 'authorized') {
-            Status::createStatus('sent_to_printer_queue',$printing);
+            Status::createStatus('sent_to_printer_queue', $printing);
             $action = 'autorizada';
         } elseif ($request->action == 'cancelled') {
-            Status::createStatus('cancelled_not_authorized',$printing);
+            Status::createStatus('cancelled_not_authorized', $printing);
             $action = 'cancelada';
         }
 
