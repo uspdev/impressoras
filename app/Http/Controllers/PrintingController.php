@@ -26,10 +26,10 @@ class PrintingController extends Controller
 
         if ($request->has('route')) {
             return view('printings/partials/printing',
-                       compact('printings', 'quantities'));
+                compact('printings', 'quantities', 'user'));
         }
 
-        return view('printings/index', compact('printings', 'quantities'));
+        return view('printings/index', compact('printings', 'quantities', 'user'));
     }
 
     public function status(Printing $printing)

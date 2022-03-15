@@ -4,22 +4,14 @@
 @stop
 @section('content')
 
-<!--
-<form method="get" action="/printings">
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="Impressora ..." name="user">
-            <span class="input-group-btn">
-                <button type="submit" class="btn btn-success"> Buscar </button>
-            </span>
-        </div>
-</form>
--->
+<div class="card-header">
+	<h4><b>Impressões de {{ $user->name }}</b></h4>
+</div>
 
 <br>
 
 @include('printings.partials.printings_quantities')
 
-<br>
 {{ $printings->links() }}
 <div class="table-responsive">
   <table class="table table-striped">
@@ -40,7 +32,6 @@
       @endforelse
     </tbody>
   </table>
-  {{ $printings->links() }}
 </div>
 @stop
 

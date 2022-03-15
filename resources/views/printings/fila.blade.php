@@ -39,7 +39,7 @@
     @if(!$auth)
     @include('printings.partials.printings_quantities')
     @endif
-
+    
 	<div class="table-responsive">
 		<table class="table table-striped">
 			<thead>

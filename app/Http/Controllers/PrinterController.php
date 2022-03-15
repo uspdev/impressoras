@@ -71,7 +71,7 @@ class PrinterController extends Controller
 
     public function printer_queue(Printer $printer)
     {
-        $printings = $printer->printings()->get();
+        $printings = $printer->printings()->paginate(10);
         $name = $printer->name;
         $quantities['Mensal'] = Printing::getPrintingsQuantities(null, $printer, 'Mensal');
         $quantities['Diário'] = Printing::getPrintingsQuantities(null, $printer, 'Diário');
