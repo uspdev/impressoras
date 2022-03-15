@@ -68,8 +68,18 @@ class PrintingController extends Controller
         return response()->json(['yes', $printing->id, $printing->latest_status]);
     }
 
+    public function show(Request $request, Printing $printing){
+        if ($request->header('Authorization') != env('API_KEY')) {
+            return response('Acesso nao autorizado', 403);
+        }
+        return response()->json([$printing->latest_status]);
+    }
+
     public function update(Request $request, Printing $printing)
     {
+        if ($request->header('Authorization') != env('API_KEY')) {
+            return response('Acesso nao autorizado', 403);
+        }
         Status::createStatus('print_success', $printing);
 
         return response()->json(['ok']);
