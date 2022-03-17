@@ -33,11 +33,11 @@
             {{ $name }}</b>
         </h4>
 	</div>
-
     <br>
-    
     @if(!$auth)
     @include('printings.partials.printings_quantities')
+    <br>
+    {{ $printings->links() }}
     @endif
     
 	<div class="table-responsive">
