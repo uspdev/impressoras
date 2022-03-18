@@ -2,15 +2,17 @@
 
 import requests
 import time
+import os
 
 # Registrando printing
 
-url = 'http://127.0.0.1:8000/api/printings/'
+url = 'http:/192.168.7.1:8000/api/printings/'
 
 api_key='123'
 
 headers = {'Authorization': api_key}
 
+'''
 data = {'user': '5385361',
         'pages': '2',
         'copies': '3',
@@ -20,6 +22,22 @@ data = {'user': '5385361',
         'filename': 'teste.pdf',
         'filesize': '192045',
         }
+'''
+user = os.getenv('TEAUSERNAME')
+datafile = os.getenv('TEADATAFILE')
+copies = os.getenv('TEACOPIES')
+printer = os.getenv('TEAPRINTERNAME')
+jobid = os.getenv('TEAJOBID')
+host = os.getenv('TEACLIENTHOST')
+filename = os.getenv('TEATITLE')
+filesize = os.getenv('TEAJOBSIZE')
+
+file_object = open('/tmp/saida.txt', 'a')
+file_object.write('Nome do arquivo: ' + filename)
+file_object.close
+
+exit(0)
+
 
 response = requests.post(url, headers=headers, data=data)
 
