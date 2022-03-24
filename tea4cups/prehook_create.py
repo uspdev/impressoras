@@ -2,47 +2,70 @@
 
 import requests
 import time
+import os
 
 # Registrando printing
 
-url = 'http://127.0.0.1:8000/api/printings/'
+url = 'http:/192.168.7.1:8000/api/printings/'
 
 api_key='123'
 
 headers = {'Authorization': api_key}
 
+'''
 data = {'user': '5385361',
         'pages': '2',
         'copies': '3',
-        'printer': 'impressora_proaluno_letras',
+        'printer': 'profcs',
         'jobid': '1',
         'host': '10.89.9.5',
-        'filename': 'mamute.pdf',
+        'filename': 'teste.pdf',
         'filesize': '192045',
         }
+'''
+user = os.getenv('TEAUSERNAME')
+datafile = os.getenv('TEADATAFILE')
+copies = os.getenv('TEACOPIES')
+printer = os.getenv('TEAPRINTERNAME')
+jobid = os.getenv('TEAJOBID')
+host = os.getenv('TEACLIENTHOST')
+filename = os.getenv('TEATITLE')
+filesize = os.getenv('TEAJOBSIZE')
+
+file_object = open('/tmp/saida.txt', 'a')
+file_object.write('Nome do arquivo: ' + filename)
+file_object.close
+
+exit(0)
+
 
 response = requests.post(url, headers=headers, data=data)
 
 # TODO: só seguir se o código for 200
-print(response.status_code)
+if response.status_code == 200:
 
-# TODO: se o retorno for sent_to_printer_queue exit(0) no script
-data = response.json()
-printing_id = data[1]
-
-# TODO: se o retorno for waiting_job_authorization fazer um loop com 5 tentativas com intervalos de 1 segundo
-for i in range(50):
-    time.sleep(1)
-    response = requests.get(url + str(printing_id), headers=headers)
-    status = response.json()[0]
-    if status == 'sent_to_printer_queue':
+    # TODO: se o retorno for sent_to_printer_queue exit(0) no script
+    data = response.json()
+    if data["latest_status"] == "sent_to_printer_queue":
         exit(0)
-    if response[0] == 'cancelled_not_authorized':
-        exit(1)
 
-# No final, se passou o tempo máximo e não foi autorizado, cancelamos
-# TODO: fazer a rota de cancelamento e usá-la aqui
-# Novo status: cancelled_timeout
-exit(1)
+    printing_id = str(data["printing_id"])
+
+    # TODO: se o retorno for waiting_job_authorization fazer um loop com 5 tentativas com intervalos de 1 segundo
+    for i in range(5):
+        time.sleep(1)
+        response = requests.get(url + printing_id, headers=headers)
+        status = response.json()["latest_status"]
+        if status == "sent_to_printer_queue":
+            exit(0)
+        if status == "cancelled_not_authorized":
+            exit(1)
+
+    # No final, se passou o tempo máximo e não foi autorizado, cancelamos
+    # TODO: fazer a rota de cancelamento e usá-la aqui
+    # Novo status: cancelled_timeout
+    data = {"status": "cancelled_timeout"}
+    requests.post(url + printing_id, headers=headers, data=data)
+    exit(1)
 
 

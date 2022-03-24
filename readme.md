@@ -61,6 +61,7 @@ Para limpar banco:
 - "waiting_job_authorization"   : está aguardando autorização
 - "cancelled_not_authorized"    : usuário sem permissão na impressora
 - "cancelled_user_out_of_quota" : usuário não tem quota disponível
+- "cancelled_timeout"           : arquivo não foi autorizado no tempo disponível e foi cancelado automaticamente
 - "sent_to_printer_queue"       : arquivo foi para impressora
 - "print_success"               : a impressora respondeu que imprimiu com sucesso
 - "printer_problem"             : quando a impressora não respondeu

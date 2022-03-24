@@ -33,23 +33,18 @@
             {{ $name }}</b>
         </h4>
 	</div>
-
     <br>
-    
     @if(!$auth)
-    @include('printings.partials.printing_quantities')
+    @include('printings.partials.printings_quantities')
+    <br>
+    {{ $printings->links() }}
     @endif
-
+    
 	<div class="table-responsive">
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th width="15%">Nome do arquivo</th>
-					<th width="14%">Tamanho</th>
-					<th width="14%">Páginas</th>
-					<th width="14%">Usuário (N.USP)</th>
-                    <th width="14%">Host</th>
-                    <th width="15%">Status</th>
+                    @include('printings.partials.printings_header')
                     @if ($auth)
                         @can('admin')
                         <th width="14%">Ação</th>
@@ -60,18 +55,7 @@
 			<tbody>
 				@forelse ($printings as $printing)
 					<tr>
-						<td>{{ $printing->filename }}</td>
-						<td>{{ $printing->filesize }}</td>
-						<td>{{ (int)$printing->pages*(int)$printing->copies }}</td>
-						<td>{{ $printing->user }}</td>
-						<td>{{ $printing->host }}</td>
-						<td>
-                            @can('admin')
-                            <a href="/printings/status/{{ $printing->id }}">{{ $printing->latest_status }}</a>
-                            @else
-                            {{ $printing->latest_status }}
-                            @endcan
-                        </td>
+                        @include('printings.partials.printings_body')
                         @if ($auth)
                             @can('admin')
                                 <td>

@@ -71,12 +71,16 @@ class PrinterController extends Controller
 
     public function printer_queue(Printer $printer)
     {
-        $printings = $printer->printings()->get();
+        $printings = $printer->printings()->paginate(10);
         $name = $printer->name;
+        $quantities['Mensal'] = Printing::getPrintingsQuantities(null, $printer, 'Mensal');
+        $quantities['Diário'] = Printing::getPrintingsQuantities(null, $printer, 'Diário');
+        $quantities['Total'] = Printing::getPrintingsQuantities(null, $printer);
 
         return view('printings.fila', [
             'printings' => $printings,
             'name' => $name,
+            'quantities' => $quantities,
             'auth' => false,
         ]);
     }
@@ -89,7 +93,7 @@ class PrinterController extends Controller
             return response('', 403);
         }
 
-        $printings = $printer->printings->where('latest_status','waiting_job_authorization');
+        $printings = $printer->printings->where('latest_status', 'waiting_job_authorization');
 
         $name = $printer->name;
 

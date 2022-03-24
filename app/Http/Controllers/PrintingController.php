@@ -20,16 +20,16 @@ class PrintingController extends Controller
         $user = \Auth::user();
         $printings = Printing::where('user', '=', $user->codpes);
         $printings = $printings->orderBy('jobid', 'DESC')->paginate(10);
-        $quantities['Mensal'] = Printing::getPrintingsQuantitiesUser($user->codpes, null, 'Mensal');
-        $quantities['Diário'] = Printing::getPrintingsQuantitiesUser($user->codpes, null, 'Diário');
-        $quantities['Total'] = Printing::getPrintingsQuantitiesUser($user->codpes);
+        $quantities['Mensal'] = Printing::getPrintingsQuantities($user->codpes, null, 'Mensal');
+        $quantities['Diário'] = Printing::getPrintingsQuantities($user->codpes, null, 'Diário');
+        $quantities['Total'] = Printing::getPrintingsQuantities($user->codpes);
 
         if ($request->has('route')) {
             return view('printings/partials/printing',
-                       compact('printings', 'quantities'));
+                compact('printings', 'quantities', 'user'));
         }
 
-        return view('printings/index', compact('printings', 'quantities'));
+        return view('printings/index', compact('printings', 'quantities', 'user'));
     }
 
     public function status(Printing $printing)
@@ -48,12 +48,15 @@ class PrintingController extends Controller
         $this->authorize('admin');
 
         $printer = $printing->printer;
+        $user = \Auth::user();
+        $printing->authorized_by_user_id = $user->id;
+        $printing->save();
 
         if ($request->action == 'authorized') {
-            Status::createStatus('sent_to_printer_queue',$printing);
+            Status::createStatus('sent_to_printer_queue', $printing);
             $action = 'autorizada';
         } elseif ($request->action == 'cancelled') {
-            Status::createStatus('cancelled_not_authorized',$printing);
+            Status::createStatus('cancelled_not_authorized', $printing);
             $action = 'cancelada';
         }
 

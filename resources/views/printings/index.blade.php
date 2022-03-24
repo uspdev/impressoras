@@ -1,48 +1,38 @@
 @extends('master')
+
 @section('title', 'Dashboard')
 @section('content_header')
 @stop
+
 @section('content')
 
-<!--
-<form method="get" action="/printings">
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="Impressora ..." name="user">
-            <span class="input-group-btn">
-                <button type="submit" class="btn btn-success"> Buscar </button>
-            </span>
-        </div>
-</form>
--->
-
-<br>
-
-@include('printings.partials.printing_quantities')
-
-<br>
-{{ $printings->links() }}
-<div class="table-responsive">
+  <div class="card-header">
+    <h4><b>Impressões de {{ $user->name }}</b></h4>
+  </div>
+  <br>
+  @include('printings.partials.printings_quantities')
+  <br>
+  {{ $printings->links() }}
+  <div class="table-responsive">
     <table class="table table-striped">
-        <thead>
-            <tr>
-                <th width="5%">Job ID</th>
-                @can('admin') <th width="10%">Pessoa</th> @endcan
-                @can('admin') <th width="10%">Host</th> @endcan
-                <th width="10%">Data</th>
-                <th width="5%">Páginas</th>
-                <th width="5%">Cópias</th>
-                <th width="10%">Tamanho</th>
-                <th width="15%">Arquivo</th>
-                <th width="15%">Impressora</th>
-                <th width="15%">Status</th>
-            </tr>
-        </thead>
-        <tbody>
-    @include('printings/partials/printing')
-</tbody>
-</table>
-{{ $printings->links() }}
-</div>
+      <thead>
+        <tr>
+          @include('printings.partials.printings_header')
+        </tr>
+      </thead>
+      <tbody>
+        @forelse ($printings as $printing)
+          <tr>
+            @include('printings.partials.printings_body')
+          </tr>
+        @empty
+          <tr>
+            <td colspan="7">Não há impressões</td>
+          </tr>
+        @endforelse
+      </tbody>
+    </table>
+  </div>
 @stop
 
 @section('javascripts_bottom')

@@ -22,6 +22,11 @@ class Printing extends Model
         return $this->hasMany(Status::class);
     }
 
+    public function authorizedBy()
+    {
+        return $this->hasOne(User::class);
+    }
+
     /**
      * Função para retornar a quantidade de impressões em determinado contexto.
      *
@@ -31,19 +36,22 @@ class Printing extends Model
      *
      * @return int quantidade de impressões para o contexto
      */
-    public static function getPrintingsQuantitiesUser($user, $printer = null, $period = null)
+    public static function getPrintingsQuantities($user = null, $printer = null, $period = null)
     {
-        $query = DB::table('printings')
-            // somente as impressões do usuário em questão
-            ->where('printings.user', $user)
-            // considerando somente impressões com status de impresso
-            ->where('printings.latest_status', 'print_success');
+        $query = DB::table('printings');
+        // somente as impressões do usuário em questão
+        if ($user) {
+            $query->where('printings.user', $user);
+        }
 
         if ($printer) {
             // considerando impressões das impressoras pertencentes a mesma regra
             $query->join('printers', 'printings.printer_id', '=', 'printers.id')
                 ->where('printers.rule_id', $printer->rule->id);
         }
+
+        // considerando somente impressões com status de impresso
+        $query->where('printings.latest_status', 'print_success');
 
         // somente impressões do mês ou do dia
         if ($period == 'Mensal') {
@@ -54,26 +62,4 @@ class Printing extends Model
 
         return $query->sum(DB::raw('printings.pages*printings.copies'));
     }
-
-    /*
-    public static function getPrintingsFromScope($printer, $status)
-    {
-        $printings = DB::table('printings')
-
-            // considerando somente as impressões da impressora em questão
-            //->join('printers', 'printings.printer_id', '=', 'printers.id')
-            //->where('printers.id', $printer->id)
-
-            // considerando somente impressões com $status
-            ->join('status', 'printings.id', '=', 'status.printing_id')
-            ->where('status.name','=', $status)->latest('status.created_at')
-            ->select('printings.id')
-
-            ->get();
-
-        $printings = $printings->pluck('id');
-
-        return $printings;
-    }
-    */
 }
