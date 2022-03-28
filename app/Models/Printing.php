@@ -22,9 +22,9 @@ class Printing extends Model
         return $this->hasMany(Status::class);
     }
 
-    public function authorizedBy()
+    public function authorizedByUserId()
     {
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class,'authorized_by_user_id' );
     }
 
     /**
@@ -45,9 +45,13 @@ class Printing extends Model
         }
 
         if ($printer) {
-            // considerando impressões das impressoras pertencentes a mesma regra
-            $query->join('printers', 'printings.printer_id', '=', 'printers.id')
-                ->where('printers.rule_id', $printer->rule->id);
+            if ($printer->rule) {
+                // considerando impressões das impressoras pertencentes a mesma regra
+                $query->join('printers', 'printings.printer_id', '=', 'printers.id')
+                    ->where('printers.rule_id', $printer->rule->id);
+            } else {
+                $query->where('printings.printer_id', '=', $printer->id);
+            }
         }
 
         // considerando somente impressões com status de impresso

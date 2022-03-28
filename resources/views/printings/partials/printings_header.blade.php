@@ -9,3 +9,6 @@
 <th width="10%">Tamanho</th>
 <th width="15%">Arquivo</th>
 <th width="15%">Status</th>
+@if (!$auth)
+    <th width="15%">Autorizado por</th>
+@endif
