@@ -46,8 +46,10 @@ class Printing extends Model
 
         if ($printer) {
             // considerando impressões das impressoras pertencentes a mesma regra
-            $query->join('printers', 'printings.printer_id', '=', 'printers.id')
-                ->where('printers.rule_id', $printer->rule->id);
+            $query->join('printers', 'printings.printer_id', '=', 'printers.id');
+            if ($printer->rule) {
+                $query->where('printers.rule_id', $printer->rule->id);
+            }
         }
 
         // considerando somente impressões com status de impresso
