@@ -1,5 +1,7 @@
 @extends('master')
 
+@section('title', 'Regras')
+
 @section('content')
 
     <style>

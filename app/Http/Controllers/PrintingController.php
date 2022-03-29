@@ -23,7 +23,7 @@ class PrintingController extends Controller
         $quantities['Mensal'] = Printing::getPrintingsQuantities($user->codpes, null, 'Mensal');
         $quantities['Diário'] = Printing::getPrintingsQuantities($user->codpes, null, 'Diário');
         $quantities['Total'] = Printing::getPrintingsQuantities($user->codpes);
-        $auth = false;
+        $auth = true;
 
         if ($request->has('route')) {
             return view('printings/partials/printing',

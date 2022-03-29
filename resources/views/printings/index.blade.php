@@ -1,6 +1,6 @@
 @extends('master')
 
-@section('title', 'Dashboard')
+@section('title', 'Minhas Impresões')
 @section('content_header')
 @stop
 
