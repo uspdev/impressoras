@@ -22,9 +22,9 @@ class Printing extends Model
         return $this->hasMany(Status::class);
     }
 
-    public function authorizedBy()
+    public function authorizedByUserId()
     {
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class, 'authorized_by_user_id');
     }
 
     /**
