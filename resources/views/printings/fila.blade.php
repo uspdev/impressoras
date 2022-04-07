@@ -70,7 +70,7 @@
 					</tr>
                 @empty
                     <tr>
-                        <td colspan="7">Não há impressões</td>
+                        <td colspan= @if ($auth) "11" @else "10" @endif>Não há impressões</td>
                     </tr>
 				@endforelse
 			</tbody>

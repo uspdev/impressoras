@@ -1,6 +1,6 @@
 @extends('master')
 
-@section('title', 'Dashboard')
+@section('title', 'Minhas Impresões')
 @section('content_header')
 @stop
 
@@ -27,7 +27,7 @@
           </tr>
         @empty
           <tr>
-            <td colspan="7">Não há impressões</td>
+            <td colspan="10">Não há impressões</td>
           </tr>
         @endforelse
       </tbody>

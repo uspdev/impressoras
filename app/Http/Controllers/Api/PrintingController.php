@@ -85,7 +85,7 @@ class PrintingController extends Controller
         ]);
     }
 
-    public function show(Request $request, Printing $printing)
+    public function showStatus(Request $request, Printing $printing)
     {
         if ($request->header('Authorization') != env('API_KEY')) {
             return response('Acesso nao autorizado', 403);
@@ -94,7 +94,7 @@ class PrintingController extends Controller
         return response()->json(['latest_status' => $printing->latest_status]);
     }
 
-    public function update(Request $request, Printing $printing)
+    public function updateStatus(Request $request, Printing $printing)
     {
         if ($request->header('Authorization') != env('API_KEY')) {
             return response('Acesso nao autorizado', 403);
@@ -104,6 +104,18 @@ class PrintingController extends Controller
         Status::createStatus($status, $printing);
 
         return response()->json(['latest_status' => $printing->latest_status]);
+    }
+
+    public function getFromJobId(Request $request)
+    {
+        $printer = $this->loadPrinter($request->printer);
+        $printing = $printer->printings()->where('jobid', $request->jobid)->first();
+
+        if ($printing) {
+            return response()->json(['printing_id' => $printing->id]);
+        } else {
+            return response()->json(['printing_id' => 'Not found']);
+        }
     }
 
     /************* Métodos privados auxiliares ***************/
