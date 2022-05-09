@@ -1,7 +1,6 @@
 # Quotas
 
-Sistema desenvolvido em *Laravel* + *tea4cups* para gestão de impressões no contexto 
-da Universidade de São Paulo.
+Sistema desenvolvido em *Laravel* + *tea4cups* para gestão de impressões no contexto da Universidade de São Paulo.
 
 O fluxo do arquivo impresso é controlado em 4 estágios usando rotas do Laravel e
 hooks do tea4cups, na seguinte sequência:
