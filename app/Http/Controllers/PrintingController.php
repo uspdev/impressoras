@@ -25,10 +25,12 @@ class PrintingController extends Controller
         $quantities['Total'] = Printing::getPrintingsQuantities($user->codpes);
         $auth = true;
 
+        /* Pq esse if?
         if ($request->has('route')) {
             return view('printings/partials/printing',
                 compact('printings', 'quantities', 'user', 'auth'));
         }
+        */
 
         return view('printings/index', compact('printings', 'quantities', 'user', 'auth'));
     }
