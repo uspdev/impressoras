@@ -8,9 +8,6 @@
   <div class="card-header">
     <h4><b>Impressões</b></h4>
   </div>
-  <br>
-  @include('printings.partials.printings_quantities')
-  <br>
   {{ $printings->appends(request()->query())->links() }}
   <div class="table-responsive">
     <table class="table table-striped">
