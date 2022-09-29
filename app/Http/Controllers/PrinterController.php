@@ -78,7 +78,7 @@ class PrinterController extends Controller
         $quantities['Diário'] = Printing::getPrintingsQuantities(null, $printer, 'Diário');
         $quantities['Total'] = Printing::getPrintingsQuantities(null, $printer);
 
-        return view('printings.fila', [
+        return view('fila.fila', [
             'printings' => $printings,
             'name' => $name,
             'quantities' => $quantities,
@@ -104,13 +104,13 @@ class PrinterController extends Controller
 
         $name = $printer->name;
 
-        return view('printings.fila', [
+        return view('fila.fila', [
             'printings' => $printings,
             'name' => $name,
             'auth' => true,
             'fotos' => $fotos,
             'printings_success' => $this->historico()
-        ]);
+            ]);
 
     }
 
