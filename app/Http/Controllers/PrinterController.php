@@ -6,6 +6,7 @@ use App\Http\Requests\PrinterRequest;
 use App\Models\Printer;
 use App\Models\Printing;
 use Illuminate\Http\Request;
+use App\Services\PhotoService;
 
 class PrinterController extends Controller
 {
@@ -85,7 +86,7 @@ class PrinterController extends Controller
         ]);
     }
 
-    public function authorization_queue(Printer $printer)
+    public function authorization_queue(Printer $printer, PhotoService $photos)
     {
         $this->authorize('admin');
 
@@ -95,12 +96,30 @@ class PrinterController extends Controller
 
         $printings = $printer->printings->where('latest_status', 'waiting_job_authorization');
 
+        $fotos = array();
+
+         foreach($printings as $printing){
+             $fotos[$printing->user] = $photos->obterFoto($printing->user); 
+         }
+
         $name = $printer->name;
 
         return view('printings.fila', [
             'printings' => $printings,
             'name' => $name,
             'auth' => true,
+            'fotos' => $fotos,
+            'printings_success' => $this->historico()
         ]);
+
     }
+
+    public function historico(){
+        
+        $printings_success = Printing::where('latest_status', '=', 'sent_to_printer_queue')
+                                ->orderBy('id', 'DESC')->take(20)->get();
+                                    
+            return $printings_success;
+        }
+
 }

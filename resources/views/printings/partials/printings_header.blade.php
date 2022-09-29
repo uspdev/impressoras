@@ -1,5 +1,16 @@
-<th width="5%">Job ID</th>
 @can('admin')
+<form method="get" action="">
+<div class="row">
+    <div class=" col-sm input-group">
+    <input type="text" class="form-control" name="search" value="{{ request()->search }}" placeholder="Insira o nome do arquivo">
+
+    <span class="input-group-btn">
+        <button type="submit" class="btn btn-success"> Buscar </a></button>
+    </span>
+
+    </div>
+</div>
+</form>
 <th>Usuário (N.USP)</th>
 <th>Host</th>
 @endcan 

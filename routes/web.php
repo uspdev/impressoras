@@ -20,8 +20,10 @@ use App\Http\Controllers\RuleController;
 // Printings
 Route::get('/', [IndexController::class, 'index'])->name('home');
 
+Route::get('/all-printings', [PrintingController::class, 'show']);
 Route::get('/printings', [PrintingController::class, 'index']);
 Route::get('/printings/admin', [PrintingController::class, 'admin']);
+Route::get('/printings/foto/{codpes}', [PrintingController::class, 'obterFoto']);
 Route::get('/printings/status/{printing}', [PrintingController::class, 'status']);
 Route::get('/printings/action/{printing}', [PrintingController::class, 'action']);
 

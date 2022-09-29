@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c6f5849c46ed71ac4cf233b54f59b89a",
+    "content-hash": "c7624b78252fa9b9a7a977d65c4bb61e",
     "packages": [
         {
             "name": "brick/math",
@@ -5831,6 +5831,45 @@
             "time": "2021-05-30T04:06:37+00:00"
         },
         {
+            "name": "uspdev/wsfoto",
+            "version": "2.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/uspdev/wsfoto.git",
+                "reference": "8129b629b8da6c9b6b708d3c7188046e97ffc2f6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/uspdev/wsfoto/zipball/8129b629b8da6c9b6b708d3c7188046e97ffc2f6",
+                "reference": "8129b629b8da6c9b6b708d3c7188046e97ffc2f6",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Uspdev\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Thiago Gomes Verissimo",
+                    "email": "thiago.verissimo@usp.br",
+                    "homepage": "https://github.com/thiagogomesverissimo"
+                }
+            ],
+            "description": "Classe PHP que abstrai requisições SOAP do wsfoto USP",
+            "homepage": "https://github.com/uspdev/wsfoto",
+            "support": {
+                "issues": "https://github.com/uspdev/wsfoto/issues",
+                "source": "https://github.com/uspdev/wsfoto/tree/2.0.2"
+            },
+            "time": "2022-03-25T21:05:01+00:00"
+        },
+        {
             "name": "vlucas/phpdotenv",
             "version": "v5.4.1",
             "source": {
@@ -8424,5 +8463,5 @@
         "php": "^7.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.3.0"
 }
