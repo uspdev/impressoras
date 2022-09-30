@@ -73,14 +73,13 @@ class PrinterController extends Controller
     public function printer_queue(Printer $printer)
     {
         $printings = $printer->printings()->paginate(10);
-        $name = $printer->name;
         $quantities['Mensal'] = Printing::getPrintingsQuantities(null, $printer, 'Mensal');
         $quantities['Diário'] = Printing::getPrintingsQuantities(null, $printer, 'Diário');
         $quantities['Total'] = Printing::getPrintingsQuantities(null, $printer);
 
         return view('fila.fila', [
             'printings' => $printings,
-            'name' => $name,
+            'name' => $printer->name,
             'quantities' => $quantities,
             'auth' => false,
         ]);
@@ -99,14 +98,12 @@ class PrinterController extends Controller
         $fotos = array();
 
          foreach($printings as $printing){
-             $fotos[$printing->user] = $photos->obterFoto($printing->user); 
+             $fotos[$printing->user] = $photos->obterFoto($printing->user);
          }
-
-        $name = $printer->name;
 
         return view('fila.fila', [
             'printings' => $printings,
-            'name' => $name,
+            'name' => $printer->name,
             'auth' => true,
             'fotos' => $fotos,
             'printings_success' => $this->historico()
@@ -114,12 +111,10 @@ class PrinterController extends Controller
 
     }
 
-    public function historico(){
-        
+    public function historico() {
         $printings_success = Printing::where('latest_status', '=', 'sent_to_printer_queue')
                                 ->orderBy('id', 'DESC')->take(20)->get();
-                                    
-            return $printings_success;
-        }
+        return $printings_success;
+    }
 
 }

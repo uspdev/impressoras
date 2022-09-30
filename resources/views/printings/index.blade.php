@@ -33,34 +33,3 @@
     </table>
   </div>
 @endsection
-
-<!-- JavaScript responsável pelo bug na tela "Minhas impressões"
-@section('javascripts_bottom')
-<script type="text/javascript">
-$(document).ready(function(){
-function verificaStatus(route) {
-$.ajax({
-url: route,
-type: 'get',
-dataType: "html",
-data: {
-route: route,
-},
-beforeSend: function() {
-var loading = '<div class="spinner-border spinner-border-sm text-muted"></div>';
-$("td.Fila,td.Processando").html(loading);
-},
-success: function( data ) {
-$('.table tbody').html(data);
-}
-});
-};
-
-setInterval(function(){
-var route = $(location).attr("pathname");
-verificaStatus(route)
-}, 5000);
-
-});
-</script> -->
-@endsection
