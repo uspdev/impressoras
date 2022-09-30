@@ -8,6 +8,3 @@
 <td>{{ round((float)$printing->filesize/1024) }} MB</td>
 <td>{{ $printing->filename }}</td>
 <td>{{ $printing->latest_status ?? '' }}</td>
-@if (!empty($auth))
-<td>{{ $printing->authorizedByUserId->name ?? '' }}</td>
-@endif

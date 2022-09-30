@@ -20,7 +20,3 @@
 <th>Tamanho</th>
 <th>Arquivo</th>
 <th>Status</th>
-
-@if (!empty($auth))
-    <th>Autorizado por</th>
-@endif

@@ -36,6 +36,11 @@ return [
             'can' => 'logado',
         ],
         [
+            'text' => 'Impressões',
+            'url' => '/all-printings',
+            'can' => 'admin',
+        ],
+        [
             'text' => 'Impressoras',
             'url' => '/printers',
             'can' => '',

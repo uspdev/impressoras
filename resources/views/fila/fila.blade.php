@@ -43,7 +43,7 @@
 		<table class="table table-striped">
 			<thead>
 				<tr>
-                    @include('printings.partials.printings_header')
+                    @include('fila.partials.fila_header')
                     @if ($auth)
                         @can('admin')
                         <th width="14%">Foto</th>
@@ -55,7 +55,7 @@
 			<tbody>
 				@forelse ($printings as $printing)
 					<tr>
-                        @include('printings.partials.printings_body')
+                        @include('fila.partials.fila_body')
                         @if ($auth)
                             @can('admin')
                                <td> 

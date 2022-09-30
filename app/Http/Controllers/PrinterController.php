@@ -6,6 +6,7 @@ use App\Http\Requests\PrinterRequest;
 use App\Models\Printer;
 use App\Models\Printing;
 use Illuminate\Http\Request;
+use App\Services\PhotoService;
 
 class PrinterController extends Controller
 {
@@ -72,20 +73,19 @@ class PrinterController extends Controller
     public function printer_queue(Printer $printer)
     {
         $printings = $printer->printings()->paginate(10);
-        $name = $printer->name;
         $quantities['Mensal'] = Printing::getPrintingsQuantities(null, $printer, 'Mensal');
         $quantities['Diário'] = Printing::getPrintingsQuantities(null, $printer, 'Diário');
         $quantities['Total'] = Printing::getPrintingsQuantities(null, $printer);
 
-        return view('printings.fila', [
+        return view('fila.fila', [
             'printings' => $printings,
-            'name' => $name,
+            'name' => $printer->name,
             'quantities' => $quantities,
             'auth' => false,
         ]);
     }
 
-    public function authorization_queue(Printer $printer)
+    public function authorization_queue(Printer $printer, PhotoService $photos)
     {
         $this->authorize('admin');
 
@@ -95,12 +95,26 @@ class PrinterController extends Controller
 
         $printings = $printer->printings->where('latest_status', 'waiting_job_authorization');
 
-        $name = $printer->name;
+        $fotos = array();
 
-        return view('printings.fila', [
+         foreach($printings as $printing){
+             $fotos[$printing->user] = $photos->obterFoto($printing->user);
+         }
+
+        return view('fila.fila', [
             'printings' => $printings,
-            'name' => $name,
+            'name' => $printer->name,
             'auth' => true,
-        ]);
+            'fotos' => $fotos,
+            'printings_success' => $this->historico()
+            ]);
+
     }
+
+    public function historico() {
+        $printings_success = Printing::where('latest_status', '=', 'sent_to_printer_queue')
+                                ->orderBy('id', 'DESC')->take(20)->get();
+        return $printings_success;
+    }
+
 }
