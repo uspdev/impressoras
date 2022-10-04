@@ -44,13 +44,15 @@
 						<td>{{ $printer->name }}</td>
                         <td>
                             <div class="d-grid gap-2 d-md-block">
-                                <a href="/printers/queue/{{ $printer->id }}"><button class="btn btn-primary" type="button">Impressora</button></a>
                                 @can('admin')
-                                @if ($printer->rule)
-                                    @if ($printer->rule->queue_control)
-                                        <a href="/printers/auth_queue/{{ $printer->id }}"><button class="btn btn-secondary" type="button">Autorização</button></a>
+                                    <a href="/printers/{{ $printer->id }}"><button class="btn btn-primary" type="button">Impressora</button></a>
+                                @endcan    
+                                @can('monitor')
+                                    @if ($printer->rule)
+                                        @if ($printer->rule->queue_control)
+                                            <a href="/printers/auth_queue/{{ $printer->id }}"><button class="btn btn-secondary" type="button">Autorização</button></a>
+                                        @endif
                                     @endif
-                                @endif
                                 @endcan
                             </div>
                         </td>

@@ -39,21 +39,22 @@ class Printing extends Model
     public static function getPrintingsQuantities($user = null, $printer = null, $period = null)
     {
         $query = DB::table('printings');
+        $query->where('printings.latest_status', 'print_success');
+
         // somente as impressões do usuário em questão
         if ($user) {
             $query->where('printings.user', $user);
         }
 
         if ($printer) {
-            // considerando impressões das impressoras pertencentes a mesma regra
+            // contabiliza todas as impressões em todas as impressoras do respectivo usuário
             $query->join('printers', 'printings.printer_id', '=', 'printers.id');
+
+            // considerando impressões das impressoras pertencentes a mesma regra
             if ($printer->rule) {
                 $query->where('printers.rule_id', $printer->rule->id);
             }
         }
-
-        // considerando somente impressões com status de impresso
-        $query->where('printings.latest_status', 'print_success');
 
         // somente impressões do mês ou do dia
         if ($period == 'Mensal') {

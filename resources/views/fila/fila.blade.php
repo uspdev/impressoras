@@ -45,7 +45,7 @@
 				<tr>
                     @include('fila.partials.fila_header')
                     @if ($auth)
-                        @can('admin')
+                        @can('monitor')
                         <th width="14%">Foto</th>
                         <th width="14%">Ações</th>
                         @endcan
@@ -57,7 +57,7 @@
 					<tr>
                         @include('fila.partials.fila_body')
                         @if ($auth)
-                            @can('admin')
+                            @can('monitor')
                                <td> 
                                    <img src="data:image/png;base64, {{ $fotos[$printing->user] }} "
                                    width="170px" height="220px"/>
@@ -82,8 +82,8 @@
 		</table>
     </div>
 
-    @can('admin')
-		@include('printings.historico')
+    @can('monitor')
+		@include('fila.historico')
     @endcan
 
 @endsection

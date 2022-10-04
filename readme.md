@@ -98,7 +98,7 @@ Retorno:
 - "yes": se o usuário puder imprimir
 - "no": se o usuário não puder imprimir
 
-Exemplo de requisição POST no rota api/printings:
+Exemplo de requisição POST (QUOTA_CHECK) na rota api/printings:
 
 ```sh
    curl --header "Authorization: 123"         \
@@ -107,12 +107,32 @@ Exemplo de requisição POST no rota api/printings:
      -d '{
             "user": "5385361",
             "pages": "5",
-            "copies": "2",
-            "printer": "impressora_proaluno_letras",
-            "jobid": "1",                       
+            "copies": "3",
+            "printer": "financeiro_ppd",
+            "jobid": "21",                       
             "host": "10.89.9.5",
             "filename": "mamute.pdf",
             "filesize": "192045"
+          }'              
+```
+Exemplo de requisição POST (QUOTA_SAVE) no rota api/printings/PRINTING_ID:
+
+```sh
+   curl --header "Authorization: 123"         \
+     -H "Content-Type: application/json"      \
+     -X POST http://127.0.0.1:8000/api/printings/financeiro_ppd/21  \
+     -d '{
+            "status": "print_success"
+          }'              
+```
+Exemplo de requisição quando o problema está na IMPRESSORA: 
+
+```sh
+   curl --header "Authorization: 123"         \
+     -H "Content-Type: application/json"      \
+     -X POST http://127.0.0.1:8000/api/printings/financeiro_ppd/21  \
+     -d '{
+            "status": "printer_problem"
           }'              
 ```
 

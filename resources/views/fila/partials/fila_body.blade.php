@@ -1,4 +1,4 @@
-@can('admin')
+@can('monitor')
 <td>{{ $printing->user }}</td>
 <td>{{ $printing->host }}</td>
 @endcan

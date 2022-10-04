@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use App\Services\ReplicadoTemp;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -25,15 +26,16 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        // admin
-        Gate::define('admin', function ($user) {
-            $admins = explode(',', trim(config('quota.admins')));
-
-            return  in_array($user->codpes, $admins) and $user->codpes;
-        });
-
         Gate::define('logado', function ($user) {
             return true;
+        });
+
+        Gate::define('monitor', function ($user) {
+            if(Gate::allows('admin')) return True;
+
+            $monitores = ReplicadoTemp::listarMonitores(22);
+
+            return in_array($user->codpes, $monitores);
         });
     }
 }

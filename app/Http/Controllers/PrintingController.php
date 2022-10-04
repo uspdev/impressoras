@@ -29,14 +29,12 @@ class PrintingController extends Controller
         $quantities['Total'] = Printing::getPrintingsQuantities($user->codpes);
         $auth = true;
 
-        /* Pq esse if?
-        if ($request->has('route')) {
-            return view('printings/partials/printing',
-                compact('printings', 'quantities', 'user', 'auth'));
-        }
-        */
-
-        return view('printings/index', compact('printings', 'quantities', 'user', 'auth'));
+        return view('printings/index',[
+            'printings' => $printings, 
+            'quantities' => $quantities, 
+            'user' => $user, 
+            'auth' => $auth
+        ]);
     }
 
     public function show(Request $request){
@@ -44,6 +42,8 @@ class PrintingController extends Controller
 
         if(isset($request->search)) {
             $printings = Printing::where('filename','LIKE',"%{$request->search}%")
+                                    ->Orwhere('user', 'LIKE', "%{$request->search}%")
+                                    ->orderBy('jobid', 'DESC')
                                     ->paginate(15);
         } else {
             $printings = Printing::paginate(15);
@@ -67,7 +67,7 @@ class PrintingController extends Controller
 
     public function action(Request $request, Printing $printing)
     {
-        $this->authorize('admin');
+        $this->authorize('monitor');
 
         $printer = $printing->printer;
         $user = \Auth::user();
