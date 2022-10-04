@@ -31,14 +31,10 @@ Route::get('/printings/action/{printing}', [PrintingController::class, 'action']
 Route::resource('/printers', PrinterController::class);
 Route::get('/printers/queue/{printer}', [PrinterController::class, 'printer_queue']);
 Route::get('/printers/auth_queue/{printer}', [PrinterController::class, 'authorization_queue']);
+Route::get('/printers/{printer}', [PrinterController::class, 'show']);
 
 // Rules
 Route::resource('/rules', RuleController::class);
-
-// Senha única USP
-Route::get('/login', [LoginController::class, 'redirectToProvider'])->name('login');
-Route::get('/callback', [LoginController::class, 'handleProviderCallback']);
-Route::post('/logout', [LoginController::class, 'logout']);
 
 // Logs
 Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->middleware('can:admin');
