@@ -85,7 +85,7 @@ class PrinterController extends Controller
         ]);
     }
 
-    public function authorization_queue(Printer $printer, PhotoService $photos)
+    public function authorization_queue(Printer $printer, PhotoService $photos, Request $request)
     {
         $this->authorize('admin');
 
@@ -97,9 +97,17 @@ class PrinterController extends Controller
 
         $fotos = array();
 
-         foreach($printings as $printing){
-             $fotos[$printing->user] = $photos->obterFoto($printing->user);
-         }
+        foreach($printings as $printing){
+            $fotos[$printing->user] = $photos->obterFoto($printing->user);
+        }
+
+        if($request->has('route')) {
+            return view('fila/partials/fila_body', [
+                'printings' => $printings,
+                'fotos'     => $fotos,
+                'auth'      => true,
+            ]);
+        }
 
         return view('fila.fila', [
             'printings' => $printings,

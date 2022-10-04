@@ -19,14 +19,14 @@
 
         button
         {
-            background-color: transparent; 
+            background-color: transparent;
             border: none;
         }
 
     </style>
 
 	<div class="card-header">
-		<h4><b>Fila de 
+		<h4><b>Fila de
             @if ($auth)
                 autorização de
             @endif
@@ -58,7 +58,7 @@
                         @include('printings.partials.printings_body')
                         @if ($auth)
                             @can('admin')
-                               <td> 
+                               <td>
                                    <img src="data:image/png;base64, {{ $fotos[$printing->user] }} "
                                    width="170px" height="220px"/>
                                  </td>
@@ -70,7 +70,7 @@
                                         </form>
                                     </div>
                                 </td>
-                            @endcan 
+                            @endcan
                         @endif
 					</tr>
                 @empty
@@ -86,4 +86,33 @@
 		@include('printings.historico')
     @endcan
 
+@endsection
+@section('javascripts_bottom')
+<script type="text/javascript">
+  $(document).ready(function(){
+    function verificaStatus(route) {
+      $.ajax({
+        url: route,
+        type: 'get',
+        dataType: "html",
+        data: {
+          route: route,
+        },
+        beforeSend: function() {
+          var loading = '<div class="spinner-border spinner-border-sm text-muted"></div>';
+          $("td.Fila,td.Processando").html(loading);
+        },
+        success: function( data ) {
+          $('.table tbody').html(data);
+        }
+      });
+    };
+
+    setInterval(function(){
+      var route = $(location).attr("pathname");
+      verificaStatus(route)
+    }, 5000);
+
+  });
+</script>
 @endsection
