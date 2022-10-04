@@ -4,57 +4,29 @@
 
 @section('content')
 
-<style>
+    <style>
 
-#actions
-{
-    display: flex;
-    justify-content: start;
-}
+        #actions
+        {
+            display: flex;
+            justify-content: start;
+        }
 
-#i-ban
-{
-    margin-left: 80%;
-}
+        #i-ban
+        {
+            margin-left: 80%;
+        }
 
-button
-{
-    background-color: transparent;
-    border: none;
-}
+        button
+        {
+            background-color: transparent;
+            border: none;
+        }
 
-</style>
+    </style>
 
-<div class="card-header">
-  <h4><b>Fila de
-          @if ($auth)
-              autorização de
-          @endif
-          {{ $name }}</b>
-      </h4>
-</div>
-  <br>
-  @if(!$auth)
-  @include('printings.partials.printings_quantities')
-  <br>
-  {{ $printings->links() }}
-  @endif
-<div class="table-responsive">
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        @include('fila.partials.fila_header')
-      </tr>
-    </thead>
-    <tbody id="fila">
-        @include('fila.partials.fila_body')
-    </tbody>
-  </table>
-</div>
-
-<<<<<<< HEAD
 	<div class="card-header">
-		<h4><b>Fila de 
+		<h4><b>Fila de
             @if ($auth)
                 autorização de
             @endif
@@ -71,9 +43,9 @@ button
 		<table class="table table-striped">
 			<thead>
 				<tr>
-                    @include('fila.partials.fila_header')
+                    @include('printings.partials.printings_header')
                     @if ($auth)
-                        @can('monitor')
+                        @can('admin')
                         <th width="14%">Foto</th>
                         <th width="14%">Ações</th>
                         @endcan
@@ -83,10 +55,10 @@ button
 			<tbody>
 				@forelse ($printings as $printing)
 					<tr>
-                        @include('fila.partials.fila_body')
+                        @include('printings.partials.printings_body')
                         @if ($auth)
-                            @can('monitor')
-                               <td> 
+                            @can('admin')
+                               <td>
                                    <img src="data:image/png;base64, {{ $fotos[$printing->user] }} "
                                    width="170px" height="220px"/>
                                  </td>
@@ -98,7 +70,7 @@ button
                                         </form>
                                     </div>
                                 </td>
-                            @endcan 
+                            @endcan
                         @endif
 					</tr>
                 @empty
@@ -110,11 +82,11 @@ button
 		</table>
     </div>
 
-    @can('monitor')
-		@include('fila.historico')
+    @can('admin')
+		@include('printings.historico')
     @endcan
-@endsection
 
+@endsection
 @section('javascripts_bottom')
 <script type="text/javascript">
   $(document).ready(function(){
@@ -126,8 +98,12 @@ button
         data: {
           route: route,
         },
+        beforeSend: function() {
+          var loading = '<div class="spinner-border spinner-border-sm text-muted"></div>';
+          $("td.Fila,td.Processando").html(loading);
+        },
         success: function( data ) {
-          $("#fila").html(data);
+          $('.table tbody').html(data);
         }
       });
     };
@@ -136,7 +112,6 @@ button
       var route = $(location).attr("pathname");
       verificaStatus(route)
     }, 5000);
->>>>>>> b3915ba1bdd5a091445bae3ca10c40cbabe832d6
 
   });
 </script>

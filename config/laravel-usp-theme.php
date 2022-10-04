@@ -13,6 +13,9 @@ $right_menu = [
         'align' => 'right',
         'can' => 'admin',
     ],
+    [
+        'key' => 'senhaunica-socialite',
+    ],
 ];
 
 return [

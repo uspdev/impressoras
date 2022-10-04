@@ -1,3 +1,5 @@
+@forelse ($printings as $printing)
+<tr>
 @can('monitor')
 <td>{{ $printing->user }}</td>
 <td>{{ $printing->host }}</td>
@@ -8,3 +10,24 @@
 <td>{{ round((float)$printing->filesize/1024) }} MB</td>
 <td>{{ $printing->filename }}</td>
 <td>{{ $printing->latest_status ?? '' }}</td>
+@if ($auth)
+  @can('monitor')
+    <td>
+      <img src="data:image/png;base64, {{ $fotos[$printing->user] }} " width="170px" height="220px"/>
+    </td>
+    <td>
+      <div id="actions">
+        <form>
+          <a href="/printings/action/{{ $printing->id }}?action=authorized" onclick="return confirm('Tem certeza que deseja autorizar?');"><i class="fas fa-check"></i></a>
+          <a href="/printings/action/{{ $printing->id }}?action=cancelled" onclick="return confirm('Tem certeza que deseja cancelar?');"><i class="fas fa-ban"></i></a>
+        </form>
+      </div>
+    </td>
+  @endcan
+@endif
+</tr>
+@empty
+  <tr>
+    <td colspan= @if ($auth) "11" @else "10" @endif>Não há impressões</td>
+  </tr>
+@endforelse
