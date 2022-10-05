@@ -122,33 +122,22 @@ class PrinterController extends Controller
             ]);
         }
 
+        $printings_queue = Printing::where('printer_id', '=', $printer->id)
+                                     ->where('latest_status','!=','waiting_job_authorization');
+                            
+        if(isset($request->search)) {
+            $printings_queue = $printings_queue->where('filename','LIKE',"%{$request->search}%")
+                                                ->Orwhere('user', 'LIKE', "%{$request->search}%");
+        }                           
+
+        $printings_queue = $printings_queue->orderBy('id', 'DESC')->take(50)->get();                             
+
         return view('fila.fila', [
             'printings' => $printings,
             'name' => $printer->name,
-            'auth' => true,
+            'auth' => true, # não entendi a necessidade... ?
             'fotos' => $fotos,
-            'printings_success' => $this->historico()
+            'printings_queue' => $printings_queue
             ]);
-
         }
-
-    public function historico() 
-    {
-        $this->authorize('monitor');
-
-        $printings = Printing::all();
-
-        if(isset($request->search)) {
-            $printings = Printing::where('filename','LIKE',"%{$request->search}%")
-                                    ->Orwhere('user', 'LIKE', "%{$request->search}%")
-                                    ->orderBy('jobid', 'DESC')
-                                    ->paginate(15);
-        }
-
-        $printings_success = Printing::where('latest_status', '=', 'sent_to_printer_queue')
-                                ->orderBy('id', 'DESC')->take(50)->get();
-        
-        return $printings_success;
-    }
-
 }

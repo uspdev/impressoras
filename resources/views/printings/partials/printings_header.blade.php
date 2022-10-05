@@ -1,8 +1,8 @@
 @can('monitor')
-<form method="get" action="">
+<form method="get">
 <div class="row">
     <div class=" col-sm input-group">
-    <input type="text" class="form-control" name="search" value="{{ request()->search }}" placeholder="Insira o nome do arquivo">
+    <input type="text" class="form-control" name="search" value="{{ request()->search }}" placeholder="Insira o nome do arquivo ou número USP">
 
     <span class="input-group-btn">
         <button type="submit" class="btn btn-success"> Buscar </a></button>

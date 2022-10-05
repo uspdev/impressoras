@@ -1,6 +1,6 @@
     <div class="card-header">
 		<h4>
-            <b>Histórico (últimos 20 arquivos mandados para impressão)</b>
+            <b>Histórico (últimos 50 arquivos mandados esta impressora)</b>
         </h4>
 	</div>
     <div class="table-responsive">
@@ -11,7 +11,7 @@
 				</tr>
 			</thead>
 			<tbody>
-            @foreach ($printings_success as $printing)
+            @foreach ($printings_queue as $printing)
             <tr>
                 @can('monitor')
                 <td>{{ $printing->user }}</td>
