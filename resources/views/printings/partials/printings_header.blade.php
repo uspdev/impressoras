@@ -1,4 +1,4 @@
-@can('admin')
+@can('monitor')
 <form method="get" action="">
 <div class="row">
     <div class=" col-sm input-group">
@@ -21,6 +21,6 @@
 <th>Arquivo</th>
 <th>Status</th>
 
-@if (!empty($auth))
+@if(!empty($auth))
     <th>Autorizado por</th>
 @endif

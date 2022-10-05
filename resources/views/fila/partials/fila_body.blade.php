@@ -1,6 +1,6 @@
 @forelse ($printings as $printing)
 <tr>
-@can('admin')
+@can('monitor')
 <td>{{ $printing->user }}</td>
 <td>{{ $printing->host }}</td>
 @endcan
@@ -11,7 +11,7 @@
 <td>{{ $printing->filename }}</td>
 <td>{{ $printing->latest_status ?? '' }}</td>
 @if ($auth)
-  @can('admin')
+  @can('monitor')
     <td>
       <img src="data:image/png;base64, {{ $fotos[$printing->user] }} " width="170px" height="220px"/>
     </td>

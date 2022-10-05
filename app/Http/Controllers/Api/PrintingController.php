@@ -48,6 +48,8 @@ class PrintingController extends Controller
             $quota_period = $printer->rule->quota_period;
 
             if (!empty($quota_period)) {
+
+                // as impressoras que participam da mesma regra
                 $quantities = Printing::getPrintingsQuantities($request->user, $printer, $quota_period);
                 $out_of_quota = $quantities + $request->pages * $request->copies > $printer->rule->quota;
 
@@ -57,8 +59,7 @@ class PrintingController extends Controller
                     return response()->json([
                         'response' => 'no',
                         'printing_id' => $printing->id,
-                        'latest_status' => $printing->latest_status,
-                        'quantities' => $quantities,
+                        'latest_status' => $printing->latest_status
                     ]);
                 }
             }
@@ -94,28 +95,19 @@ class PrintingController extends Controller
         return response()->json(['latest_status' => $printing->latest_status]);
     }
 
-    public function updateStatus(Request $request, Printing $printing)
+    public function updateStatus(Request $request, $printer, $jobid)
     {
         if ($request->header('Authorization') != env('API_KEY')) {
             return response('Acesso nao autorizado', 403);
         }
 
+        $printer = $this->loadPrinter($printer);
+        $printing = $printer->printings()->where('jobid', $jobid)->first();
+
         $status = $request->status;
         Status::createStatus($status, $printing);
 
         return response()->json(['latest_status' => $printing->latest_status]);
-    }
-
-    public function getFromJobId(Request $request)
-    {
-        $printer = $this->loadPrinter($request->printer);
-        $printing = $printer->printings()->where('jobid', $request->jobid)->first();
-
-        if ($printing) {
-            return response()->json(['printing_id' => $printing->id]);
-        } else {
-            return response()->json(['printing_id' => 'Not found']);
-        }
     }
 
     /************* Métodos privados auxiliares ***************/

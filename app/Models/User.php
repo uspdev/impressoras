@@ -10,7 +10,6 @@ use \Uspdev\SenhaunicaSocialite\Traits\HasSenhaunica;
 class User extends Authenticatable
 {
     use Notifiable, HasRoles, HasSenhaunica;
-
     /**
      * The attributes that are mass assignable.
      *

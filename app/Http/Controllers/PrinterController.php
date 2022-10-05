@@ -12,6 +12,8 @@ class PrinterController extends Controller
 {
     public function index()
     {
+        $this->authorize('monitor');
+
         $printers = Printer::all();
 
         return view('printers.index', [
@@ -35,6 +37,15 @@ class PrinterController extends Controller
         $printer = Printer::create($request->validated());
 
         return redirect('/printers');
+    }
+
+    public function show(Printer $printer){
+
+        $this->authorize('admin');
+
+        return view('printers.show', [
+            'printer' => $printer
+        ]);
     }
 
     public function edit(Printer $printer)
@@ -72,6 +83,8 @@ class PrinterController extends Controller
 
     public function printer_queue(Printer $printer)
     {
+        $this->authorize('monitor');
+
         $printings = $printer->printings()->paginate(10);
         $quantities['Mensal'] = Printing::getPrintingsQuantities(null, $printer, 'Mensal');
         $quantities['Diário'] = Printing::getPrintingsQuantities(null, $printer, 'Diário');
@@ -87,7 +100,7 @@ class PrinterController extends Controller
 
     public function authorization_queue(Printer $printer, PhotoService $photos, Request $request)
     {
-        $this->authorize('admin');
+        $this->authorize('monitor');
 
         if (!$printer->rule || !$printer->rule->queue_control) {
             return response('', 403);
@@ -117,11 +130,24 @@ class PrinterController extends Controller
             'printings_success' => $this->historico()
             ]);
 
-    }
+        }
 
-    public function historico() {
+    public function historico() 
+    {
+        $this->authorize('monitor');
+
+        $printings = Printing::all();
+
+        if(isset($request->search)) {
+            $printings = Printing::where('filename','LIKE',"%{$request->search}%")
+                                    ->Orwhere('user', 'LIKE', "%{$request->search}%")
+                                    ->orderBy('jobid', 'DESC')
+                                    ->paginate(15);
+        }
+
         $printings_success = Printing::where('latest_status', '=', 'sent_to_printer_queue')
-                                ->orderBy('id', 'DESC')->take(20)->get();
+                                ->orderBy('id', 'DESC')->take(50)->get();
+        
         return $printings_success;
     }
 
