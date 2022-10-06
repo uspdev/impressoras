@@ -11,8 +11,7 @@
     </div>
 </div>
 </form>
-<th>Usuário (N.USP)</th>
-<th>Host</th>
+<th>Usuário</th>
 @endcan 
 <th>Data</th>
 <th width="5%">Páginas</th>

@@ -1,6 +1,5 @@
 @can('admin')
 <td>{{ $printing->user }}</td>
-<td>{{ $printing->host }}</td>
 @endcan
 <td>{{ \Carbon\Carbon::CreateFromFormat('Y-m-d H:i:s', $printing->created_at)->format('d/m/Y H:i') }} </td>
 <td>{{ $printing->pages }}</td>

@@ -10,17 +10,19 @@ class Status extends Model
     use HasFactory;
     protected $table = 'status';
 
-    public static function getStatusName($value)
+    public static function statusName($status)
     {
-        return array([
+        $list = [
             'waiting_job_authorization' => 'Aguardando autorização',
-            'cancelled_user_out_of_quota' => 'Cancelado: excedeu a quota',
-            'cancelled_not_authorized' => 'Cancelado: não autorizado',
-            'cancelled_timeout' => 'Cancelado: timeout', 
+            'cancelled_user_out_of_quota' => 'Cancelado - excedeu a quota',
+            'cancelled_not_authorized' => 'Cancelado - não autorizado pelo monitor',
+            'cancelled_not_allowed'   => 'Cancelado - não é aluno(a) de graduação',
+            'cancelled_timeout' => 'Cancelado - sem resposta da impressora', 
             'sent_to_printer_queue' => 'Enviado para a impressora',
-            'print_success' => 'Impresso',
-            'printer_problem' => 'Problema na impressora',
-        ]);
+            'print_success' => 'Impresso com sucesso',
+            'printer_problem' => 'Cancelado -Problema na impressora',
+        ];
+        return $list[$status];
     }
 
     public function printing()

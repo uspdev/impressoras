@@ -75,4 +75,8 @@ class Printing extends Model
             return '';
         } 
     }
+
+    public function getFilenameAttribute($value) {
+        return substr($value, 0, 25) . ' ... ' . substr($value, -4);
+    }
 }

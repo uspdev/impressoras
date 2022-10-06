@@ -130,7 +130,7 @@ class PrinterController extends Controller
                                                 ->Orwhere('user', 'LIKE', "%{$request->search}%");
         }                           
 
-        $printings_queue = $printings_queue->orderBy('id', 'DESC')->take(50)->get();                             
+        $printings_queue = $printings_queue->orderBy('id', 'DESC')->take(100)->get();                             
 
         return view('fila.fila', [
             'printings' => $printings,

@@ -39,7 +39,7 @@ class PrintingController extends Controller
                 }
                 
                 if (!$permissao) {
-                    Status::createStatus('cancelled_not_authorized', $printing);
+                    Status::createStatus('cancelled_not_allowed', $printing);
 
                     return response()->json([
                         'response' => 'no',
