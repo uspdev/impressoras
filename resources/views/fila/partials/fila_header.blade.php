@@ -7,7 +7,6 @@
 <th width="5%">Cópias</th>
 <th>Tamanho</th>
 <th>Arquivo</th>
-<th>Status</th>
 @if ($auth)
     @can('admin')
     <th width="14%">Foto</th>

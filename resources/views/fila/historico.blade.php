@@ -14,7 +14,7 @@
             @foreach ($printings_queue as $printing)
             <tr>
                 @can('monitor')
-                <td>{{ $printing->user }}</td>
+                <td>{{ $printing->user }} - {{ $printing->nome }}</td>
                 <td>{{ $printing->host }}</td>
                 @endcan
                 <td>{{ \Carbon\Carbon::CreateFromFormat('Y-m-d H:i:s', $printing->created_at)->format('d/m/Y H:i') }} </td>

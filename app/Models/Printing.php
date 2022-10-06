@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Uspdev\Replicado\Pessoa;
 
 class Printing extends Model
 {
@@ -64,5 +65,14 @@ class Printing extends Model
         }
 
         return $query->sum(DB::raw('printings.pages*printings.copies'));
+    }
+
+    public function getNomeAttribute() {
+        $codpes = (int) $this->user;
+        if(!empty($codpes)){
+            return Pessoa::nomeCompleto($codpes);
+        } else {
+            return '';
+        } 
     }
 }
