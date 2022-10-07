@@ -6010,16 +6010,16 @@
         },
         {
             "name": "uspdev/replicado",
-            "version": "1.13.2",
+            "version": "1.13.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/uspdev/replicado.git",
-                "reference": "b6d1dcf685c42d6d328e85b623dcc49da24219d4"
+                "reference": "77bca6c21438e69c46dffdda636dccae657a388b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/uspdev/replicado/zipball/b6d1dcf685c42d6d328e85b623dcc49da24219d4",
-                "reference": "b6d1dcf685c42d6d328e85b623dcc49da24219d4",
+                "url": "https://api.github.com/repos/uspdev/replicado/zipball/77bca6c21438e69c46dffdda636dccae657a388b",
+                "reference": "77bca6c21438e69c46dffdda636dccae657a388b",
                 "shasum": ""
             },
             "require": {
@@ -6054,22 +6054,22 @@
             "homepage": "https://github.com/uspdev/replicado",
             "support": {
                 "issues": "https://github.com/uspdev/replicado/issues",
-                "source": "https://github.com/uspdev/replicado/tree/1.13.2"
+                "source": "https://github.com/uspdev/replicado/tree/1.13.3"
             },
-            "time": "2022-06-10T00:46:59+00:00"
+            "time": "2022-10-07T02:28:01+00:00"
         },
         {
             "name": "uspdev/senhaunica-socialite",
-            "version": "4.3.2",
+            "version": "4.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/uspdev/senhaunica-socialite.git",
-                "reference": "fd3e7fb55e7b9089ea83c805ca517820e6c4bc91"
+                "reference": "857a913d047c79406084af4efa21852d70efb84c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/uspdev/senhaunica-socialite/zipball/fd3e7fb55e7b9089ea83c805ca517820e6c4bc91",
-                "reference": "fd3e7fb55e7b9089ea83c805ca517820e6c4bc91",
+                "url": "https://api.github.com/repos/uspdev/senhaunica-socialite/zipball/857a913d047c79406084af4efa21852d70efb84c",
+                "reference": "857a913d047c79406084af4efa21852d70efb84c",
                 "shasum": ""
             },
             "require": {
@@ -6110,9 +6110,9 @@
             "homepage": "https://github.com/uspdev/senhaunica-socialite",
             "support": {
                 "issues": "https://github.com/uspdev/senhaunica-socialite/issues",
-                "source": "https://github.com/uspdev/senhaunica-socialite/tree/4.3.2"
+                "source": "https://github.com/uspdev/senhaunica-socialite/tree/4.3.3"
             },
-            "time": "2022-05-24T13:32:24+00:00"
+            "time": "2022-10-06T02:21:57+00:00"
         },
         {
             "name": "uspdev/wsfoto",

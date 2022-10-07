@@ -6,7 +6,8 @@
 <td>{{ $printing->copies }}</td>
 <td>{{ round((float)$printing->filesize/1024) }} KB</td>
 <td>{{ $printing->filename }}</td>
-<td>{{ $printing->latest_status ?? '' }}</td>
+<td>{{ $printing->printer->name }}</td>
+<td><b><p style="color:red;">{{ \App\Models\Status::statusName($printing->latest_status) }}</p></b></td>
 @if (!empty($auth))
 <td>{{ $printing->authorizedByUserId->name ?? '' }}</td>
 @endif

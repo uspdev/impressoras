@@ -18,6 +18,7 @@
 <th width="5%">Cópias</th>
 <th>Tamanho</th>
 <th>Arquivo</th>
+<th>Impressora</th>
 <th>Status</th>
 
 @if(!empty($auth))
