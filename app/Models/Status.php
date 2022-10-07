@@ -17,10 +17,10 @@ class Status extends Model
             'cancelled_user_out_of_quota' => 'Cancelado - excedeu a quota',
             'cancelled_not_authorized' => 'Cancelado - não autorizado pelo monitor',
             'cancelled_not_allowed'   => 'Cancelado - não é aluno(a) de graduação',
-            'cancelled_timeout' => 'Cancelado - sem resposta da impressora', 
+            'cancelled_timeout' => 'Cancelado - Tempo de resposta a solicitação expirado', 
             'sent_to_printer_queue' => 'Enviado para a impressora',
             'print_success' => 'Impresso com sucesso',
-            'printer_problem' => 'Cancelado -Problema na impressora',
+            'printer_problem' => 'Cancelado - Problema na impressora',
         ];
         return $list[$status];
     }
