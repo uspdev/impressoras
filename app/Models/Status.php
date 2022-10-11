@@ -22,7 +22,12 @@ class Status extends Model
             'print_success' => 'Impresso com sucesso',
             'printer_problem' => 'Cancelado - Problema na impressora',
         ];
-        return $list[$status];
+
+        if(empty($status)){
+            echo 'Sem status';
+        } else {
+            return $list[$status];
+        }
     }
 
     public function printing()
