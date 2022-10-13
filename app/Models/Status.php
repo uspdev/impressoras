@@ -24,7 +24,7 @@ class Status extends Model
         ];
 
         if(empty($status)){
-            echo 'Sem status';
+            return 'Sem status';
         } else {
             return $list[$status];
         }

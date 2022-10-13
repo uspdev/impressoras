@@ -38,8 +38,6 @@ class PrintingController extends Controller
     }
 
     public function show(Request $request){
-        $printings = Printing::all();
-
         if(isset($request->search)) {
             $printings = Printing::where('filename','LIKE',"%{$request->search}%")
                                     ->Orwhere('user', 'LIKE', "%{$request->search}%")
