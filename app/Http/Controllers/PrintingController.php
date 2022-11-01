@@ -44,7 +44,7 @@ class PrintingController extends Controller
                                     ->latest()
                                     ->paginate(15);
         } else {
-            $printings = Printing::paginate(15);
+            $printings = Printing::latest()->paginate(15);
         }
 
         return view('allprintings.geral_index',[
