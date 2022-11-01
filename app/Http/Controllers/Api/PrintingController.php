@@ -28,7 +28,7 @@ class PrintingController extends Controller
         $validated['printer_id'] = $printer->id;
 
         # Deixando o nome do arquivo menor
-        $validated['filename'] = substr($validated['filename'], 0, 200) . ' ... ' . substr($validated['filename'], -10);
+        $validated['filename'] = substr($validated['filename'], 0, 50) . ' ... ' . substr($validated['filename'], -10);
 
         $printing = Printing::create($validated);
 
