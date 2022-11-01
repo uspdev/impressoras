@@ -19,7 +19,7 @@ class PrintingController extends Controller
         // printings
         $user = \Auth::user();
         $printings = Printing::where('user', '=', $user->codpes)
-                                ->orderBy('jobid', 'DESC')
+                                ->latest()
                                 ->when($request->search, function($query) use($request){
                                     return $query->where('filename','LIKE',"%{$request->search}%");
                                 })
@@ -41,7 +41,7 @@ class PrintingController extends Controller
         if(isset($request->search)) {
             $printings = Printing::where('filename','LIKE',"%{$request->search}%")
                                     ->Orwhere('user', 'LIKE', "%{$request->search}%")
-                                    ->orderBy('jobid', 'DESC')
+                                    ->latest()
                                     ->paginate(15);
         } else {
             $printings = Printing::paginate(15);
