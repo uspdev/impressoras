@@ -24,7 +24,12 @@ class PrintingController extends Controller
         // Registra printing
         $validated = $request->validated();
         unset($validated['printer']);
+
         $validated['printer_id'] = $printer->id;
+
+        # Deixando o nome do arquivo menor
+        $validated['filename'] = substr($validated['filename'], 0, 200) . ' ... ' . substr($validated['filename'], -10);
+
         $printing = Printing::create($validated);
 
         if (!empty($printer->rule)) {
