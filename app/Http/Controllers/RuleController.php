@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\RuleRequest;
 use App\Models\Rule;
+use App\Models\Printer;
 use Illuminate\Http\Request;
 
 class RuleController extends Controller
@@ -53,6 +54,18 @@ class RuleController extends Controller
         $rule->update($request->validated());
 
         return redirect('/rules');
+    }
+
+    public function show(Rule $rule){
+
+        $this->authorize('admin');
+
+        $printers = Printer::where('rule_id', $rule->id)->get();
+
+        return view('rules.show', [
+            'rule' => $rule,
+            'printers' => $printers
+        ]);
     }
 
     public function destroy(Rule $rule)

@@ -1,6 +1,15 @@
-<b>Nome:</b> {{ $printer->name }} <br>
-<b>Regra:</b> {{ $printer->rule->name }} <br>
-<b>Nome de máquina:</b> {{ $printer->machine_name }}
+<div class="card">   
+    <table class="table">
+      <tr>
+        <td>
+          <b>Nome:</b> {{ $printer->name }} <br>
+          <b>Regra:</b> {{ $printer->rule->name }} <br>
+          <b>Nome de máquina:</b> {{ $printer->machine_name }}
+        </td>
+      </tr>
+    </table>
+</div>
+<br>
 <div>
   <table>
     <tr>
