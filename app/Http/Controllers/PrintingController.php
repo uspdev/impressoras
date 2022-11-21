@@ -55,6 +55,7 @@ class PrintingController extends Controller
     public function status(Printing $printing)
     {
         $this->authorize('admin');
+        
         $statuses = $printing->status->sortByDesc('created_at')->all();
 
         return view('printings.status', [

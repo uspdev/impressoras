@@ -39,12 +39,24 @@ class PrinterController extends Controller
         return redirect('/printers');
     }
 
-    public function show(Printer $printer){
+    public function show(Printer $printer, Request $request)
+    {
 
         $this->authorize('admin');
 
+        $printings_all = Printing::where('printer_id', $printer->id);            
+        
+        if(isset($request->search)) 
+        {
+            $printings_all = $printings_all->where('filename','LIKE',"%{$request->search}%")
+                                            ->orWhere('user', 'LIKE', "%{$request->search}%");
+        }  
+
+        $printings_all = $printings_all->orderBy('id', 'DESC')->paginate(15);                             
+
         return view('printers.show', [
-            'printer' => $printer
+            'printer' => $printer,
+            'printings_all' => $printings_all
         ]);
     }
 
