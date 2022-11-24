@@ -23,7 +23,7 @@
                 {{ $rule->categories ? implode(", ", $rule->categories) : "Sem restrições" }}
             </td>
         </tr>
-     </table>
+    </table>
 </div>
 <br>
 <div>
