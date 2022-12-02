@@ -33,6 +33,7 @@
                     <th widht="20%">Quota</th>
                     <th widht="20%">Restrito para</th>
                     <th widht="20%">Ações</th>
+                    <th widht="20%">Visualizar regra</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -60,6 +61,9 @@
                                     </button>    
                                 </form>
                             </div>
+                        </td>
+                        <td>
+                        <a href="/rules/{{ $rule->id }}"><button class="btn btn-primary" type="button">Regra</button></a>
                         </td>
 					</tr>
                 @empty     
