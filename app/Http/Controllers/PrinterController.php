@@ -44,15 +44,14 @@ class PrinterController extends Controller
 
         $this->authorize('admin');
 
-        $printings_all = Printing::where('printer_id', $printer->id);            
-        
-        if(isset($request->search)) 
-        {
-            $printings_all = $printings_all->where('filename','LIKE',"%{$request->search}%")
-                                            ->orWhere('user', 'LIKE', "%{$request->search}%");
-        }  
-
-        $printings_all = $printings_all->orderBy('id', 'DESC')->paginate(15);                             
+        $query = Printing::where('printer_id', $printer->id);
+        $query->when($request->search, function ($q) use ($request) {
+            return $q->where( function ($q) use ($request) {
+                return $q->orWhere('filename', 'LIKE', "%$request->search%")
+                         ->orWhere('user', 'LIKE', "%$request->search%");
+            });
+        });
+        $printings_all = $query->orderBy('id', 'DESC')->paginate();
 
         return view('printers.show', [
             'printer' => $printer,
@@ -136,13 +135,13 @@ class PrinterController extends Controller
 
         $printings_queue = Printing::where('printer_id', '=', $printer->id)
                                      ->where('latest_status','!=','waiting_job_authorization');
-                            
+
         if(isset($request->search)) {
             $printings_queue = $printings_queue->where('filename','LIKE',"%{$request->search}%")
                                                 ->Orwhere('user', 'LIKE', "%{$request->search}%");
-        }                           
+        }
 
-        $printings_queue = $printings_queue->orderBy('id', 'DESC')->take(100)->get();                             
+        $printings_queue = $printings_queue->orderBy('id', 'DESC')->take(100)->get();
 
         return view('fila.fila', [
             'printings' => $printings,
