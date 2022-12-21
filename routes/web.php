@@ -5,6 +5,7 @@ use App\Http\Controllers\IndexController;
 use App\Http\Controllers\PrinterController;
 use App\Http\Controllers\PrintingController;
 use App\Http\Controllers\RuleController;
+use App\Http\Controllers\PedidoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,12 @@ Route::get('/printers/{printer}', [PrinterController::class, 'show']);
 
 // Rules
 Route::resource('/rules', RuleController::class);
+
+//Pedido
+Route::resource('/pedidos', PedidoController::class);
+Route::get('/meuspedidos', [PedidoController::class, 'meusPedidos']);
+Route::post('/pedidos/{pedido}/accepted', [PedidoController::class, 'accepted']);
+Route::post('/pedidos/{pedido}/refused', [PedidoController::class, 'refused']);
 
 // Logs
 Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->middleware('can:admin');

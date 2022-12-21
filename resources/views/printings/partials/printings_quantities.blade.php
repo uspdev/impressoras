@@ -10,4 +10,5 @@
     </td>
     <td width="33%" align="right"><b>Impressões neste mês:</b> {{ $quantities['Mensal'] ?? '' }}</td>
   </tr>
+  <a href="pedidos/create"><i class="fas fa-plus"></i> Solicitar quotas</a>
 </table>

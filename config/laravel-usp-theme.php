@@ -40,6 +40,16 @@ return [
             'can' => 'logado',
         ],
         [
+            'text' => 'Meus pedidos',
+            'url' => '/meuspedidos',
+            'can' => 'logado',
+        ],
+        [
+            'text' => 'Pedidos',
+            'url' => '/pedidos',
+            'can' => 'monitor',
+        ],
+        [
             'text' => 'Impressões',
             'url' => '/all-printings',
             'can' => 'admin',
