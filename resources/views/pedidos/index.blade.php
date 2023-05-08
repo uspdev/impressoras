@@ -26,7 +26,7 @@
       <td>{{ $pedido->quantidade_usada }}</td>
       <td>{{ $pedido->motivo }}</td>
         <td>
-          Status do pedido - {{ $pedido->status }}
+          <b>Status do pedido - {{ $pedido->status }}<b>
           @if($pedido->status == 'Aguardando')
             <div id="actions">
               <form method="POST" action="pedidos/{{$pedido->id}}/accepted">

@@ -15,6 +15,8 @@ class PedidoController extends Controller
      */
     public function index()
     {
+        $this->authorize('logado');
+
         $pedidos = Pedido::paginate(10);
         
         return view('pedidos.index', [
@@ -29,6 +31,8 @@ class PedidoController extends Controller
      */
     public function create()
     {
+        $this->authorize('logado');
+
         return view('pedidos.create', [
             'pedido' => new Pedido,
         ]);
@@ -42,6 +46,8 @@ class PedidoController extends Controller
      */
     public function store(PedidoRequest $request)
     {
+        $this->authorize('logado');
+
         $validated = $request->validated();
         $validated['user_id'] = auth()->user()->id;
         $pedido = Pedido::create($validated);        
@@ -52,6 +58,8 @@ class PedidoController extends Controller
 
     
     public function meusPedidos(){
+
+        $this->authorize('logado');
 
         $user = \Auth::user();
         $pedidos = Pedido::where('user_id', $user->id)->paginate(10);
@@ -69,6 +77,8 @@ class PedidoController extends Controller
      */
     public function show(Pedido $pedido)
     {
+        $this->authorize('logado');
+
         return view('pedidos.show', [
             'pedido' => $pedido
         ]);

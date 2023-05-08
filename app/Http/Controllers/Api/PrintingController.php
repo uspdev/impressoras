@@ -56,6 +56,7 @@ class PrintingController extends Controller
 
             // 2. Verifica se ultrapassou da quota disponível ou não
             $quota_period = $printer->rule->quota_period;
+            //$pedidos = Pedido::where('codpes')->where('status','Aceito')->get();
 
             if (!empty($quota_period)) {
 
