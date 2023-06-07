@@ -5,6 +5,7 @@ use App\Http\Controllers\IndexController;
 use App\Http\Controllers\PrinterController;
 use App\Http\Controllers\PrintingController;
 use App\Http\Controllers\RuleController;
+use App\Http\Controllers\WebprintingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,10 @@ Route::resource('/printers', PrinterController::class);
 Route::get('/printers/queue/{printer}', [PrinterController::class, 'printer_queue']);
 Route::get('/printers/auth_queue/{printer}', [PrinterController::class, 'authorization_queue']);
 Route::get('/printers/{printer}', [PrinterController::class, 'show']);
+
+// webprintings
+Route::get('/webprintings', [WebprintingController::class, 'create']);
+Route::post('/webprintings', [WebprintingController::class, 'store']);
 
 // Rules
 Route::resource('/rules', RuleController::class);

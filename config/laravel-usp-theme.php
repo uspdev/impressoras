@@ -35,6 +35,11 @@ return [
 
     'menu' => [
         [
+            'text' => 'Enviar impressão',
+            'url' => '/webprintings',
+            'can' => 'logado',
+        ],
+        [
             'text' => 'Minhas Impressões',
             'url' => '/printings',
             'can' => 'logado',

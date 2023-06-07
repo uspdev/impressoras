@@ -17,6 +17,7 @@ class PrintingController extends Controller
     public function index(Request $request)
     {
         // printings
+        $this->authorize('logado');
         $user = \Auth::user();
         $printings = Printing::where('user', '=', $user->codpes)
                                 ->latest()
@@ -38,6 +39,8 @@ class PrintingController extends Controller
     }
 
     public function show(Request $request){
+        $this->authorize('logado');
+        
         if(isset($request->search)) {
             $printings = Printing::where('filename','LIKE',"%{$request->search}%")
                                     ->Orwhere('user', 'LIKE', "%{$request->search}%")
