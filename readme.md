@@ -50,7 +50,8 @@ Para limpar banco:
 - quota [int]: quantidade de quota disponível para o período
 - categories [str]: categorias autorizadas para a impressão
 
-### Model Status
+### Model Statusdelete from status;
+delete from printings;
 
 - name [str]: Nome do status
 - reason [str]: razão do status
@@ -140,6 +141,11 @@ Exemplo de requisição quando o problema está na IMPRESSORA:
 # Guidelines para o desenvolvimento
 
 - Escrever o código em inglês.
+
+# limpar banco na unha
+
+    delete from status;
+    delete from printings;
 
 # Agradecimentos
 
