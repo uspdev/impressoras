@@ -125,23 +125,19 @@ class PrinterController extends Controller
             $fotos[$printing->user] = $photos->obterFoto($printing->user);
         }
 
+        $printings_queue = Printing::where('printer_id', '=', $printer->id)
+                                     ->where('latest_status','!=','waiting_job_authorization')
+                                     ->orderBy('id', 'DESC')
+                                     ->take(100)->get();
+
         if($request->has('route')) {
             return view('fila/partials/fila_body', [
+                'printings_queue' => $printings_queue,
                 'printings' => $printings,
                 'fotos'     => $fotos,
                 'auth'      => true,
             ]);
         }
-
-        $printings_queue = Printing::where('printer_id', '=', $printer->id)
-                                     ->where('latest_status','!=','waiting_job_authorization');
-
-        if(isset($request->search)) {
-            $printings_queue = $printings_queue->where('filename','LIKE',"%{$request->search}%")
-                                                ->Orwhere('user', 'LIKE', "%{$request->search}%");
-        }
-
-        $printings_queue = $printings_queue->orderBy('id', 'DESC')->take(100)->get();
 
         return view('fila.fila', [
             'printings' => $printings,

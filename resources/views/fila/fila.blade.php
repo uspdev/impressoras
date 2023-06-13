@@ -34,17 +34,8 @@ button
   <br>
   {{ $printings->links() }}
   @endif
-<div class="table-responsive">
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        @include('fila.partials.fila_header')
-      </tr>
-    </thead>
-    <tbody id="fila">
-        @include('fila.partials.fila_body')
-    </tbody>
-  </table>
+<div class="table-responsive" id="fila">
+  @include('fila.partials.fila_body')
 </div>
 
     <br>
@@ -54,12 +45,6 @@ button
       {{ $printings->links() }}
     @endif
 
-
-    </div>
-
-    @can('monitor')
-		  @include('fila.historico')
-    @endcan
 @endsection
 
 @section('javascripts_bottom')
