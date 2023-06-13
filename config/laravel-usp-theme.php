@@ -37,7 +37,7 @@ return [
         [
             'text' => 'Enviar impressão',
             'url' => '/webprintings',
-            'can' => 'logado',
+            'can' => 'admin',
         ],
         [
             'text' => 'Minhas Impressões',
