@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
-class Printer extends Model implements \Rawilk\Printing\Contracts\Printer
+class Printer extends Model #implements \Rawilk\Printing\Contracts\Printer
 {
     use HasFactory;
     protected $guarded = ['id'];
@@ -21,10 +21,10 @@ class Printer extends Model implements \Rawilk\Printing\Contracts\Printer
         return $this->belongsTo(Rule::class);
     }
 
-
     /**
      * methods from \Rawilk\Printing\Contracts\Printer
      **/ 
+    /*
     public function capabilities(): array {
         return ['aaa'];
     }
@@ -34,7 +34,7 @@ class Printer extends Model implements \Rawilk\Printing\Contracts\Printer
     }
 
     public function id(){
-        return $this->id;
+        return 4;
     }
 
     public function isOnline(): bool {
@@ -42,7 +42,8 @@ class Printer extends Model implements \Rawilk\Printing\Contracts\Printer
     }
 
     public function name(): ?string {
-        return $this->name;
+        //return $this->name;
+        return 'testessss';
     }
 
     public function status(): string {
@@ -57,4 +58,5 @@ class Printer extends Model implements \Rawilk\Printing\Contracts\Printer
     public function jobs(): Collection {
         return collect([]);
     }
+    */
 }
