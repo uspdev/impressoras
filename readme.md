@@ -1,3 +1,6 @@
+PS: Não atualizar por enquanto o composer.lock
+
+
 # Quotas
 
 Sistema desenvolvido em *Laravel* + *tea4cups* para gestão de impressões no contexto da Universidade de São Paulo.

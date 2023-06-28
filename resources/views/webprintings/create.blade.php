@@ -8,16 +8,17 @@
             <div class="card-body">
 
 
-                <div class="mb-3">
-                    <label for="formFile" class="form-label">Arquivo</label>
-                    <input class="form-control" type="file" id="formFile">
-                    <small>Somente arquivos pdf são permitidos</small>
+                <div class="row">
+                    <div class="col-sm form-group col-sm-8">
+                        <label for="file" class="form-label">Arquivo</label>
+                        <input class="form-control" type="file" id="file" name="file">
+                        <small>Somente arquivos pdf são permitidos</small>
+                    </div>
                 </div>
 
                 <div class="row">
                     <div class="col-sm form-group col-sm-8">
 
-                    
                         <div class="form-group">
                             <label for="printer_id" class="required"><b>Selecione impressora</b></label>
                             <select class="form-control" name="printer_id">
@@ -38,7 +39,19 @@
                     </div>
                 </div>
 
-            <button type="submit" class="btn btn-success"> Enviar </button>
+                <div class="row">
+                    <div class="col-sm form-group col-sm-8">
+                        <label for="sides" class="form-label">Tipo de impressão</label>
+                        <select class="form-select" name="sides" aria-label="Lado" id="sides">
+                            <option selected>Selecione o tipo</option>
+                            <option value="one-sided">Um lado</option>
+                            <option value="two-sided-long-edge">Frente e verso na borda maior</option>
+                            <option value="two-sided-short-edge">Frente e verso na borda menor</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-success"> Enviar </button>
 
         </div>
 
