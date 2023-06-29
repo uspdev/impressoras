@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Printer;
-use Illuminate\Validation\Rule;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Validation\Rule;
 use Rawilk\Printing\Facades\Printing;    
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 
 class WebprintingController extends Controller
 {
@@ -31,12 +33,24 @@ class WebprintingController extends Controller
         $filepath = Storage::disk('local')->path($relpath);
         $filename = $request->file('file')->getClientOriginalName();
 
-        # WILL vai melhorar
-        $pages = system("/usr/bin/pdfinfo $filepath| grep Pages | awk '{print $2}'");
+        // contagem de páginas usando o pdfinfo
+        $pdfinfo = "/usr/bin/pdfinfo";
+        if (!File::exists($pdfinfo))
+            throw new \Exception("Instalar pdfinfo: apt install poppler-utils.");
+        $process = new Process([$pdfinfo, $filepath]);
+        $process->run();
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
 
-        
-        dd($pages);
+        if (preg_match('/^Pages:\s+(\d+)/m', $process->getOutput(), $matches) != 1)
+            throw new \Exception("Problema na contagem: número não encontrado.");
 
+        $pages = $matches[1];
+        if ($pages < 1)
+            throw new \Exception("Problema na contagem: contagem errada.");
+
+        // aqui roda a lógica de barrar, ou não, o job
 
         // trocando id pelo nome da impressora
         $printer_local = Printer::find($request->printer_id);
@@ -48,10 +62,9 @@ class WebprintingController extends Controller
             ->sides($request->sides)
             ->file($filepath)
             ->send();
-
-        // depois de impresso, deletar arquivo no laravel ?
         Storage::delete($relpath);
 
-        dd($printJob->id()); // the id number returned from the print server
+        // finaliza
+        dd($printJob);
     }
 }
