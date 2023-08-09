@@ -68,11 +68,14 @@ class WebprintingController extends Controller
             "jobid" => 0,
             "host" => "127.0.0.1",
             "filename" => $filename,
-            "filesize" => $filesize
+            "filesize" => $filesize,
+            "sides" => $request->sides,
+            "tmp_relpath" => $relpath,
         ];
 
         // OBS: aqui não temos ainda o jobid de verdade
         $printing = Printing::create($data);
+
         if (!empty($printer->rule)) {
             // 1. Verificar se usuário está em uma categoria que permite impressão
             if (!empty($printer->rule->categories)) {

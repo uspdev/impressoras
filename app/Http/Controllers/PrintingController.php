@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Printing;
+use App\Models\Printer;
 use App\Models\Status;
-use Illuminate\Http\Request;    
+use Illuminate\Http\Request;
+use Rawilk\Printing\Facades\Printing as CupsPrinting;
+use Illuminate\Support\Facades\Storage; 
 
 class PrintingController extends Controller
 {
@@ -78,13 +81,33 @@ class PrintingController extends Controller
 
         if ($request->action == 'authorized') {
             Status::createStatus('sent_to_printer_queue', $printing);
-            $action = 'autorizada';
+            request()->session()->flash('alert-success', 'Impressão autorizada com sucesso.');
+
+            // trocando id pelo nome da impressora
+            $printer = Printer::find($printing->printer_id);
+            $id = 'ipp://'.config('printing.drivers.cups.ip').':631/printers/' . $printer->machine_name;
+
+            $filepath = Storage::disk('local')->path($printing->tmp_relpath);
+
+            $printJob = CupsPrinting::newPrintTask()
+                ->printer($id)
+                ->jobTitle($printing->filename)
+                ->sides($printing->sides)
+                ->file($filepath)
+                ->send();
+            Storage::delete($printing->tmp_relpath);
+
+            $printing->jobid = $printJob->id();
+            $printing->save();
+            Status::createStatus('print_success', $printing);
+            
+
         } elseif ($request->action == 'cancelled') {
             Status::createStatus('cancelled_not_authorized', $printing);
-            $action = 'cancelada';
+            request()->session()->flash('alert-danger', 'Impressão cancelada');
         }
 
-        request()->session()->flash('alert-success', 'Impressão '.$action.' com sucesso.');
+        
 
         return redirect("/printers/auth_queue/{$printer->id}");
     }

@@ -28,22 +28,10 @@ button
 <div class="card-header">
   <h4><b>Fila de autorização de {{ $name }}</b></h4>
 </div>
-  <br>
-  @if(!$auth)
-  @include('printings.partials.printings_quantities')
-  <br>
-  {{ $printings->links() }}
-  @endif
+
 <div class="table-responsive" id="fila">
   @include('fila.partials.fila_body')
 </div>
-
-    <br>
-    @if(!$auth)
-    @include('printings.partials.printings_quantities')
-      <br>
-      {{ $printings->links() }}
-    @endif
 
 @endsection
 

@@ -5,13 +5,8 @@
 
 @section('content')
 
-  <div class="card-header">
-    <h4><b>Impressões de {{ $user->name }}</b></h4>
-  </div>
-  <br>
   @include('printings.partials.printings_quantities')
-  <br>
-  {{ $printings->links() }}
+
   <div class="table-responsive">
     <table class="table table-striped">
       <thead>
@@ -32,4 +27,5 @@
       </tbody>
     </table>
   </div>
+  {{ $printings->links() }}
 @endsection

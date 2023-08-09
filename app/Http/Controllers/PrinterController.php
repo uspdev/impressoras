@@ -142,7 +142,6 @@ class PrinterController extends Controller
         return view('fila.fila', [
             'printings' => $printings,
             'name' => $printer->name,
-            'auth' => true, # não entendi a necessidade... ?
             'fotos' => $fotos,
             'printings_queue' => $printings_queue
             ]);

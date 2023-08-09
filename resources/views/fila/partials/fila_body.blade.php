@@ -8,12 +8,10 @@
       <th width="5%">Cópias</th>
       <th>Tamanho</th>
       <th>Arquivo</th>
-      @if ($auth)
         @can('admin')
           <th width="14%">Foto</th>
           <th width="14%">Ações</th>
         @endcan
-      @endif
     </tr>
   </thead>
   <tbody id="fila">
@@ -41,7 +39,7 @@
       </tr>
       @empty
         <tr>
-          <td colspan= @if ($auth) "11" @else "10" @endif>Não há impressões</td>
+          <td colspan=11>Não há impressões</td>
         </tr>
     @endforelse
   </tbody>
@@ -63,9 +61,7 @@
            <th>Tamanho</th>
            <th>Arquivo</th>
            <th>Status</th>
-           @if(!empty($auth))
-               <th>Autorizado por</th>
-           @endif
+           <th>Autorizado por</th>
         </tr>
       </thead>
       <tbody>
@@ -78,9 +74,7 @@
             <td>{{ round((float)$printing->filesize/1024) }} KB</td>
             <td>{{ $printing->filename }}</td>
             <td><b><p style="color:red;">{{ \App\Models\Status::statusName($printing->latest_status) }}</p></b></td>
-            @if (!empty($auth))
             <td>{{ $printing->authorizedByUserId->name ?? '' }}</td>
-            @endif
           </tr>
         @endforeach
       </tbody>

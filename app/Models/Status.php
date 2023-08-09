@@ -16,7 +16,7 @@ class Status extends Model
             'waiting_job_authorization' => 'Aguardando autorização',
             'cancelled_user_out_of_quota' => 'Cancelado - excedeu a quota',
             'cancelled_not_authorized' => 'Cancelado - não autorizado pelo monitor',
-            'cancelled_not_allowed'   => 'Cancelado - não é aluno(a) de graduação ou não pertence a unidade FFLCH',
+            'cancelled_not_allowed'   => 'Cancelado - pessoa não possui vínculo necessário para usar essa impressora',
             'cancelled_timeout' => 'Cancelado - Tempo de resposta a solicitação expirado', 
             'sent_to_printer_queue' => 'Enviado para a impressora',
             'print_success' => 'Impresso com sucesso',
