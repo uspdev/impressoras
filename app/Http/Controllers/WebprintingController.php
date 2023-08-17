@@ -90,22 +90,7 @@ class WebprintingController extends Controller
         $printing = Printing::create($data);
 
         if (!empty($printer->rule)) {
-            // 1. Verificar se usuário está em uma categoria que permite impressão
-            if (!empty($printer->rule->categories)) {
-                $permissao = false;
-                foreach($printer->rule->categories as $c) {
-                    if (\Auth::user()->hasPermissionTo($c, 'senhaunica')) {
-                        $permissao = true;
-                        break;
-                    }
-                }
-                if (!$permissao) {
-                    Status::createStatus('cancelled_not_allowed', $printing);
-                    return redirect("/printings");
-                }
-            }
-
-            // 2. Verifica se ultrapassou da quota disponível ou não
+            // 1. Verifica se ultrapassou da quota disponível ou não
             $quota_period = $printer->rule->quota_period;
 
             if (!empty($quota_period)) {
@@ -118,13 +103,13 @@ class WebprintingController extends Controller
                 }
             }
 
-            // 3. Verifica se a impressora tem controle de fila
+            // 2. Verifica se a impressora tem controle de fila
             if ($printer->rule->queue_control) {
                 Status::createStatus('waiting_job_authorization', $printing);
                 return redirect("/printings");
             }
         }
-        // 4. Se a impressora não tem regra, então qualquer impressão esta liberada
+        // 3. Se a impressora não tem regra, então qualquer impressão esta liberada
         Status::createStatus('sent_to_printer_queue', $printing);
 
         $printJob = CupsPrinting::newPrintTask()
