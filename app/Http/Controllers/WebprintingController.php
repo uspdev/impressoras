@@ -18,7 +18,13 @@ use Uspdev\Replicado\Pessoa;
 class WebprintingController extends Controller
 {
     public function index(){
-        $printers = Printer::all();
+        $printers = [];
+
+        foreach (Printer::all() as $p) {
+            if ($p->allows(\Auth::user())) {
+                array_push($printers, $p);
+            }
+        }
 
         return view('webprintings.index', [
             'printers' => $printers,

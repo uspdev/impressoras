@@ -44,15 +44,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('imprime', function (User $user, Printer $printer) {
-            if (!empty($printer->rule) and !empty($printer->rule->categories)) {
-                foreach($printer->rule->categories as $c) {
-                    if($user->hasPermissionTo($c, 'senhaunica')) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-            return true;
+            return $printer->allows($user);
         });
     }
 }

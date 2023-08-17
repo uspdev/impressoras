@@ -24,7 +24,7 @@
                             </div>
                         </td>
 						<td>0</td>
-						<td>{{ $printer->rule->quota }}</td>
+						<td>{{ $printer->rule ? $printer->rule->quota : ''}}</td>
 					</tr>
                 @empty
                     <tr>
