@@ -17,18 +17,27 @@ use Uspdev\Replicado\Pessoa;
 
 class WebprintingController extends Controller
 {
-    public function create(){
-        $this->authorize('admin');
-        return view('webprintings.create');
+    public function index(){
+        $printers = Printer::all();
+
+        return view('webprintings.index', [
+            'printers' => $printers,
+        ]);
     }
 
-    public function store(Request $request){
+    public function create(Printer $printer){
+        $this->authorize('admin');
+        return view('webprintings.create', [
+            'printer' => $printer
+        ]);
+    }
+
+    public function store(Request $request, Printer $printer){
         $this->authorize('admin');
 
         // validação básica
         $request->validate([
             'file' => 'required|mimetypes:application/pdf',
-            'printer_id' => 'required|integer', // da para melhorar...
             'sides' => ['required', Rule::in(['one-sided', 'two-sided-long-edge', 'two-sided-short-edge'])],
         ]);
 
@@ -55,8 +64,6 @@ class WebprintingController extends Controller
         if ($pages < 1)
             throw new \Exception("Problema na contagem: contagem errada.");
 
-        // trocando id pelo nome da impressora
-        $printer = Printer::find($request->printer_id);
         $id = 'ipp://'.config('printing.drivers.cups.ip').':631/printers/' . $printer->machine_name;
 
         $codpes = \Auth::user()->codpes;

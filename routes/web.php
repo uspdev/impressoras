@@ -36,8 +36,9 @@ Route::get('/printers/auth_queue/{printer}', [PrinterController::class, 'authori
 Route::get('/printers/{printer}', [PrinterController::class, 'show']);
 
 // webprintings
-Route::get('/webprintings', [WebprintingController::class, 'create']);
-Route::post('/webprintings', [WebprintingController::class, 'store']);
+Route::get('/webprintings', [WebprintingController::class, 'index']);
+Route::get('/webprintings/{printer}', [WebprintingController::class, 'create']);
+Route::post('/webprintings/{printer}', [WebprintingController::class, 'store']);
 
 // Rules
 Route::resource('/rules', RuleController::class);
