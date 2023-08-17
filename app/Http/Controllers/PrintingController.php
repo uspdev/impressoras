@@ -42,7 +42,7 @@ class PrintingController extends Controller
     }
 
     public function show(Request $request){
-        $this->authorize('logado');
+        $this->authorize('admin');
         
         if(isset($request->search)) {
             $printings = Printing::where('filename','LIKE',"%{$request->search}%")
@@ -110,5 +110,20 @@ class PrintingController extends Controller
         
 
         return redirect("/printers/auth_queue/{$printer->id}");
+    }
+
+    public function refund(Printing $printing)
+    {
+        $this->authorize('monitor');
+
+        $printer = $printing->printer;
+        $user = \Auth::user();
+        $printing->authorized_by_user_id = $user->id;
+        $printing->save();
+
+        Status::createStatus('printer_problem', $printing);
+        request()->session()->flash('alert-success', 'Quota devolvida.');
+
+        return redirect("/all-printings");
     }
 }

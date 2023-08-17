@@ -27,6 +27,7 @@ Route::get('/printings/admin', [PrintingController::class, 'admin']);
 Route::get('/printings/foto/{codpes}', [PrintingController::class, 'obterFoto']);
 Route::get('/printings/status/{printing}', [PrintingController::class, 'status']);
 Route::get('/printings/action/{printing}', [PrintingController::class, 'action']);
+Route::get('/printings/refund/{printing}', [PrintingController::class, 'refund']);
 
 // Printers
 Route::resource('/printers', PrinterController::class);
