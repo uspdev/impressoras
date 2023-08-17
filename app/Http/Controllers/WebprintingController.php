@@ -79,11 +79,13 @@ class WebprintingController extends Controller
         if (!empty($printer->rule)) {
             // 1. Verificar se usuário está em uma categoria que permite impressão
             if (!empty($printer->rule->categories)) {
-                $vinculos = Pessoa::obterSiglasVinculosAtivos($codpes);
-
                 $permissao = false;
-                if(!empty($vinculos))
-                    $permissao = array_intersect($vinculos, $printer->rule->categories) ? true : false;
+                foreach($printer->rule->categories as $c) {
+                    if (\Auth::user()->hasPermissionTo($c, 'senhaunica')) {
+                        $permissao = true;
+                        break;
+                    }
+                }
                 if (!$permissao) {
                     Status::createStatus('cancelled_not_allowed', $printing);
                     return redirect("/printings");
