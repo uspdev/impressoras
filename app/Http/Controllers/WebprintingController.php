@@ -26,14 +26,14 @@ class WebprintingController extends Controller
     }
 
     public function create(Printer $printer){
-        $this->authorize('admin');
+        $this->authorize('imprime', $printer);
         return view('webprintings.create', [
             'printer' => $printer
         ]);
     }
 
     public function store(Request $request, Printer $printer){
-        $this->authorize('admin');
+        $this->authorize('imprime', $printer);
 
         // validação básica
         $request->validate([

@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use App\Models\Printer;
+use App\Models\User;
 use App\Services\ReplicadoTemp;
 
 class AuthServiceProvider extends ServiceProvider
@@ -39,6 +41,18 @@ class AuthServiceProvider extends ServiceProvider
                 $monitores = ReplicadoTemp::listarMonitores(22);
 
             return in_array($user->codpes, $monitores);
+        });
+
+        Gate::define('imprime', function (User $user, Printer $printer) {
+            if (!empty($printer->rule) and !empty($printer->rule->categories)) {
+                foreach($printer->rule->categories as $c) {
+                    if($user->hasPermissionTo($c, 'senhaunica')) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            return true;
         });
     }
 }
