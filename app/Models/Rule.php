@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Permission\Models\Permission;
 use Uspdev\Replicado\DB as ReplicadoDB;
 
 class Rule extends Model
@@ -21,13 +22,11 @@ class Rule extends Model
 
     public static function categories()
     {
-        $sql = 'SELECT DISTINCT (tipvin) FROM LOCALIZAPESSOA ORDER BY tipvin';
-        $result = ReplicadoDB::fetchAll($sql);
-        if ($result) {
-            return array_column($result, 'tipvin');
+        $c = [];
+        foreach (Permission::all() as $p) {
+            array_push($c, $p->name);
         }
-
-        return;
+        return $c;
     }
 
     public function printers()
