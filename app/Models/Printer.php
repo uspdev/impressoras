@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use App\Models\Printing;
 use App\Models\User;
 
 class Printer extends Model #implements \Rawilk\Printing\Contracts\Printer
@@ -33,5 +34,17 @@ class Printer extends Model #implements \Rawilk\Printing\Contracts\Printer
             return false;
         }
         return true;
+    }
+
+    public function used(User $user)
+    {
+        if (!empty($this->rule))
+        {
+            $period = $this->rule->quota_period;
+            if (!empty($period)) {
+                return Printing::getPrintingsQuantities($user->codpes, $this, $period);
+            }
+        }
+        return;
     }
 }

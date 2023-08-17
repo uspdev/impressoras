@@ -23,7 +23,7 @@
                                 <a href="/webprintings/{{ $printer->id }}"><button class="btn btn-primary" type="button">{{ $printer->name }}</button></a>
                             </div>
                         </td>
-						<td>0</td>
+						<td>{{ $printer->used(\Auth::user()) }}</td>
 						<td>{{ $printer->rule ? $printer->rule->quota : ''}}</td>
 					</tr>
                 @empty

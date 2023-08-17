@@ -40,6 +40,7 @@ class WebprintingController extends Controller
 
     public function store(Request $request, Printer $printer){
         $this->authorize('imprime', $printer);
+        $user = \Auth::user();
 
         // validação básica
         $request->validate([
@@ -72,9 +73,8 @@ class WebprintingController extends Controller
 
         $id = 'ipp://'.config('printing.drivers.cups.ip').':631/printers/' . $printer->machine_name;
 
-        $codpes = \Auth::user()->codpes;
         $data = [
-            "user" => $codpes,
+            "user" => $user->codpes,
             "pages" => $pages,
             "copies" => 1,
             "printer_id" => $printer->id,
@@ -95,7 +95,7 @@ class WebprintingController extends Controller
 
             if (!empty($quota_period)) {
                 // as impressoras que participam da mesma regra
-                $quantities = Printing::getPrintingsQuantities($codpes, $printer, $quota_period);
+                $quantities = $printer->used($user);
                 $out_of_quota = $quantities + $pages > $printer->rule->quota;
                 if ($out_of_quota) {
                     Status::createStatus('cancelled_user_out_of_quota', $printing);
