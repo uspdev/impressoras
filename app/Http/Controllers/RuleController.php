@@ -51,6 +51,9 @@ class RuleController extends Controller
     {
         $this->authorize('admin');
 
+        if (empty($request->categories)) {
+            $rule->categories = [];
+        }
         $rule->update($request->validated());
 
         return redirect('/rules');
