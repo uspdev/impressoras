@@ -18,6 +18,7 @@ use Uspdev\Replicado\Pessoa;
 class WebprintingController extends Controller
 {
     public function index(){
+        $this->authorize('logado');
         $printers = [];
 
         foreach (Printer::all() as $p) {
