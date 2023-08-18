@@ -27,6 +27,7 @@ Route::get('/printings/admin', [PrintingController::class, 'admin']);
 Route::get('/printings/foto/{codpes}', [PrintingController::class, 'obterFoto']);
 Route::get('/printings/status/{printing}', [PrintingController::class, 'status']);
 Route::get('/printings/action/{printing}', [PrintingController::class, 'action']);
+Route::get('/printings/refund/{printing}', [PrintingController::class, 'refund']);
 
 // Printers
 Route::resource('/printers', PrinterController::class);
@@ -35,8 +36,9 @@ Route::get('/printers/auth_queue/{printer}', [PrinterController::class, 'authori
 Route::get('/printers/{printer}', [PrinterController::class, 'show']);
 
 // webprintings
-Route::get('/webprintings', [WebprintingController::class, 'create']);
-Route::post('/webprintings', [WebprintingController::class, 'store']);
+Route::get('/webprintings', [WebprintingController::class, 'index']);
+Route::get('/webprintings/{printer}', [WebprintingController::class, 'create']);
+Route::post('/webprintings/{printer}', [WebprintingController::class, 'store']);
 
 // Rules
 Route::resource('/rules', RuleController::class);

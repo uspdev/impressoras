@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use App\Models\Printing;
+use App\Models\User;
 
 class Printer extends Model #implements \Rawilk\Printing\Contracts\Printer
 {
@@ -21,42 +23,28 @@ class Printer extends Model #implements \Rawilk\Printing\Contracts\Printer
         return $this->belongsTo(Rule::class);
     }
 
-    /**
-     * methods from \Rawilk\Printing\Contracts\Printer
-     **/ 
-    /*
-    public function capabilities(): array {
-        return ['aaa'];
-    }
-
-    public function description(): ?string {
-        return 'bla';
-    }
-
-    public function id(){
-        return 4;
-    }
-
-    public function isOnline(): bool {
+    public function allows(User $user)
+    {
+        if (!empty($this->rule) and !empty($this->rule->categories)) {
+            foreach($this->rule->categories as $c) {
+                if($user->hasPermissionTo($c, 'senhaunica')) {
+                    return true;
+                }
+            }
+            return false;
+        }
         return true;
     }
 
-    public function name(): ?string {
-        //return $this->name;
-        return 'testessss';
+    public function used(User $user)
+    {
+        if (!empty($this->rule))
+        {
+            $period = $this->rule->quota_period;
+            if (!empty($period)) {
+                return Printing::getPrintingsQuantities($user->codpes, $this, $period);
+            }
+        }
+        return;
     }
-
-    public function status(): string {
-        return 'bla 2';
-    }
-
-    public function trays(): array {
-        return [];
-    }
-
-    //public function jobs(): Collection;
-    public function jobs(): Collection {
-        return collect([]);
-    }
-    */
 }

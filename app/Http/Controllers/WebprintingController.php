@@ -17,18 +17,35 @@ use Uspdev\Replicado\Pessoa;
 
 class WebprintingController extends Controller
 {
-    public function create(){
-        $this->authorize('admin');
-        return view('webprintings.create');
+    public function index(){
+        $this->authorize('logado');
+        $printers = [];
+
+        foreach (Printer::all() as $p) {
+            if ($p->allows(\Auth::user())) {
+                array_push($printers, $p);
+            }
+        }
+
+        return view('webprintings.index', [
+            'printers' => $printers,
+        ]);
     }
 
-    public function store(Request $request){
-        $this->authorize('admin');
+    public function create(Printer $printer){
+        $this->authorize('imprime', $printer);
+        return view('webprintings.create', [
+            'printer' => $printer
+        ]);
+    }
+
+    public function store(Request $request, Printer $printer){
+        $this->authorize('imprime', $printer);
+        $user = \Auth::user();
 
         // validação básica
         $request->validate([
             'file' => 'required|mimetypes:application/pdf',
-            'printer_id' => 'required|integer', // da para melhorar...
             'sides' => ['required', Rule::in(['one-sided', 'two-sided-long-edge', 'two-sided-short-edge'])],
         ]);
 
@@ -55,13 +72,10 @@ class WebprintingController extends Controller
         if ($pages < 1)
             throw new \Exception("Problema na contagem: contagem errada.");
 
-        // trocando id pelo nome da impressora
-        $printer = Printer::find($request->printer_id);
         $id = 'ipp://'.config('printing.drivers.cups.ip').':631/printers/' . $printer->machine_name;
 
-        $codpes = \Auth::user()->codpes;
         $data = [
-            "user" => $codpes,
+            "user" => $user->codpes,
             "pages" => $pages,
             "copies" => 1,
             "printer_id" => $printer->id,
@@ -77,27 +91,12 @@ class WebprintingController extends Controller
         $printing = Printing::create($data);
 
         if (!empty($printer->rule)) {
-            // 1. Verificar se usuário está em uma categoria que permite impressão
-            if (!empty($printer->rule->categories)) {
-                $permissao = false;
-                foreach($printer->rule->categories as $c) {
-                    if (\Auth::user()->hasPermissionTo($c, 'senhaunica')) {
-                        $permissao = true;
-                        break;
-                    }
-                }
-                if (!$permissao) {
-                    Status::createStatus('cancelled_not_allowed', $printing);
-                    return redirect("/printings");
-                }
-            }
-
-            // 2. Verifica se ultrapassou da quota disponível ou não
+            // 1. Verifica se ultrapassou da quota disponível ou não
             $quota_period = $printer->rule->quota_period;
 
             if (!empty($quota_period)) {
                 // as impressoras que participam da mesma regra
-                $quantities = Printing::getPrintingsQuantities($codpes, $printer, $quota_period);
+                $quantities = $printer->used($user);
                 $out_of_quota = $quantities + $pages > $printer->rule->quota;
                 if ($out_of_quota) {
                     Status::createStatus('cancelled_user_out_of_quota', $printing);
@@ -105,13 +104,13 @@ class WebprintingController extends Controller
                 }
             }
 
-            // 3. Verifica se a impressora tem controle de fila
+            // 2. Verifica se a impressora tem controle de fila
             if ($printer->rule->queue_control) {
                 Status::createStatus('waiting_job_authorization', $printing);
                 return redirect("/printings");
             }
         }
-        // 4. Se a impressora não tem regra, então qualquer impressão esta liberada
+        // 3. Se a impressora não tem regra, então qualquer impressão esta liberada
         Status::createStatus('sent_to_printer_queue', $printing);
 
         $printJob = CupsPrinting::newPrintTask()
