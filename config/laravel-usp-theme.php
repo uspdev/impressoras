@@ -37,6 +37,7 @@ return [
         [
             'text' => 'Enviar impressão',
             'url' => '/webprintings',
+            'can' => 'logado',
         ],
         [
             'text' => 'Minhas Impressões',
@@ -44,9 +45,9 @@ return [
             'can' => 'logado',
         ],
         [
-            'text' => 'Impressões',
+            'text' => 'Todas as impressões',
             'url' => '/all-printings',
-            'can' => 'admin',
+            'can' => 'monitor',
         ],
         [
             'text' => 'Impressoras',
