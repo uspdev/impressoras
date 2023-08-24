@@ -42,7 +42,7 @@ class PrintingController extends Controller
     }
 
     public function show(Request $request){
-        $this->authorize('admin');
+        $this->authorize('monitor');
         
         if(isset($request->search)) {
             $printings = Printing::where('filename','LIKE',"%{$request->search}%")
