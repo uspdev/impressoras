@@ -29,6 +29,15 @@
                     </div>
                 </div>
 
+                <div class="row">
+                    <div class="col-sm form-group col-sm-8">
+                        <label for="start_page" class="form-label">Página inicial (não preencher caso for todo o documento)</label>
+                        <input type="text" name="start_page" id="start_page" />
+                        <label for="end_page" class="form-label">Página final (preencher somente se a inicial for preenchida)</label>
+                        <input type="text" name="end_page" id="end_page" />
+                    </div>
+                </div>
+
                 <button type="submit" class="btn btn-success"> Enviar </button>
 
         </div>

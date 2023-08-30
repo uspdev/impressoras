@@ -44,6 +44,7 @@ class WebprintingController extends Controller
         $user = \Auth::user();
 
         // validação básica
+        // TODO validar paginação
         $request->validate([
             'file' => 'required|mimetypes:application/pdf',
             'sides' => ['required', Rule::in(['one-sided', 'two-sided-long-edge', 'two-sided-short-edge'])],
@@ -71,6 +72,10 @@ class WebprintingController extends Controller
         $pages = $matches[1];
         if ($pages < 1)
             throw new \Exception("Problema na contagem: contagem errada.");
+
+        // TODO refatorar
+        if (!empty($request->start_page))
+            $pages = $request->end_page - $request->start_page + 1;
 
         $id = 'ipp://'.config('printing.drivers.cups.ip').':631/printers/' . $printer->machine_name;
 
@@ -115,6 +120,7 @@ class WebprintingController extends Controller
 
         $printJob = CupsPrinting::newPrintTask()
             ->printer($id)
+            ->range($request->start_page, $request->end_page)
             ->jobTitle($filename)
             ->sides($request->sides)
             ->file($filepath)
