@@ -95,6 +95,8 @@ class WebprintingController extends Controller
             "filename" => $filename,
             "filesize" => $filesize,
             "sides" => $request->sides,
+            "start_page" => $request->start_page,
+            "end_page" => $request->end_page,
             "tmp_relpath" => $relpath,
         ];
 
