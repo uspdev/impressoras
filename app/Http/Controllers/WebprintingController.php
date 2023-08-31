@@ -48,6 +48,8 @@ class WebprintingController extends Controller
         $request->validate([
             'file' => 'required|mimetypes:application/pdf',
             'sides' => ['required', Rule::in(['one-sided', 'two-sided-long-edge', 'two-sided-short-edge'])],
+            'start_page' => 'required_with:end_page|integer|min:1|digits_between: 1,5',
+            'end_page' =>   'required_with:start_page|integer|gte:start_page|digits_between:1,5'
         ]);
 
         // metadatas do arquivo
@@ -78,6 +80,10 @@ class WebprintingController extends Controller
             $pages = $request->end_page - $request->start_page + 1;
 
         $id = 'ipp://'.config('printing.drivers.cups.ip').':631/printers/' . $printer->machine_name;
+
+        // Trucando o nome para no máximo 64 caracteres
+        $filename = explode('.pdf',$filename);
+        $filename = substr($filename[0],0,64).'.pdf';
 
         $data = [
             "user" => $user->codpes,

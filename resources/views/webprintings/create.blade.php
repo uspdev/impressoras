@@ -29,12 +29,15 @@
                     </div>
                 </div>
 
+                <b>Seleção de páginas:</b><br>
+                <small>* não preencher caso for todo o documento</small>
                 <div class="row">
                     <div class="col-sm form-group col-sm-8">
-                        <label for="start_page" class="form-label">Página inicial (não preencher caso for todo o documento)</label>
-                        <input type="text" name="start_page" id="start_page" />
-                        <label for="end_page" class="form-label">Página final (preencher somente se a inicial for preenchida)</label>
-                        <input type="text" name="end_page" id="end_page" />
+                        <label for="start_page" class="form-label">Página inicial </label>
+                        <input type="text" name="start_page" id="start_page" value="{{ old('start_page') }}"/>
+                        <br>
+                        <label for="end_page" class="form-label">Página final</label>
+                        <input type="text" name="end_page" id="end_page" value="{{ old('end_page') }}" />
                     </div>
                 </div>
 
