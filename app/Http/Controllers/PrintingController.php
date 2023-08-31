@@ -92,6 +92,7 @@ class PrintingController extends Controller
             $printJob = CupsPrinting::newPrintTask()
                 ->printer($id)
                 ->jobTitle($printing->filename)
+                ->range($printing->start_page, $printing->end_page)
                 ->sides($printing->sides)
                 ->file($filepath)
                 ->send();
