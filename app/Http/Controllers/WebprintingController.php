@@ -48,8 +48,8 @@ class WebprintingController extends Controller
         $request->validate([
             'file' => 'required|mimetypes:application/pdf',
             'sides' => ['required', Rule::in(['one-sided', 'two-sided-long-edge', 'two-sided-short-edge'])],
-            'start_page' => 'required_with:end_page|integer|min:1|digits_between: 1,5',
-            'end_page' =>   'required_with:start_page|integer|gte:start_page|digits_between:1,5'
+            'start_page' => 'nullable|required_with:end_page|integer|min:1|digits_between: 1,5',
+            'end_page' =>   'nullable|required_with:start_page|integer|gte:start_page|digits_between:1,5'
         ]);
 
         // metadatas do arquivo
