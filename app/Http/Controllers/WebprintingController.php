@@ -3,16 +3,14 @@
 namespace App\Http\Controllers;
 
 //use App\Http\Requests\PrintingRequest;
+use App\Helpers\PrintingHelper;
 use App\Models\Printer;
 use App\Models\Printing;
 use App\Models\Status;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Rawilk\Printing\Facades\Printing as CupsPrinting;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
 use Uspdev\Replicado\Pessoa;
 
 class WebprintingController extends Controller
@@ -58,20 +56,8 @@ class WebprintingController extends Controller
         $filename = $request->file('file')->getClientOriginalName();
         $filesize = $request->file('file')->getSize();
 
-        // contagem de páginas usando o pdfinfo
-        $pdfinfo = "/usr/bin/pdfinfo";
-        if (!File::exists($pdfinfo))
-            throw new \Exception("Instalar pdfinfo: apt install poppler-utils.");
-        $process = new Process([$pdfinfo, $filepath]);
-        $process->run();
-        if (!$process->isSuccessful()) {
-            throw new ProcessFailedException($process);
-        }
-
-        if (preg_match('/^Pages:\s+(\d+)/m', $process->getOutput(), $matches) != 1)
-            throw new \Exception("Problema na contagem: número não encontrado.");
-
-        $pages = $matches[1];
+        $pdfinfo = PrintingHelper::pdfinfo($filepath);
+        $pages = $pdfinfo['pages'];
         if ($pages < 1)
             throw new \Exception("Problema na contagem: contagem errada.");
 
