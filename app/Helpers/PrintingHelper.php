@@ -70,7 +70,7 @@ class PrintingHelper
             throw new \Exception("Instalar ghostscript: apt install ghostscript.");
         }
 
-        $base = "/home/kotas/kotas/resources";
+        $base = base_path()."/resources";
         $pdf = File::dirname($file) . "/" . File::name($file) . "pdfx.pdf";
         $process = new Process([
             $ghostscript,

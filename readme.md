@@ -1,6 +1,3 @@
-PS: Não atualizar por enquanto o composer.lock
-
-
 # Quotas
 
 Sistema desenvolvido em *Laravel* + *tea4cups* para gestão de impressões no contexto da Universidade de São Paulo.
@@ -18,6 +15,12 @@ Após a impressora responder:
 4) Se não pode, o quota_check atualiza o registro em printings para o status "Cancelado"
 
 ## Deploy básico para desenvolvimento
+Pacotes:
+  - ghostscript
+  - icc-profiles
+  - libgs9-common
+  - poppler-utils
+  - texlive-extra-utils
 
 ```sh
     composer install
