@@ -115,16 +115,18 @@ class WebprintingController extends Controller
 
         // 4. Trata o PDF antes de mandá-lo para a impressora
         $tmp_pdf = PrintingHelper::pdfjam($filepath);
+        $pdfx = PrintingHelper::pdfx($tmp_pdf);
 
         $printJob = CupsPrinting::newPrintTask()
             ->printer($id)
             ->range($request->start_page, $request->end_page)
             ->jobTitle($filename)
             ->sides($request->sides)
-            ->file($tmp_pdf)
+            ->file($pdfx)
             ->send();
         Storage::delete($relpath);
         File::delete($tmp_pdf);
+        File::delete($pdfx);
 
         $printing->jobid = $printJob->id();
         $printing->save();

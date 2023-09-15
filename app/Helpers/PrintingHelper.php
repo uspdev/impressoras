@@ -12,8 +12,9 @@ class PrintingHelper
         $info = [];
 
         $pdfinfo = "/usr/bin/pdfinfo";
-        if (!File::exists($pdfinfo))
+        if (!File::exists($pdfinfo)) {
             throw new \Exception("Instalar pdfinfo: apt install poppler-utils.");
+        }
 
         $process = new Process([$pdfinfo, $file]);
         $process->run();
@@ -38,8 +39,9 @@ class PrintingHelper
         $pdfinfo = PrintingHelper::pdfinfo($file);
 
         $pdfjam = "/usr/bin/pdfjam";
-        if (!File::exists($pdfjam))
+        if (!File::exists($pdfjam)) {
             throw new \Exception("Instalar pdfjam: apt install texlive-extra-utils.");
+        }
 
         if ($pdfinfo['width'] > $pdfinfo['height']) {
             $mode = "--landscape";
@@ -57,6 +59,34 @@ class PrintingHelper
 
         if (!File::exists($pdf))
             throw new \Exception("PDF não encontrado>");
+
+        return $pdf;
+    }
+
+    public static function pdfx($file) {
+        $ghostscript = "/usr/bin/gs";
+
+        if (!File::exists($ghostscript)) {
+            throw new \Exception("Instalar ghostscript: apt install ghostscript.");
+        }
+
+        $base = "/home/kotas/kotas/resources";
+        $pdf = File::dirname($file) . "/" . File::name($file) . "pdfx.pdf";
+        $process = new Process([
+            $ghostscript,
+            '-dBATCH', '-dNOPAUSE', '-dQUIET',
+            '-dPDFX',
+            '-sDEVICE=pdfwrite',
+            '-sColorConversionStrategy=Gray',
+            '-sPDFSETTINGS=prepress',
+            '-sOutputFile='.$pdf,
+            '-I', $base, $base.'/PDFX_def.ps',
+            $file
+        ]);
+        $process->run();
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
 
         return $pdf;
     }
