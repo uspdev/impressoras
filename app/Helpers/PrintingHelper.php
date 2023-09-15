@@ -33,4 +33,31 @@ class PrintingHelper
 
         return $info;
     }
+
+    public static function pdfjam($file) {
+        $pdfinfo = PrintingHelper::pdfinfo($file);
+
+        $pdfjam = "/usr/bin/pdfjam";
+        if (!File::exists($pdfjam))
+            throw new \Exception("Instalar pdfjam: apt install texlive-extra-utils.");
+
+        if ($pdfinfo['width'] > $pdfinfo['height']) {
+            $mode = "--landscape";
+        }
+        else {
+            $mode = "--portrait";
+        }
+
+        $pdf = File::dirname($file) . "/" . File::name($file) . "pdfjam.pdf";
+        $process = new Process([$pdfjam, $mode, "--a4paper", "--outfile", $pdf, $file]);
+        $process->run();
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
+
+        if (!File::exists($pdf))
+            throw new \Exception("PDF não encontrado>");
+
+        return $pdf;
+    }
 }

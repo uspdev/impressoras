@@ -8,6 +8,7 @@ use App\Models\Printer;
 use App\Models\Printing;
 use App\Models\Status;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Rawilk\Printing\Facades\Printing as CupsPrinting;
@@ -112,14 +113,18 @@ class WebprintingController extends Controller
         // 3. Se a impressora não tem regra, então qualquer impressão esta liberada
         Status::createStatus('sent_to_printer_queue', $printing);
 
+        // 4. Trata o PDF antes de mandá-lo para a impressora
+        $tmp_pdf = PrintingHelper::pdfjam($filepath);
+
         $printJob = CupsPrinting::newPrintTask()
             ->printer($id)
             ->range($request->start_page, $request->end_page)
             ->jobTitle($filename)
             ->sides($request->sides)
-            ->file($filepath)
+            ->file($tmp_pdf)
             ->send();
         Storage::delete($relpath);
+        File::delete($tmp_pdf);
 
         $printing->jobid = $printJob->id();
         $printing->save();
