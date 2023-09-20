@@ -47,7 +47,7 @@ class PrintingHelper
             $mode = "--landscape";
         }
         else {
-            $mode = "--portrait";
+            $mode = "--no-landscape";
         }
 
         $pdf = File::dirname($file) . "/" . File::name($file) . "pdfjam.pdf";
