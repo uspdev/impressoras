@@ -17,8 +17,8 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-sm form-group col-sm-8">
-                            <label for="email" class="form-label">E-mail</label>
-                            <input class="form-control" type="text" name="email" id="email" />
+                            <label for="codpes" class="form-label">Usuário</label>
+                            <input class="form-control" type="text" name="codpes" id="codpes" />
                         </div>
                     </div>
                     <div class="row">
