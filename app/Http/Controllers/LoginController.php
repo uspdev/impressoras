@@ -27,7 +27,7 @@ class LoginController extends Controller
             return redirect('/');
         }
 
-        request()->session()->flash('alert-danger', 'E-mail e senha incorretos.');
+        request()->session()->flash('alert-danger', 'Usuário e senha incorretos.');
         return redirect('/login/local');
     }
 }
