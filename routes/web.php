@@ -46,6 +46,8 @@ Route::resource('/rules', RuleController::class);
 // local login
 Route::get('/login/local', [LoginController::class, 'index']);
 Route::post('/login/local', [LoginController::class, 'login']);
+Route::get('/login/local/create', [LoginController::class, 'create']);
+Route::post('/login/local/create', [LoginController::class, 'store']);
 
 // Logs
 Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->middleware('can:admin');

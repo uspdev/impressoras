@@ -59,6 +59,11 @@ return [
             'url' => '/rules',
             'can' => 'admin',
         ],
+        [
+            'text' => 'Adicionar usuário',
+            'url' => '/login/local/create',
+            'can' => 'admin',
+        ],
     ],
     'right_menu' => $right_menu,
 ];
