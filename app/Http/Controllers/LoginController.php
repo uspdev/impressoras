@@ -6,6 +6,7 @@ use Auth;
 use Hash;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Permission;
 
 class LoginController extends Controller
 {
@@ -13,9 +14,8 @@ class LoginController extends Controller
         return view('login.index');
     }
 
-    /* veio daqui
-       https://www.positronx.io/laravel-custom-authentication-login-and-registration-tutorial/
-    */
+    /* veio daqui:
+       https://www.positronx.io/laravel-custom-authentication-login-and-registration-tutorial/ */
     function login(Request $request) {
         $request->validate([
             'codpes' => 'required',
@@ -46,12 +46,18 @@ class LoginController extends Controller
             'password' => 'required|min:6'
         ]);
 
+        /* garante que existe a permission para locais
+           TODO consertar para usar Permissions em geral */
+        $p = Permission::findOrCreate('Outros', 'senhaunica');
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'codpes' => $request->codpes,
             'password' => Hash::make($request->password),
         ]);
+
+        $user->givePermissionTo($p);
 
         request()->session()->flash('alert-success', 'Usuário criado com sucesso.');
         return view('login.create');
