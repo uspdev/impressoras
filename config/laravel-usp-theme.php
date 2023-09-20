@@ -40,7 +40,7 @@ return [
             'can' => 'logado',
         ],
         [
-            'text' => 'Minhas Impressões',
+            'text' => 'Minhas impressões',
             'url' => '/printings',
             'can' => 'logado',
         ],
@@ -60,8 +60,8 @@ return [
             'can' => 'admin',
         ],
         [
-            'text' => 'Adicionar usuário',
-            'url' => '/login/local/create',
+            'text' => 'Usuários locais',
+            'url' => '/local',
             'can' => 'admin',
         ],
     ],

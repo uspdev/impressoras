@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\LocalUserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PrinterController;
 use App\Http\Controllers\PrintingController;
@@ -46,8 +47,11 @@ Route::resource('/rules', RuleController::class);
 // local login
 Route::get('/login/local', [LoginController::class, 'index']);
 Route::post('/login/local', [LoginController::class, 'login']);
-Route::get('/login/local/create', [LoginController::class, 'create']);
-Route::post('/login/local/create', [LoginController::class, 'store']);
+
+// local user
+Route::resource('/local', LocalUserController::class)->parameters([
+    'local' => 'user'
+]);
 
 // Logs
 Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->middleware('can:admin');
