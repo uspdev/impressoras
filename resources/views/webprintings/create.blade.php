@@ -13,7 +13,7 @@
                     <div class="col-sm form-group col-sm-8">
                         <label for="file" class="form-label">Arquivo</label>
                         <input class="form-control" type="file" id="file" name="file">
-                        <small>Somente arquivos pdf são permitidos</small>
+                        <small>Somente arquivos pdf são permitidos. Limite de tamanho: 10MB.</small>
                     </div>
                 </div>
 
