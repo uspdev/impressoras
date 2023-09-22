@@ -10,26 +10,17 @@
     @auth
         <script>window.location = "/printings";</script>
     @else
-        <form method="POST" action="/login/local">
-            @csrf
-            <div class="card">
-                <h1>Login local</h1>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-sm form-group col-sm-8">
-                            <label for="codpes" class="form-label">Usuário</label>
-                            <input class="form-control" type="text" name="codpes" id="codpes" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm form-group col-sm-8">
-                            <label for="password" class="form-label">Senha</label>
-                            <input class="form-control" type="password" name="password" id="password" />
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-success">Login</button>
-                </div>
-            </div>
+        <div class="d-flex justify-content-center">
+            <form method="POST" action="/login/local">
+                @csrf
+                    <h1 class="h3 mb-3 font-weight-normal">Login local</h1>
+                    <label for="codpes" class="sr-only">Usuário</label>
+                    <input class="form-control" type="text" name="codpes" id="codpes" placeholder="Usuário" autofocus/>
+                    <label for="password" class="sr-only">Senha</label>
+                    <input class="form-control mb-4" type="password" name="password" id="password" placeholder="Senha" />
+                    <button type="submit" class="btn btn-lg btn-success btn-block">Login</button>
+            </form>
+        </div>
     @endauth
 @endsection
 
