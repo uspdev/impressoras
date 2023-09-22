@@ -47,6 +47,7 @@ class WebprintingController extends Controller
         $request->validate([
             'file' => 'required|mimetypes:application/pdf',
             'sides' => ['required', Rule::in(['one-sided', 'two-sided-long-edge', 'two-sided-short-edge'])],
+            'pages_per_sheet' => ['required', Rule::in(['1', '2', '4'])],
             'start_page' => 'nullable|required_with:end_page|integer|min:1|digits_between: 1,5',
             'end_page' =>   'nullable|required_with:start_page|integer|gte:start_page|digits_between:1,5'
         ]);
