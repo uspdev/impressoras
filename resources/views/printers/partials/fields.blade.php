@@ -1,13 +1,12 @@
-<div class="card">   
-    <table class="table">
-        <tr>
-            <td>
-                <b>Nome:</b> {{ $printer->name }} <br>
-                <b>Regra:</b> {{ $printer->rule ? $printer->rule->name : 'Impressora não possui regra' }} <br>
-                <b>Nome de máquina:</b> {{ $printer->machine_name }}
-            </td>
-        </tr>
-    </table>
+<div class="card">
+    <div class="card-header">
+        <h4>{{ $printer->name }}</h4>
+    </div>
+    <div class="card-body">
+        <b>Nome de máquina:</b> {{ $printer->machine_name }} <br/>
+        <b>Localização:</b> {{ $printer->location }} <br/>
+        <b>Regra:</b> {{ $printer->rule ? $printer->rule->name : 'Impressora não possui regra' }}
+    </div>
 </div>
 <br>
 <div>

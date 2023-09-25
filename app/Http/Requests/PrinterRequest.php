@@ -26,6 +26,7 @@ class PrinterRequest extends FormRequest
         $rules = [
             'name' => 'required',
             'machine_name' => 'required',
+            'location' => 'nullable',
             'rule_id' => 'nullable',
         ];
 
