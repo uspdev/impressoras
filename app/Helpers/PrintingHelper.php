@@ -35,7 +35,7 @@ class PrintingHelper
         return $info;
     }
 
-    public static function pdfjam($file) {
+    public static function pdfjam($file, $pages_per_sheet = 1, $start_page = 1, $end_page = null) {
         $pdfinfo = PrintingHelper::pdfinfo($file);
 
         $pdfjam = "/usr/bin/pdfjam";
@@ -43,15 +43,42 @@ class PrintingHelper
             throw new \Exception("Instalar pdfjam: apt install texlive-extra-utils.");
         }
 
+        $nup = "1x1";
         if ($pdfinfo['width'] > $pdfinfo['height']) {
             $mode = "--landscape";
+            switch ($pages_per_sheet) {
+                case 2:
+                    $mode = "--no-landscape";
+                    $nup = "1x2";
+                    break;
+                case 4:
+                    $nup = "2x2";
+                    break;
+            }
         }
         else {
             $mode = "--no-landscape";
+            switch ($pages_per_sheet) {
+                case 2:
+                    $mode = "--landscape";
+                    $nup = "2x1";
+                    break;
+                case 4:
+                    $nup = "2x2";
+                    break;
+            }
         }
 
         $pdf = File::dirname($file) . "/" . File::name($file) . "pdfjam.pdf";
-        $process = new Process([$pdfjam, $mode, "--a4paper", "--outfile", $pdf, $file]);
+        $command = [
+            $pdfjam, $mode,
+            "--a4paper",
+            "--nup", $nup,
+            "--outfile", $pdf,
+            $file, "$start_page-$end_page"
+        ];
+
+        $process = new Process($command);
         $process->run();
         if (!$process->isSuccessful()) {
             throw new ProcessFailedException($process);

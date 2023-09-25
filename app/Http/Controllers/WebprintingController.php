@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-//use App\Http\Requests\PrintingRequest;
 use App\Helpers\PrintingHelper;
 use App\Models\Printer;
 use App\Models\Printing;
@@ -68,8 +67,10 @@ class WebprintingController extends Controller
             $pages = $pdfinfo['pages'];
         }
 
+        $pages = ceil($pages/$request->pages_per_sheet);
         if ($pages < 1)
-            throw new \Exception("Problema na contagem: contagem errada.");
+            // deveria tratar com exception de validação
+            dd("Problema na contagem: contagem errada.");
 
         // trunca nome para no máximo 64 caracteres
         $filename = explode('.pdf',$filename);
@@ -117,13 +118,22 @@ class WebprintingController extends Controller
         Status::createStatus('sent_to_printer_queue', $printing);
 
         // 4. Trata o PDF antes de mandá-lo para a impressora
-        $tmp_pdf = PrintingHelper::pdfjam($filepath);
+        $pps = $request->pages_per_sheet;
+        if (!empty($request->start_page)) {
+            $start = $request->start_page;
+            // trata possível erro de preenchimento
+            $end = min($pdfinfo['pages'], $request->end_page);
+            $tmp_pdf = PrintingHelper::pdfjam($filepath, $pps, $start, $end);
+        }
+        else
+            $tmp_pdf = PrintingHelper::pdfjam($filepath, $pps);
+
         $pdfx = PrintingHelper::pdfx($tmp_pdf);
+        // pode ser interessante implementar uma validação da contagem
 
         $id = 'ipp://'.config('printing.drivers.cups.ip').':631/printers/' . $printer->machine_name;
         $printJob = CupsPrinting::newPrintTask()
             ->printer($id)
-            ->range($request->start_page, $request->end_page)
             ->jobTitle($filename)
             ->sides($request->sides)
             ->file($pdfx)
