@@ -19,6 +19,10 @@
                     <input type="text" class="form-control" name="machine_name" value="{{old('machine_name',$printer->machine_name)}}">
                 </div>
                 <div class="form-group">
+                    <label for="location"><b>Localização</b></label>
+                    <input type="text" class="form-control" name="location" value="{{old('location',$printer->location)}}">
+                </div>
+                <div class="form-group">
                     <label for="rule_id" class="required"><b>Regra</b></label>
                     <select class="form-control" name="rule_id">
                         <option value="" selected="">Selecione uma opção </option>

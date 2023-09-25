@@ -19,29 +19,30 @@
 
     </style>
 
-	<div class="card-header">
-		<h4><b>Impressoras</b></h4>
+    <div class="card-header">
+        <h4><b>Impressoras</b></h4>
         @can('admin')
         <a href="/printers/create"><i class="fas fa-plus"></i> Adicionar impressora</a>
         @endcan
-	</div>
-	<div class="table-responsive">
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th width="20%">Nome</th>
-                    <th width="20%">Acessar fila</th>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th width="15%">Nome</th>
+                    <th width="15%">Acessar fila</th>
+                    <th width="15%">Localização</th>
                     @can('admin')
-					<th width="20%">Nome de Máquina</th>
-					<th width="20%">Regra</th>
-                    <th widht="20%">Ações</th>
+                    <th width="15%">Nome de Máquina</th>
+                    <th width="15%">Regra</th>
+                    <th width="15%">Ações</th>
                     @endcan
-				</tr>
-			</thead>
-			<tbody>
-				@forelse ($printers as $printer)
-					<tr>
-						<td>{{ $printer->name }}</td>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($printers as $printer)
+                    <tr>
+                        <td>{{ $printer->name }}</td>
                         <td>
                             <div class="d-grid gap-2 d-md-block">
                                 @can('admin')
@@ -56,9 +57,10 @@
                                 @endcan
                             </div>
                         </td>
+                        <td>{{ $printer->location ?? '' }}</td>
                         @can('admin')
-						<td>{{ $printer->machine_name }}</td>
-						<td>{{ $printer->rule->name ?? '' }}</td>
+                        <td>{{ $printer->machine_name }}</td>
+                        <td>{{ $printer->rule->name ?? '' }}</td>
                         <td>
                             <div id="actions">
                                 <a href="/printers/{{$printer->id}}/edit"><i class="fas fa-edit"></i></a>
@@ -72,14 +74,14 @@
                             </div>
                         </td>
                         @endcan
-					</tr>
+                    </tr>
                 @empty
                     <tr>
                         <td colspan="4">Não há impressoras cadastradas</td>
                     </tr>
-				@endforelse
-			</tbody>
-		</table>
-
+                @endforelse
+            </tbody>
+        </table>
+    </div>
 @endsection
 
