@@ -3,43 +3,38 @@
 @section('title', 'Regras')
 
 @section('content')
-
     <style>
+    #actions {
+        display: flex;
+        justify-content: start;
+    }
 
-        #actions
-        {
-            display: flex;
-            justify-content: start;
-        }
-
-        #i-trash
-        {
-            margin-left: 80%;
-        }
-
+    #i-trash {
+        margin-left: 80%;
+    }
     </style>
 
-	<div class="card-header">
-		<h4><b>Regras</b></h4>
+    <div class="card-header">
+        <h4><b>Regras</b></h4>
         <a href="/rules/create"><i class="fas fa-plus"></i> Adicionar regra</a>
-	</div>
-	<div class="table-responsive">
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th width="20%">Nome</th>
-					<th width="20%">Controle da fila para autorização de impressões</th>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th width="20%">Nome</th>
+                    <th width="20%">Controle da fila para autorização de impressões</th>
                     <th width="20%">Período da quota</th>
                     <th widht="20%">Quota</th>
                     <th widht="20%">Restrito para</th>
                     <th widht="20%">Ações</th>
                     <th widht="20%">Visualizar regra</th>
-				</tr>
-			</thead>
-			<tbody>
-				@forelse ($rules as $rule)
-					<tr>
-						<td>{{ $rule->name }}</td>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($rules as $rule)
+                    <tr>
+                        <td>{{ $rule->name }}</td>
                         <td>
                             @if ($rule->queue_control  == 0)
                                 Não
@@ -47,8 +42,8 @@
                                 Sim
                             @endif
                         </td>
-						<td>{{ $rule->quota_period }}</td>
-						<td>{{ $rule->quota }}</td>
+                        <td>{{ $rule->quota_period }}</td>
+                        <td>{{ $rule->quota }}</td>
                         <td>{{ $rule->categories ? implode(", ", $rule->categories) : "Sem restrições" }}</td>
                         <td>
                             <div id="actions">
@@ -63,16 +58,15 @@
                             </div>
                         </td>
                         <td>
-                        <a href="/rules/{{ $rule->id }}"><button class="btn btn-primary" type="button">Regra</button></a>
+                            <a href="/rules/{{ $rule->id }}"><button class="btn btn-primary" type="button">Regra</button></a>
                         </td>
-					</tr>
+                    </tr>
                 @empty     
                     <tr>
-                        <td colspan="6">Não há regras cadastradas</td>
+                        <td colspan="6">Não há regras cadastradas.</td>
                     </tr>
-				@endforelse
-			</tbody>
-		</table>
-
+                @endforelse
+            </tbody>
+        </table>
+    </div>
 @endsection
-
