@@ -43,7 +43,6 @@ class WebprintingController extends Controller
         $user = \Auth::user();
 
         // validação básica
-        // TODO validar paginação
         $request->validate([
             'file' => 'required|mimetypes:application/pdf',
             'sides' => ['required', Rule::in(['one-sided', 'two-sided-long-edge', 'two-sided-short-edge'])],
@@ -52,24 +51,27 @@ class WebprintingController extends Controller
             'end_page' =>   'nullable|required_with:start_page|integer|gte:start_page|digits_between:1,5'
         ]);
 
-        // metadatas do arquivo
+        // metadados do arquivo
         $relpath = $request->file('file')->store('.');
         $filepath = Storage::disk('local')->path($relpath);
         $filename = $request->file('file')->getClientOriginalName();
         $filesize = $request->file('file')->getSize();
 
+        // preaccounting
         $pdfinfo = PrintingHelper::pdfinfo($filepath);
-        $pages = $pdfinfo['pages'];
+
+        if (!empty($request->start_page)) {
+            // end - start pode ser maior que a contagem total por erro de preenchimento
+            $pages = min($pdfinfo['pages'], $request->end_page - $request->start_page + 1);
+        }
+        else {
+            $pages = $pdfinfo['pages'];
+        }
+
         if ($pages < 1)
             throw new \Exception("Problema na contagem: contagem errada.");
 
-        // TODO refatorar
-        if (!empty($request->start_page))
-            $pages = $request->end_page - $request->start_page + 1;
-
-        $id = 'ipp://'.config('printing.drivers.cups.ip').':631/printers/' . $printer->machine_name;
-
-        // Trucando o nome para no máximo 64 caracteres
+        // trunca nome para no máximo 64 caracteres
         $filename = explode('.pdf',$filename);
         $filename = substr($filename[0],0,64).'.pdf';
 
@@ -118,6 +120,7 @@ class WebprintingController extends Controller
         $tmp_pdf = PrintingHelper::pdfjam($filepath);
         $pdfx = PrintingHelper::pdfx($tmp_pdf);
 
+        $id = 'ipp://'.config('printing.drivers.cups.ip').':631/printers/' . $printer->machine_name;
         $printJob = CupsPrinting::newPrintTask()
             ->printer($id)
             ->range($request->start_page, $request->end_page)
