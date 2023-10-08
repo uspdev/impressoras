@@ -35,10 +35,8 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('monitor', function ($user) {
             if(Gate::allows('admin')) return True;
 
-            if (!env('REPLICADO_MONITORES', true))
-                $monitores = explode(',', env('MONITORES', ''));
-            else
-                $monitores = ReplicadoTemp::listarMonitores(22);
+            $monitores = 
+                !env('REPLICADO_MONITORES', true) ? explode(',', env('MONITORES', '')) : ReplicadoTemp::listarMonitores(22);
 
             return in_array($user->codpes, $monitores);
         });
