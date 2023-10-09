@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStatusTable extends Migration
+class UpdateUsersTableLocal extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateStatusTable extends Migration
      */
     public function up()
     {
-        Schema::create('status', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-            $table->string('name');
-            $table->foreignId('printing_id')->constrained();
+        Schema::table('users', function (Blueprint $table) {
+            $table->boolean('local')->default(0);
         });
     }
 
@@ -28,6 +25,8 @@ class CreateStatusTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('status');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('local');
+        });
     }
 }

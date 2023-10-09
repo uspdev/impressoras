@@ -40,7 +40,7 @@ return [
             'can' => 'logado',
         ],
         [
-            'text' => 'Minhas Impressões',
+            'text' => 'Minhas impressões',
             'url' => '/printings',
             'can' => 'logado',
         ],
@@ -57,6 +57,11 @@ return [
         [
             'text' => 'Regras',
             'url' => '/rules',
+            'can' => 'admin',
+        ],
+        [
+            'text' => 'Usuários locais',
+            'url' => '/local',
             'can' => 'admin',
         ],
     ],

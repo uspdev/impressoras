@@ -10,7 +10,8 @@
     @auth
         <script>window.location = "/printings";</script>
     @else
-        Você ainda não fez seu login com a senha única USP <a href="/login"> Faça seu Login! </a>
+        <p>Você ainda não fez seu login com a senha única USP. <a href="/login">Login com senha única</a>.</p>
+        <p>Caso você não possua senha única, é possível logar com uma senha local. <a href="/login/local">Login local</a>.</p>
     @endauth
 @endsection
 

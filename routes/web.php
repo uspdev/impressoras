@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\LocalUserController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PrinterController;
 use App\Http\Controllers\PrintingController;
 use App\Http\Controllers\RuleController;
@@ -42,6 +43,15 @@ Route::post('/webprintings/{printer}', [WebprintingController::class, 'store']);
 
 // Rules
 Route::resource('/rules', RuleController::class);
+
+// local login
+Route::get('/login/local', [LoginController::class, 'index']);
+Route::post('/login/local', [LoginController::class, 'login']);
+
+// local user
+Route::resource('/local', LocalUserController::class)->parameters([
+    'local' => 'user'
+]);
 
 // Logs
 Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->middleware('can:admin');
