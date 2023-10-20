@@ -99,6 +99,7 @@ class PrintingHelper
 
         $base = base_path()."/resources";
         $pdf = File::dirname($file) . "/" . File::name($file) . "pdfx.pdf";
+
         $process = new Process([
             $ghostscript,
             '-dBATCH', '-dNOPAUSE', '-dQUIET',
@@ -110,6 +111,7 @@ class PrintingHelper
             '-I', $base, $base.'/PDFX_def.ps',
             $file
         ]);
+        $process->setTimeout(45);
         $process->run();
         if (!$process->isSuccessful()) {
             throw new ProcessFailedException($process);
