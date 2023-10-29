@@ -105,6 +105,7 @@ class PrintingHelper
             '-dBATCH', '-dNOPAUSE', '-dQUIET',
             '-dPDFX',
             '-sDEVICE=pdfwrite',
+            '-sProcessColorModel=DeviceCMYK',
             '-sColorConversionStrategy=Gray',
             '-sPDFSETTINGS=prepress',
             '-sOutputFile='.$pdf,
