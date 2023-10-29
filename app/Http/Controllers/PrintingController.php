@@ -8,6 +8,7 @@ use App\Models\Status;
 use Illuminate\Http\Request;
 use Rawilk\Printing\Facades\Printing as CupsPrinting;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use App\Helpers\PrintingHelper;
 
 class PrintingController extends Controller
