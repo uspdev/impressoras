@@ -7,7 +7,8 @@ use App\Models\Printer;
 use App\Models\Status;
 use Illuminate\Http\Request;
 use Rawilk\Printing\Facades\Printing as CupsPrinting;
-use Illuminate\Support\Facades\Storage; 
+use Illuminate\Support\Facades\Storage;
+use App\Helpers\PrintingHelper;
 
 class PrintingController extends Controller
 {
@@ -89,14 +90,32 @@ class PrintingController extends Controller
 
             $filepath = Storage::disk('local')->path($printing->tmp_relpath);
 
+            // preaccounting
+            $pdfinfo = PrintingHelper::pdfinfo($filepath);
+
+            // REPETIDO - Trata o PDF antes de mandá-lo para a impressora
+            $pps = $printing->pages_per_sheet;
+            if (!empty($request->start_page)) {
+                $start = $printing->start_page;
+                // trata possível erro de preenchimento
+                $end = min($pdfinfo['pages'], $printing->end_page);
+                $tmp_pdf = PrintingHelper::pdfjam($filepath, $pps, $start, $end);
+            }
+            else
+                $tmp_pdf = PrintingHelper::pdfjam($filepath, $pps);
+
+            $pdfx = PrintingHelper::pdfx($tmp_pdf);
+            // pode ser interessante implementar uma validação da contagem
+
             $printJob = CupsPrinting::newPrintTask()
                 ->printer($id)
                 ->jobTitle($printing->filename)
-                ->range($printing->start_page, $printing->end_page)
                 ->sides($printing->sides)
-                ->file($filepath)
+                ->file($pdfx)
                 ->send();
             Storage::delete($printing->tmp_relpath);
+            File::delete($tmp_pdf);
+            File::delete($pdfx);
 
             $printing->jobid = $printJob->id();
             $printing->save();

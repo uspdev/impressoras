@@ -89,6 +89,7 @@ class WebprintingController extends Controller
             "start_page" => $request->start_page,
             "end_page" => $request->end_page,
             "tmp_relpath" => $relpath,
+            "pages_per_sheet" => $request->pages_per_sheet
         ];
 
         // OBS: aqui não temos ainda o jobid de verdade
