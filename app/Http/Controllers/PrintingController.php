@@ -96,7 +96,7 @@ class PrintingController extends Controller
 
             // REPETIDO - Trata o PDF antes de mandá-lo para a impressora
             $pps = $printing->pages_per_sheet;
-            if (!empty($request->start_page)) {
+            if (!empty($printing->start_page)) {
                 $start = $printing->start_page;
                 // trata possível erro de preenchimento
                 $end = min($pdfinfo['pages'], $printing->end_page);
