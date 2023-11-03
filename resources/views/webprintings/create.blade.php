@@ -47,15 +47,20 @@
                 </div>
 
                 <div class="row">
-                    <div class="form-group col-sm-4">
+                    <div class="form-group col-sm-3">
                         <label for="start_page" class="form-label">Página inicial </label>
                         <input class="form-control" type="text" name="start_page" id="start_page" value="{{ old('start_page') }}"/>
                         <small class="form-text text-muted">Não preencher caso for todo o documento.</small>
                     </div>
-                    <div class="form-group col-sm-4">
+                    <div class="form-group col-sm-3">
                         <label for="end_page" class="form-label">Página final</label>
                         <input class="form-control" type="text" name="end_page" id="end_page" value="{{ old('end_page') }}" />
                         <small class="form-text text-muted">Não preencher caso for todo o documento.</small>
+                    </div>
+                    <div class="form-group col-sm-3">
+                        <label for="copies" class="form-label">Cópias</label>
+                        <input class="form-control" type="text" name="copies" id="copies" value="{{ old('copies',1) }}" />
+                        <small class="form-text text-muted">Quantidade de cópias do mesmo documento</small>
                     </div>
                 </div>
 

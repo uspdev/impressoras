@@ -10,6 +10,7 @@ use Rawilk\Printing\Facades\Printing as CupsPrinting;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use App\Helpers\PrintingHelper;
+use App\Jobs\PrintingJob;
 
 class PrintingController extends Controller
 {
@@ -76,61 +77,20 @@ class PrintingController extends Controller
     {
         $this->authorize('monitor');
 
-        $printer = $printing->printer;
+        // Salva quem autorizou
         $user = \Auth::user();
         $printing->authorized_by_user_id = $user->id;
         $printing->save();
 
         if ($request->action == 'authorized') {
-            Status::createStatus('sent_to_printer_queue', $printing);
             request()->session()->flash('alert-success', 'Impressão autorizada com sucesso.');
-
-            // trocando id pelo nome da impressora
-            $printer = Printer::find($printing->printer_id);
-            $id = 'ipp://'.config('printing.drivers.cups.ip').':631/printers/' . $printer->machine_name;
-
-            $filepath = Storage::disk('local')->path($printing->tmp_relpath);
-
-            // preaccounting
-            $pdfinfo = PrintingHelper::pdfinfo($filepath);
-
-            // REPETIDO - Trata o PDF antes de mandá-lo para a impressora
-            $pps = $printing->pages_per_sheet;
-            if (!empty($printing->start_page)) {
-                $start = $printing->start_page;
-                // trata possível erro de preenchimento
-                $end = min($pdfinfo['pages'], $printing->end_page);
-                $tmp_pdf = PrintingHelper::pdfjam($filepath, $pps, $start, $end);
-            }
-            else
-                $tmp_pdf = PrintingHelper::pdfjam($filepath, $pps);
-
-            $pdfx = PrintingHelper::pdfx($tmp_pdf);
-            // pode ser interessante implementar uma validação da contagem
-
-            $printJob = CupsPrinting::newPrintTask()
-                ->printer($id)
-                ->jobTitle($printing->filename)
-                ->sides($printing->sides)
-                ->file($pdfx)
-                ->send();
-            Storage::delete($printing->tmp_relpath);
-            File::delete($tmp_pdf);
-            File::delete($pdfx);
-
-            $printing->jobid = $printJob->id();
-            $printing->save();
-            Status::createStatus('print_success', $printing);
-            
-
+            PrintingJob::dispatch($printing);
         } elseif ($request->action == 'cancelled') {
             Status::createStatus('cancelled_not_authorized', $printing);
             request()->session()->flash('alert-danger', 'Impressão cancelada');
         }
 
-        
-
-        return redirect("/printers/auth_queue/{$printer->id}");
+        return redirect("/printers/auth_queue/{$printing->printer->id}");
     }
 
     public function refund(Printing $printing)
