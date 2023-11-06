@@ -83,6 +83,7 @@ class PrintingController extends Controller
         $printing->save();
 
         if ($request->action == 'authorized') {
+            Status::createStatus('processing_pdf', $printing);
             request()->session()->flash('alert-success', 'Impressão autorizada com sucesso.');
             PrintingJob::dispatch($printing);
         } elseif ($request->action == 'cancelled') {
