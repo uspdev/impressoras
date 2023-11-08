@@ -115,12 +115,13 @@ class PrintingHelper
         $process->setTimeout($timeout);
 
         /**
+         * Vamos esperar a metade do tempo do timeout
          * Contornando assincronamente a mensagem de exception do timeout, baseado em:
          * https://symfony.com/doc/current/components/process.html#process-timeout
          **/
         $process->start();
         $i = 0;
-        while ($process->isRunning() && $i < $timeout) {
+        while ($process->isRunning() && $i < $timeout/2) {
             sleep(1);
             $i++;
         }
