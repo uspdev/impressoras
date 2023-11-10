@@ -92,6 +92,7 @@ class PrinterController extends Controller
         return redirect('/printers');
     }
 
+    /* TODO: Esse método, a principio pode ser deletado
     public function printer_queue(Printer $printer)
     {
         $this->authorize('monitor');
@@ -108,6 +109,7 @@ class PrinterController extends Controller
             'auth' => false,
         ]);
     }
+    */
 
     public function authorization_queue(Printer $printer, PhotoService $photos, Request $request)
     {

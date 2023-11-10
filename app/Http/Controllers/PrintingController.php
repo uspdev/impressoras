@@ -47,17 +47,19 @@ class PrintingController extends Controller
     public function show(Request $request){
         $this->authorize('monitor');
         
+        $printings = Printing::orderBy('id', 'DESC');
+
         if(isset($request->search)) {
-            $printings = Printing::where('filename','LIKE',"%{$request->search}%")
-                                    ->Orwhere('user', 'LIKE', "%{$request->search}%")
-                                    ->latest()
-                                    ->paginate(15);
-        } else {
-            $printings = Printing::latest()->paginate(15);
+            $printings = $printings->where('filename','LIKE',"%{$request->search}%")
+                                    ->Orwhere('user', 'LIKE', "%{$request->search}%");
+        }
+
+        if(isset($request->status)) {
+            $printings =  $printings->where('latest_status',$request->status);
         }
 
         return view('allprintings.geral_index',[
-            'printings' => $printings,
+            'printings' => $printings->paginate(15),
         ]);
     }
 

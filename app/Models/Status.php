@@ -10,9 +10,8 @@ class Status extends Model
     use HasFactory;
     protected $table = 'status';
 
-    public static function statusName($status)
-    {
-        $list = [
+    public static function getStatus() {
+        return [
             'waiting_job_authorization' => 'Aguardando autorização',
             'cancelled_user_out_of_quota' => 'Cancelado - excedeu a quota',
             'cancelled_not_authorized' => 'Cancelado - não autorizado pelo monitor',
@@ -25,6 +24,11 @@ class Status extends Model
             'print_success' => 'Impresso com sucesso',
             'printer_problem' => 'Cancelado - Problema na impressora',
         ];
+    }
+
+    public static function statusName($status)
+    {
+        $list = self::getStatus();
 
         if(empty($status)){
             return 'Sem status';
