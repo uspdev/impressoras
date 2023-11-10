@@ -21,7 +21,7 @@
         "uspdev/laravel-printing": "^1.0.2",
         "uspdev/laravel-usp-theme": "^2.0",
         "uspdev/replicado": "^1.5",
-        "uspdev/senhaunica-socialite": "4.3.7",
+        "uspdev/senhaunica-socialite": "4.3.8",
         "uspdev/wsfoto": "^2.0"
     },
     "require-dev": {
