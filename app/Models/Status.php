@@ -10,18 +10,25 @@ class Status extends Model
     use HasFactory;
     protected $table = 'status';
 
-    public static function statusName($status)
-    {
-        $list = [
+    public static function getStatus() {
+        return [
             'waiting_job_authorization' => 'Aguardando autorização',
             'cancelled_user_out_of_quota' => 'Cancelado - excedeu a quota',
             'cancelled_not_authorized' => 'Cancelado - não autorizado pelo monitor',
             'cancelled_not_allowed'   => 'Cancelado - pessoa não possui vínculo necessário para usar essa impressora',
-            'cancelled_timeout' => 'Cancelado - Tempo de resposta a solicitação expirado', 
+            'cancelled_timeout' => 'Cancelado - Tempo de resposta a solicitação expirado',
+            'failed_in_process_pdf' => 'Erro ao processar o arquivo pdf',
+            'pdf_processed_successfully' => 'Arquivo pdf processado com sucesso',
+            'processing_pdf' => 'Processando arquivo pdf',
             'sent_to_printer_queue' => 'Enviado para a impressora',
             'print_success' => 'Impresso com sucesso',
             'printer_problem' => 'Cancelado - Problema na impressora',
         ];
+    }
+
+    public static function statusName($status)
+    {
+        $list = self::getStatus();
 
         if(empty($status)){
             return 'Sem status';

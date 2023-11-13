@@ -37,12 +37,13 @@ class PrintingRequest extends FormRequest
         ];
     }
 
+    /* 03/10/2023 - Thiago: Acho que não é mais necessário depois que saímos do tea4cups 
     public function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json([
-            'success' => false,
-            'message' => 'Validation errors',
-            'data' => $validator->errors(),
+                'success' => false,
+                'message' => 'Validation errors',
+                'data' => $validator->errors(),
             ]));
     }
-}
+    */

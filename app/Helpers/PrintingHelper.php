@@ -85,7 +85,7 @@ class PrintingHelper
         }
 
         if (!File::exists($pdf))
-            throw new \Exception("PDF não encontrado>");
+            throw new \Exception("PDF não encontrado");
 
         return $pdf;
     }
@@ -100,6 +100,7 @@ class PrintingHelper
         $base = base_path()."/resources";
         $pdf = File::dirname($file) . "/" . File::name($file) . "pdfx.pdf";
 
+        $timeout = (int) config('impressoras.gs_timeout');
         $process = new Process([
             $ghostscript,
             '-dBATCH', '-dNOPAUSE', '-dQUIET',
@@ -111,12 +112,21 @@ class PrintingHelper
             '-I', $base, $base.'/PDFX_def.ps',
             $file
         ]);
-        $process->setTimeout(45);
-        $process->run();
-        if (!$process->isSuccessful()) {
-            throw new ProcessFailedException($process);
+        $process->setTimeout($timeout);
+
+        /**
+         * Vamos esperar a metade do tempo do timeout
+         * Contornando assincronamente a mensagem de exception do timeout, baseado em:
+         * https://symfony.com/doc/current/components/process.html#process-timeout
+         **/
+        $process->start();
+        $i = 0;
+        while ($process->isRunning() && $i < $timeout/2) {
+            sleep(1);
+            $i++;
         }
 
+        if (!$process->isSuccessful()) return '';
         return $pdf;
     }
 }
