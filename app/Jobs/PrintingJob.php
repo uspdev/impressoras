@@ -61,7 +61,7 @@ class PrintingJob implements ShouldQueue
         }
 
         // salvando caminho filepath_processed processado com ghostscript
-        $filepath_processed = PrintingHelper::pdfx($this->printing->filepath_pdfjam);
+        $filepath_processed = PrintingHelper::pdfx($this->printing->filepath_pdfjam, $this->printing->printer->color);
         if(empty($filepath_processed) ) {
             Status::createStatus('failed_in_process_pdf', $this->printing);
         } else {

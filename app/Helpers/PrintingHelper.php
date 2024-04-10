@@ -90,7 +90,7 @@ class PrintingHelper
         return $pdf;
     }
 
-    public static function pdfx($file) {
+    public static function pdfx($file, $color) {
         $ghostscript = "/usr/bin/gs";
 
         if (!File::exists($ghostscript)) {
@@ -100,13 +100,18 @@ class PrintingHelper
         $base = base_path()."/resources";
         $pdf = File::dirname($file) . "/" . File::name($file) . "pdfx.pdf";
 
+        $strategy = 'Gray';
+        if ($color) {
+            $strategy = 'CMYK';
+        }
+
         $timeout = (int) config('impressoras.gs_timeout');
         $process = new Process([
             $ghostscript,
             '-dBATCH', '-dNOPAUSE', '-dQUIET',
             '-dPDFX',
             '-sDEVICE=pdfwrite',
-            '-sColorConversionStrategy=Gray',
+            '-sColorConversionStrategy='.$strategy,
             '-sPDFSETTINGS=prepress',
             '-sOutputFile='.$pdf,
             '-I', $base, $base.'/PDFX_def.ps',
