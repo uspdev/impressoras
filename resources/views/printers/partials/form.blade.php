@@ -18,6 +18,14 @@
                     <label for="machine_name" class="required"><b>Nome de Máquina</b></label>
                     <input type="text" class="form-control" name="machine_name" value="{{old('machine_name',$printer->machine_name)}}">
                 </div>
+
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="color" name="color" value="1" 
+                        @if( old('color',$printer->color) == '1' ) checked @endif />
+                    <label class="form-check-label" for="color">Impressora Colorida</label>
+                </div>
+                <br>
+
                 <div class="form-group">
                     <label for="location"><b>Localização</b></label>
                     <input type="text" class="form-control" name="location" value="{{old('location',$printer->location)}}">

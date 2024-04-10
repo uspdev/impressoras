@@ -27,6 +27,7 @@ class PrinterRequest extends FormRequest
             'name' => 'required',
             'machine_name' => 'required',
             'location' => 'nullable',
+            'color'    => 'nullable',
             'rule_id' => 'nullable',
         ];
 

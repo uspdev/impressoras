@@ -5,7 +5,8 @@
     <div class="card-body">
         <b>Nome de máquina:</b> {{ $printer->machine_name }} <br/>
         <b>Localização:</b> {{ $printer->location }} <br/>
-        <b>Regra:</b> {{ $printer->rule ? $printer->rule->name : 'Impressora não possui regra' }}
+        <b>Regra:</b> {{ $printer->rule ? $printer->rule->name : 'Impressora não possui regra' }} <br/>
+        <b>Tipo:</b> @if($printer->color) Colorida @else Preto e Branca @endif
     </div>
 </div>
 <br>

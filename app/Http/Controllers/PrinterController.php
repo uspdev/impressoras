@@ -72,6 +72,11 @@ class PrinterController extends Controller
     {
         $this->authorize('admin');
 
+        if(!isset($request->color)){
+            $printer->color = 0;
+            $printer->save();
+        }
+        
         $printer->update($request->validated());
 
         return redirect('/printers');

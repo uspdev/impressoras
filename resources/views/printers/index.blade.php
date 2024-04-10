@@ -33,7 +33,8 @@
                     <th width="15%">Acessar fila</th>
                     <th width="15%">Localização</th>
                     @can('admin')
-                    <th width="15%">Nome de Máquina</th>
+                    <th width="10%">Nome de Máquina</th>
+                    <th width="5%">Tipo</th>
                     <th width="15%">Regra</th>
                     <th width="15%">Ações</th>
                     @endcan
@@ -60,6 +61,7 @@
                         <td>{{ $printer->location ?? '' }}</td>
                         @can('admin')
                         <td>{{ $printer->machine_name }}</td>
+                        <td>@if($printer->color) Colorida @else Preto e Branca @endif</td>
                         <td>{{ $printer->rule->name ?? '' }}</td>
                         <td>
                             <div id="actions">
