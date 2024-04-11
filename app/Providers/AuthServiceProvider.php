@@ -38,7 +38,7 @@ class AuthServiceProvider extends ServiceProvider
             if (!env('REPLICADO_MONITORES', true))
                 $monitores = explode(',', env('MONITORES', ''));
             else
-                $monitores = ReplicadoTemp::listarMonitores(env('IMPRESSORAS_CODSLAMON'));
+                $monitores = ReplicadoTemp::listarMonitores(env('IMPRESSORAS_CODSLAMON',22));
 
             return in_array($user->codpes, $monitores);
         });
