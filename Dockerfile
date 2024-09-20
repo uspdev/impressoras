@@ -9,6 +9,8 @@ RUN sed -i 's|main|main non-free|' /etc/apt/sources.list && apt-get update && ap
     libgs9-common \
     poppler-utils \
     texlive-extra-utils \
+    parallel \
+    pdftk \
     libicu-dev \
     libzip-dev \
     git \
