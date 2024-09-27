@@ -12,6 +12,7 @@ RUN sed -i 's|main|main non-free|' /etc/apt/sources.list && apt-get update && ap
     parallel \
     pdftk \
     libicu-dev \
+    libxml2-dev \
     libzip-dev \
     git \
     zip \
@@ -31,6 +32,7 @@ RUN docker-php-ext-install \
     intl \
     pdo_dblib \
     pdo_mysql \
+    soap \
     zip
 
 # php memory
