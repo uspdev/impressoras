@@ -97,7 +97,6 @@ class PrintingHelper
             throw new \Exception("Instalar ghostscript: apt install ghostscript.");
         }
 
-        $base = base_path()."/resources";
         $pdf = File::dirname($file) . "/" . File::name($file) . "pdfx.pdf";
 
         $strategy = 'Gray';
@@ -105,17 +104,15 @@ class PrintingHelper
             $strategy = 'CMYK';
         }
 
+        $parallel_pdfx = base_path()."/resources/parallel_pdfx.sh";
+        $base = base_path()."/resources";
         $timeout = (int) config('impressoras.gs_timeout');
         $process = new Process([
-            $ghostscript,
-            '-dBATCH', '-dNOPAUSE', '-dQUIET',
-            '-dPDFX',
-            '-sDEVICE=pdfwrite',
-            '-sColorConversionStrategy='.$strategy,
-            '-sPDFSETTINGS=prepress',
-            '-sOutputFile='.$pdf,
-            '-I', $base, $base.'/PDFX_def.ps',
-            $file
+            $parallel_pdfx,
+            $base,
+            $file,
+            $strategy,
+            $pdf
         ]);
         $process->setTimeout($timeout);
 

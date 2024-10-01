@@ -9,7 +9,10 @@ RUN sed -i 's|main|main non-free|' /etc/apt/sources.list && apt-get update && ap
     libgs9-common \
     poppler-utils \
     texlive-extra-utils \
+    parallel \
+    pdftk \
     libicu-dev \
+    libxml2-dev \
     libzip-dev \
     git \
     zip \
@@ -29,7 +32,17 @@ RUN docker-php-ext-install \
     intl \
     pdo_dblib \
     pdo_mysql \
+    soap \
     zip
+
+# php memory
+ENV PHP_MEMORY_LIMIT 512M
+ENV PHP_UPLOAD_LIMIT 512M
+RUN { \
+        echo 'memory_limit=${PHP_MEMORY_LIMIT}'; \
+        echo 'upload_max_filesize=${PHP_UPLOAD_LIMIT}'; \
+        echo 'post_max_size=${PHP_UPLOAD_LIMIT}'; \
+    } > "${PHP_INI_DIR}/conf.d/upload.ini"
 
 # laravel
 COPY . .
@@ -45,3 +58,4 @@ CMD ["./serve.sh"]
 # source:
 # [1] https://www.digitalocean.com/community/tutorials/how-to-install-and-set-up-laravel-with-docker-compose-on-ubuntu-22-04
 # [2] https://github.com/docker-library/php
+# [3] https://github.com/nextcloud/docker/blob/master/29/fpm-alpine/Dockerfile

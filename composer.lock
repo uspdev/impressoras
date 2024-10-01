@@ -7027,16 +7027,16 @@
         },
         {
             "name": "uspdev/laravel-usp-theme",
-            "version": "2.8.1",
+            "version": "2.8.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/uspdev/laravel-usp-theme.git",
-                "reference": "bcf1c38c5c4282f09a203978a51c7e82929a5d3a"
+                "reference": "e4b3bcabec9a4c454ff7f2bc29f635e85a510c82"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/uspdev/laravel-usp-theme/zipball/bcf1c38c5c4282f09a203978a51c7e82929a5d3a",
-                "reference": "bcf1c38c5c4282f09a203978a51c7e82929a5d3a",
+                "url": "https://api.github.com/repos/uspdev/laravel-usp-theme/zipball/e4b3bcabec9a4c454ff7f2bc29f635e85a510c82",
+                "reference": "e4b3bcabec9a4c454ff7f2bc29f635e85a510c82",
                 "shasum": ""
             },
             "type": "library",
@@ -7071,9 +7071,9 @@
             "description": "usp theme for laravel",
             "support": {
                 "issues": "https://github.com/uspdev/laravel-usp-theme/issues",
-                "source": "https://github.com/uspdev/laravel-usp-theme/tree/2.8.1"
+                "source": "https://github.com/uspdev/laravel-usp-theme/tree/2.8.7"
             },
-            "time": "2023-09-21T16:53:04+00:00"
+            "time": "2024-08-21T12:07:01+00:00"
         },
         {
             "name": "uspdev/replicado",
@@ -9671,5 +9671,5 @@
         "php": "^7.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
