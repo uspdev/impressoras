@@ -59,6 +59,7 @@ class Printing extends Model
 
         // somente impressões do mês ou do dia
         if ($period == 'Mensal') {
+            $query->whereYear('printings.created_at', '=', date('Y'));
             $query->whereMonth('printings.created_at', '=', date('n'));
         } elseif ($period == 'Diário') {
             $query->whereDate('printings.created_at', Carbon::today());

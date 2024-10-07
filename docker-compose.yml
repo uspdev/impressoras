@@ -1,0 +1,83 @@
+# references
+# https://doc.traefik.io/traefik/v2.0/user-guides/docker-compose/acme-http/
+# https://github.com/bluepuma77/traefik-best-practice/blob/main/docker-traefik-dashboard-letsencrypt/docker-compose.yml
+
+services:
+  proxy:
+    image: traefik:v3.1.4
+    restart: always
+    command:
+      - --api.dashboard=true
+      - --providers.docker.network=proxy
+      - --providers.docker.exposedbydefault=false
+      - --entryPoints.web.address=:80
+      - --entryPoints.web.http.redirections.entryPoint.to=websecure
+      - --entryPoints.websecure.address=:443
+      - --certificatesresolvers.le.acme.httpchallenge=true
+      - --certificatesresolvers.le.acme.httpchallenge.entrypoint=web
+      - --certificatesresolvers.le.acme.email=${LETSENCRYPT_ADMIN}
+      - --certificatesresolvers.le.acme.storage=/letsencrypt/acme.json
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - letsencrypt:/letsencrypt
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.traefik.entrypoints=websecure
+      - traefik.http.routers.traefik.rule=Host(`${TRAEFIK_HOSTNAME}`)
+      - traefik.http.routers.traefik.tls.certresolver=le
+      - traefik.http.routers.traefik.service=api@internal
+      - traefik.http.routers.traefik.middlewares=auth_user
+      - traefik.http.middlewares.auth_user.basicauth.users=${TRAEFIK_ADMIN}
+    networks:
+      - proxy
+
+  mariadb:
+    image: mariadb:11.5.2
+    restart: always
+    volumes:
+      - mariadb:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+
+  impressoras:
+    image: uspdev/impressoras:2.2.0
+    restart: always
+    env_file: .env
+    volumes:
+      - impressoes:/var/www/html/storage/app
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.impressoras.entrypoints=websecure
+      - traefik.http.routers.impressoras.rule=Host(`${IMPRESSORAS_HOSTNAME}`)
+      - traefik.http.routers.impressoras.tls.certresolver=le
+    networks:
+      - proxy
+      - default
+
+  spdf:
+    image: frooodle/s-pdf:0.29.0
+    restart: always
+    environment:
+      - SYSTEM_DEFAULTLOCALE=pt-BR
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.spdf.entrypoints=websecure
+      - traefik.http.routers.spdf.rule=Host(`${SPDF_HOSTNAME}`)
+      - traefik.http.routers.spdf.tls.certresolver=le
+    networks:
+      - proxy
+
+volumes:
+  letsencrypt:
+  mariadb:
+  impressoes:
+
+networks:
+  proxy:
+    name: proxy
