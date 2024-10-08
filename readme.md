@@ -68,3 +68,36 @@ Para limpar banco:
 
     delete from status;
     delete from printings;
+
+
+################
+## Utilização ##
+################
+
+Com a implantação do sistema "impressoras", o fluxo de impressão deixa de ser o usuário imprimindo algo direto da aplicação Windows/Linux e passa a ser:
+- "imprimir" pelo Windows/Linux escolhendo a opção de gerar PDF;
+- acessar o sistema "impressoras";
+- subir o PDF para que o sistema "impressoras" realize a impressão.
+
+
+#####################
+## Funcionalidades ##
+#####################
+
+- menu "Enviar impressão": permite que usuários enviem documentos para impressão;
+- menu "Minhas impressões": permite que o usuário consulte histórico de suas impressões;
+- menu "Todas as impressões": permite que admins e monitores consultem histórico de impressões;
+                              permite que admins e monitores consultem histórico de impressões de quaisquer usuários e de quaisquer arquivos;
+- menu "Impressoras": permite que admins cadastrem, alterem e excluam impressoras, especificando quais regras de quotas serão utilizadas;
+                      permite que admins e monitores consultem filas de impressão, autorizem ou desautorizem impressões, e consultem histórico de autorizações de impressões;
+- menu "Regras": permite que admins cadastrem, alterem e excluam regras de quotas para grupos de usuários;
+- menu "Usuários locais": permite que admins cadastrem, alterem e excluam usuários na base de dados local do "impressoras".
+
+
+#################
+## Observações ##
+#################
+
+- os monitores são definidos pelas tabelas BENEFICIOALUCONCEDIDO e BENEFICIOALUNO do Replicado, ou em variável de configuração no .env;
+- tudo a que um monitor tem acesso, os admins também têm acesso;
+- no cadastro da regra, pode-se ligar ou desligar a obrigatoriedade de ter autorização manual por parte dos monitores para cada solicitação de impressão.
