@@ -18,6 +18,8 @@ Pacotes do Debian 11:
   - ghostscript
   - icc-profiles
   - libgs9-common
+  - parallel
+  - pdftk
   - poppler-utils
   - texlive-extra-utils
 
