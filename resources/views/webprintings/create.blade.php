@@ -17,7 +17,7 @@
                 <div class="row">
                     <div class="form-group col-sm-8">
                         <div class="custom-file">
-                            <input class="custom-file-input" type="file" id="file" name="file">
+                            <input class="custom-file-input" type="file" id="file" name="file" accept="application/pdf">
                             <label for="file" class="custom-file-label">Selecionar arquivo</label>
                         </div>
                         <small class="form-text text-muted">Somente arquivos pdf são permitidos. Limite de tamanho: 10MB.</small>
