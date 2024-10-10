@@ -1,15 +1,13 @@
 @extends('master')
 
-@section('code', '500')
-
-@section('title', 'Erro ao imprimir.')
+@section('title', 'Erro ao imprimir')
 
 @section('content')
     <div class="container">
         <div class="row">
             <div class="col-md-12 text-center">
                 <div class="alert alert-danger">
-                    <h1>500: erro no servidor!</h1>
+                    <h1>Erro ao processar o PDF</h1>
                 </div>
                 <div class="lead">
                     <p>Seu trabalho demorou tempo demais para ser processado.</p>
