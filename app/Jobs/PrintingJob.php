@@ -42,14 +42,20 @@ class PrintingJob implements ShouldQueue
         if (!empty($this->printing->start_page)) {
             // trata possível erro de preenchimento
             $end = min($pdfinfo['pages'], $this->printing->end_page);
-            $filepath_pdfjam = PrintingHelper::pdfjam($this->printing->filepath_original,
-                                                      $this->printing->pages_per_sheet, 
-                                                      $this->printing->start_page, 
-                                                     $end);
+            $filepath_pdfjam = PrintingHelper::pdfjam(
+                $this->printing->filepath_original,
+                $this->printing->shrink,
+                $this->printing->pages_per_sheet,
+                $this->printing->start_page,
+                $end
+            );
         }
         else {
-            $filepath_pdfjam = PrintingHelper::pdfjam($this->printing->filepath_original,
-                                                      $this->printing->pages_per_sheet);
+            $filepath_pdfjam = PrintingHelper::pdfjam(
+                $this->printing->filepath_original,
+                $this->printing->shrink,
+                $this->printing->pages_per_sheet
+            );
         }
 
         // salvando caminho filepath_pdfjam

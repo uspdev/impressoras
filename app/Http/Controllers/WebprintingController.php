@@ -90,6 +90,7 @@ class WebprintingController extends Controller
             "sides" => $request->sides,
             "start_page" => $request->start_page,
             "end_page" => $request->end_page,
+            "shrink" => $request->has('shrink'),
             "filepath_original" => $filepath,
             "pages_per_sheet" => $request->pages_per_sheet
         ];

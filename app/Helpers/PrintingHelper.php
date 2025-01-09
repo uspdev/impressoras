@@ -35,7 +35,7 @@ class PrintingHelper
         return $info;
     }
 
-    public static function pdfjam($file, $pages_per_sheet = 1, $start_page = 1, $end_page = null) {
+    public static function pdfjam($file, $shrink = false, $pages_per_sheet = 1, $start_page = 1, $end_page = null) {
         $pdfinfo = PrintingHelper::pdfinfo($file);
 
         $pdfjam = "/usr/bin/pdfjam";
@@ -69,11 +69,18 @@ class PrintingHelper
             }
         }
 
+        $scale = 1;
+        if ($shrink) {
+            // 6mm margin in A4 paper
+            $scale = 0.95;
+        }
+
         $pdf = File::dirname($file) . "/" . File::name($file) . "pdfjam.pdf";
         $command = [
             $pdfjam, $mode,
             "--a4paper",
             "--nup", $nup,
+            "--scale", $scale,
             "--outfile", $pdf,
             $file, "$start_page-$end_page"
         ];
