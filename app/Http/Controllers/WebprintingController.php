@@ -76,7 +76,7 @@ class WebprintingController extends Controller
 
         // trunca nome para no máximo 64 caracteres
         $filename = explode('.pdf',$filename);
-        $filename = substr($filename[0],0,64).'.pdf';
+        $filename = mb_substr($filename[0],0,64).'.pdf';
 
         $data = [
             "user" => $user->codpes,
