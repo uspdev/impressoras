@@ -20,7 +20,7 @@
                             <input class="custom-file-input" type="file" id="file" name="file" accept="application/pdf">
                             <label for="file" class="custom-file-label">Selecionar arquivo</label>
                         </div>
-                        <small class="form-text text-muted">Somente arquivos pdf são permitidos. Limite de tamanho: 10MB.</small>
+                        <small class="form-text text-muted">Somente arquivos PDF são permitidos. Limite de tamanho: {{ $size }}MB.</small>
                     </div>
                 </div>
 

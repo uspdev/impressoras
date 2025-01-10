@@ -33,8 +33,11 @@ class WebprintingController extends Controller
 
     public function create(Printer $printer){
         $this->authorize('imprime', $printer);
+        // tamanho do upload_max_filesize em MB
+        $size = ini_parse_quantity(ini_get('upload_max_filesize'))/1024/1024;
         return view('webprintings.create', [
-            'printer' => $printer
+            'printer' => $printer,
+            'size' => $size,
         ]);
     }
 
