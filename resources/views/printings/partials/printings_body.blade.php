@@ -7,7 +7,14 @@
 <td>{{ round((float) $printing->filesize/1024) }} KB</td>
 <td>{{ $printing->filename }}</td>
 <td>{{ $printing->printer->name }}</td>
-<td><b><p style="color:red;">{{ \App\Models\Status::statusName($printing->latest_status) }}</p></b></td>
+<td>
+<b>
+  <p style="color:red;">{{ \App\Models\Status::statusName($printing->latest_status) }}</p>
+  @if ($printing->latest_status == 'failed_in_process_pdf')
+    <a href="/help/raster">Como resolver?</a>
+  @endif
+</b>
+</td>
 @if (!empty($auth))
 <td>{{ $printing->authorizedByUserId->name ?? '' }}</td>
 @endif

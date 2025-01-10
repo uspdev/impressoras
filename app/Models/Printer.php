@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 use App\Models\Printing;
 use App\Models\User;
 
-class Printer extends Model #implements \Rawilk\Printing\Contracts\Printer
+class Printer extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];

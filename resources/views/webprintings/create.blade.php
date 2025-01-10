@@ -17,10 +17,10 @@
                 <div class="row">
                     <div class="form-group col-sm-8">
                         <div class="custom-file">
-                            <input class="custom-file-input" type="file" id="file" name="file">
+                            <input class="custom-file-input" type="file" id="file" name="file" accept="application/pdf">
                             <label for="file" class="custom-file-label">Selecionar arquivo</label>
                         </div>
-                        <small class="form-text text-muted">Somente arquivos pdf são permitidos. Limite de tamanho: 10MB.</small>
+                        <small class="form-text text-muted">Somente arquivos PDF são permitidos. Limite de tamanho: {{ $size }}MB.</small>
                     </div>
                 </div>
 
@@ -47,20 +47,25 @@
                 </div>
 
                 <div class="row">
-                    <div class="form-group col-sm-3">
+                    <div class="form-group col-sm-2">
                         <label for="start_page" class="form-label">Página inicial </label>
                         <input class="form-control" type="text" name="start_page" id="start_page" value="{{ old('start_page') }}"/>
                         <small class="form-text text-muted">Não preencher caso for todo o documento.</small>
                     </div>
-                    <div class="form-group col-sm-3">
+                    <div class="form-group col-sm-2">
                         <label for="end_page" class="form-label">Página final</label>
                         <input class="form-control" type="text" name="end_page" id="end_page" value="{{ old('end_page') }}" />
                         <small class="form-text text-muted">Não preencher caso for todo o documento.</small>
                     </div>
-                    <div class="form-group col-sm-3">
+                    <div class="form-group col-sm-2">
                         <label for="copies" class="form-label">Cópias</label>
                         <input class="form-control" type="text" name="copies" id="copies" value="{{ old('copies',1) }}" />
-                        <small class="form-text text-muted">Quantidade de cópias do mesmo documento</small>
+                        <small class="form-text text-muted">Quantidade de cópias do mesmo documento.</small>
+                    </div>
+                    <div class="form-group col-sm-2">
+                    <label for="shrink" class="form-label">Reduzir documento sem margem</label>
+                    <input class="form-control" type="checkbox" name="shrink" id="shrink" />
+                    <small class="form-text text-muted">Marcar se o documento não tiver margem em branco.</small>
                     </div>
                 </div>
 

@@ -1,7 +1,7 @@
-FROM php:7.4-apache
+FROM php:8.3-apache
 
 # packages
-RUN sed -i 's|main|main non-free|' /etc/apt/sources.list && apt-get update && apt-get install -y \
+RUN sed -i 's|main|main non-free|' /etc/apt/sources.list.d/debian.sources && apt-get update && apt-get install -y \
     freetds-bin \
     freetds-dev \
     ghostscript \
@@ -23,9 +23,6 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# hack for sybase libs @ debian 11
-RUN cp /usr/lib/x86_64-linux-gnu/libsybdb.so.5 /usr/lib/libsybdb.so
 
 # php libs
 RUN docker-php-ext-install \

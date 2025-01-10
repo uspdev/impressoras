@@ -33,8 +33,11 @@ class WebprintingController extends Controller
 
     public function create(Printer $printer){
         $this->authorize('imprime', $printer);
+        // tamanho do upload_max_filesize em MB
+        $size = ini_parse_quantity(ini_get('upload_max_filesize'))/1024/1024;
         return view('webprintings.create', [
-            'printer' => $printer
+            'printer' => $printer,
+            'size' => $size,
         ]);
     }
 
@@ -76,7 +79,7 @@ class WebprintingController extends Controller
 
         // trunca nome para no máximo 64 caracteres
         $filename = explode('.pdf',$filename);
-        $filename = substr($filename[0],0,64).'.pdf';
+        $filename = mb_substr($filename[0],0,64).'.pdf';
 
         $data = [
             "user" => $user->codpes,
@@ -90,6 +93,7 @@ class WebprintingController extends Controller
             "sides" => $request->sides,
             "start_page" => $request->start_page,
             "end_page" => $request->end_page,
+            "shrink" => $request->has('shrink'),
             "filepath_original" => $filepath,
             "pages_per_sheet" => $request->pages_per_sheet
         ];
