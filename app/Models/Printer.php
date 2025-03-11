@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use App\Models\Printing;
 use App\Models\User;
+use Spatie\Permission\Models\Permission;
 
 class Printer extends Model
 {
@@ -27,8 +28,14 @@ class Printer extends Model
     {
         if (!empty($this->rule) and !empty($this->rule->categories)) {
             foreach($this->rule->categories as $c) {
-                if($user->hasPermissionTo($c, 'senhaunica')) {
-                    return true;
+                foreach (['web', 'senhaunica'] as $guard) {
+                    $p = Permission::where([
+                        'name' => $c,
+                        'guard_name' => $guard
+                    ])->first();
+                    if ($p and $user->hasPermissionTo($p)) {
+                        return true;
+                    }
                 }
             }
             return false;
