@@ -41,14 +41,20 @@ RUN { \
         echo 'post_max_size=${PHP_UPLOAD_LIMIT}'; \
     } > "${PHP_INI_DIR}/conf.d/upload.ini"
 
-# laravel
-COPY . .
-RUN chown -R www-data: /var/www
+# apache
 RUN a2enmod rewrite
 RUN sed -i 's|/var/www/html|/var/www/html/public|' /etc/apache2/sites-available/000-default.conf
 
+# composer cache
+COPY composer.json composer.lock ./
 USER www-data
-RUN composer install --no-interaction --no-dev
+RUN composer install --no-interaction --no-dev --no-autoloader
+
+# impressoras
+USER root
+COPY --chown=www-data . .
+USER www-data
+RUN composer dump-autoload
 
 CMD ["./serve.sh"]
 
