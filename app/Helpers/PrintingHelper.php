@@ -97,7 +97,38 @@ class PrintingHelper
         return $pdf;
     }
 
+    // precisa refatorar
     public static function pdfx($file, $color) {
+        $pdftocairo = "/usr/bin/pdftocairo";
+
+        if (!File::exists($pdftocairo)) {
+            throw new \Exception("Instalar pdftocairo: apt install poppler-utils.");
+        }
+
+        $pdf = File::dirname($file) . "/" . File::name($file) . "pdfx.pdf";
+
+        $timeout = (int) config('impressoras.gs_timeout');
+        $process = new Process([
+            $pdftocairo,
+            "-pdf",
+            "-paper", "A4",
+            $file,
+            $pdf
+        ]);
+        $process->setTimeout($timeout);
+        $process->start();
+        $i = 0;
+        while ($process->isRunning() && $i < $timeout/2) {
+            sleep(5);
+            $i++;
+        }
+
+        if (!$process->isSuccessful()) return '';
+        return $pdf;
+    }
+
+    //ou remove ou adiciona opção para usar
+    public static function pdfy($file, $color) {
         $ghostscript = "/usr/bin/gs";
 
         if (!File::exists($ghostscript)) {
