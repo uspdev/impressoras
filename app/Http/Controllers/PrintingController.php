@@ -36,17 +36,18 @@ class PrintingController extends Controller
         $quantities['Total'] = Printing::getPrintingsQuantities($user->codpes);
         $auth = true;
 
+        \UspTheme::activeUrl('/printings');
         return view('printings/index',[
-            'printings' => $printings, 
-            'quantities' => $quantities, 
-            'user' => $user, 
+            'printings' => $printings,
+            'quantities' => $quantities,
+            'user' => $user,
             'auth' => $auth
         ]);
     }
 
     public function show(Request $request){
         $this->authorize('monitor');
-        
+
         $printings = Printing::orderBy('id', 'DESC');
 
         if(isset($request->search)) {
@@ -58,6 +59,7 @@ class PrintingController extends Controller
             $printings =  $printings->where('latest_status',$request->status);
         }
 
+        \UspTheme::activeUrl('/all-printings');
         return view('allprintings.geral_index',[
             'printings' => $printings->paginate(15),
         ]);
@@ -66,9 +68,10 @@ class PrintingController extends Controller
     public function status(Printing $printing)
     {
         $this->authorize('admin');
-        
+
         $statuses = $printing->status->sortByDesc('created_at')->all();
 
+        \UspTheme::activeUrl('/printings');
         return view('printings.status', [
             'printing' => $printing,
             'statuses' => $statuses,
@@ -93,6 +96,7 @@ class PrintingController extends Controller
             request()->session()->flash('alert-danger', 'Impressão cancelada');
         }
 
+        \UspTheme::activeUrl('/printers');
         return redirect("/printers/auth_queue/{$printing->printer->id}");
     }
 
@@ -108,6 +112,7 @@ class PrintingController extends Controller
         Status::createStatus('printer_problem', $printing);
         request()->session()->flash('alert-success', 'Quota devolvida.');
 
+        \UspTheme::activeUrl('/all-printings');
         return redirect("/all-printings");
     }
 }

@@ -26,6 +26,7 @@ class WebprintingController extends Controller
             }
         }
 
+        \UspTheme::activeUrl('/webprintings');
         return view('webprintings.index', [
             'printers' => $printers,
         ]);
@@ -33,6 +34,7 @@ class WebprintingController extends Controller
 
     public function create(Printer $printer){
         $this->authorize('imprime', $printer);
+        \UspTheme::activeUrl('/webprintings');
         return view('webprintings.create', [
             'printer' => $printer
         ]);
@@ -71,6 +73,7 @@ class WebprintingController extends Controller
         if ($pages < 1) {
             request()->session()->flash('alert-danger','Problema na contagem de páginas');
             Status::createStatus('failed_in_process_pdf', $printing);
+            \UspTheme::activeUrl('/printings');
             return redirect("/printings");
         }
 
@@ -108,6 +111,7 @@ class WebprintingController extends Controller
                 $out_of_quota = ($quantities + $printing->pages*$printing->copies) > $printer->rule->quota;
                 if ($out_of_quota) {
                     Status::createStatus('cancelled_user_out_of_quota', $printing);
+                    \UspTheme::activeUrl('/printings');
                     return redirect("/printings");
                 }
             }
@@ -115,12 +119,14 @@ class WebprintingController extends Controller
             // 3. Verifica se a impressora tem controle de fila
             if ($printer->rule->queue_control) {
                 Status::createStatus('waiting_job_authorization', $printing);
+                \UspTheme::activeUrl('/printings');
                 return redirect("/printings");
             }
         }
 
         // imprimindo
         PrintingJob::dispatch($printing);
+        \UspTheme::activeUrl('/printings');
         return redirect("/printings");
     }
 }

@@ -15,6 +15,7 @@ class RuleController extends Controller
 
         $rules = Rule::all();
 
+        \UspTheme::activeUrl('/rules');
         return view('rules.index', [
             'rules' => $rules,
         ]);
@@ -24,6 +25,7 @@ class RuleController extends Controller
     {
         $this->authorize('admin');
 
+        \UspTheme::activeUrl('/rules');
         return view('rules.create', [
             'rule' => new Rule(),
         ]);
@@ -35,6 +37,7 @@ class RuleController extends Controller
 
         $rule = Rule::create($request->validated());
 
+        \UspTheme::activeUrl('/rules');
         return redirect('/rules');
     }
 
@@ -42,6 +45,7 @@ class RuleController extends Controller
     {
         $this->authorize('admin');
 
+        \UspTheme::activeUrl('/rules');
         return view('rules.edit', [
             'rule' => $rule,
         ]);
@@ -56,6 +60,7 @@ class RuleController extends Controller
         }
         $rule->update($request->validated());
 
+        \UspTheme::activeUrl('/rules');
         return redirect('/rules');
     }
 
@@ -65,6 +70,7 @@ class RuleController extends Controller
 
         $printers = Printer::where('rule_id', $rule->id)->get();
 
+        \UspTheme::activeUrl('/rules');
         return view('rules.show', [
             'rule' => $rule,
             'printers' => $printers
@@ -83,6 +89,7 @@ class RuleController extends Controller
 
         $rule->delete();
 
+        \UspTheme::activeUrl('/rules');
         return redirect('/rules');
     }
 }

@@ -16,6 +16,7 @@ class LocalUserController extends Controller
 
         $users = User::where('local', '1')->get();
 
+        \UspTheme::activeUrl('/local');
         return view('local.index', [
             'users' => $users,
         ]);
@@ -25,6 +26,7 @@ class LocalUserController extends Controller
     {
         $this->authorize('admin');
 
+        \UspTheme::activeUrl('/local');
         return view('local.create', [
             'user' => new User(),
         ]);
@@ -55,6 +57,7 @@ class LocalUserController extends Controller
 
         $user->givePermissionTo($p);
 
+        \UspTheme::activeUrl('/local');
         return redirect('/local');
     }
 
@@ -62,6 +65,7 @@ class LocalUserController extends Controller
     {
         $this->authorize('admin');
 
+        \UspTheme::activeUrl('/local');
         return view('local.edit', [
             'user' => $user,
         ]);
@@ -81,6 +85,7 @@ class LocalUserController extends Controller
         $request->merge(['password' => Hash::make($request->password)]);
         $user->update($request->all());
 
+        \UspTheme::activeUrl('/local');
         return redirect('/local');
     }
 
@@ -91,11 +96,13 @@ class LocalUserController extends Controller
         if ($user->local == false) {
             request()->session()->flash('alert-danger', 'Usuário senha única não pode ser apagado.');
 
+            \UspTheme::activeUrl('/local');
             return redirect('/local');
         }
 
         $user->delete();
 
+        \UspTheme::activeUrl('/local');
         return redirect('/local');
     }
 }
