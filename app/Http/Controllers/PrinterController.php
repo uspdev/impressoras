@@ -16,6 +16,7 @@ class PrinterController extends Controller
 
         $printers = Printer::all();
 
+        \UspTheme::activeUrl('/printers');
         return view('printers.index', [
             'printers' => $printers,
         ]);
@@ -25,6 +26,7 @@ class PrinterController extends Controller
     {
         $this->authorize('admin');
 
+        \UspTheme::activeUrl('/printers');
         return view('printers.create', [
             'printer' => new Printer(),
         ]);
@@ -36,6 +38,7 @@ class PrinterController extends Controller
 
         $printer = Printer::create($request->validated());
 
+        \UspTheme::activeUrl('/printers');
         return redirect('/printers');
     }
 
@@ -53,6 +56,7 @@ class PrinterController extends Controller
         });
         $printings_all = $query->orderBy('id', 'DESC')->paginate();
 
+        \UspTheme::activeUrl('/printers');
         return view('printers.show', [
             'printer' => $printer,
             'printings_all' => $printings_all
@@ -63,6 +67,7 @@ class PrinterController extends Controller
     {
         $this->authorize('admin');
 
+        \UspTheme::activeUrl('/printers');
         return view('printers.edit', [
             'printer' => $printer,
         ]);
@@ -76,9 +81,10 @@ class PrinterController extends Controller
             $printer->color = 0;
             $printer->save();
         }
-        
+
         $printer->update($request->validated());
 
+        \UspTheme::activeUrl('/printers');
         return redirect('/printers');
     }
 
@@ -89,11 +95,13 @@ class PrinterController extends Controller
         if ($printer->printings->isNotEmpty()) {
             request()->session()->flash('alert-danger', 'Há impressões nessa Impressora. Não é possível deletar.');
 
+            \UspTheme::activeUrl('/printers');
             return redirect('/printers');
         }
 
         $printer->delete();
 
+        \UspTheme::activeUrl('/printers');
         return redirect('/printers');
     }
 
@@ -138,6 +146,7 @@ class PrinterController extends Controller
                                      ->take(100)->get();
 
         if($request->has('route')) {
+            \UspTheme::activeUrl('/printers');
             return view('fila/partials/fila_body', [
                 'printings_queue' => $printings_queue,
                 'printings' => $printings,
@@ -146,6 +155,7 @@ class PrinterController extends Controller
             ]);
         }
 
+        \UspTheme::activeUrl('/printers');
         return view('fila.fila', [
             'printings' => $printings,
             'name' => $printer->name,
