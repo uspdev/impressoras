@@ -17,11 +17,11 @@
                 <div class="form-group">
                     <label class="required"><b>Controle da fila para autorização de impressões</b></label>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="queue_control" id="check-yes" value="1" @if (isset($rule->queue_control) and ($rule->queue_control === 1)) checked @elseif ((old('queue_control') != null) and (old('fixarip') == 0)) checked @endif> 
+                        <input class="form-check-input" type="radio" name="queue_control" id="check-yes" value="1" @if (isset($rule->queue_control) and ($rule->queue_control === 1)) checked @elseif ((old('queue_control') != null) and (old('fixarip') == 0)) checked @endif>
                         <label class="form-check-label" for="check-yes">Sim</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="queue_control" id="check-no" value="0" @if (isset($rule->queue_control) and ($rule->queue_control === 0)) checked @elseif ((old('queue_control') != null) and (old('fixarip') == 0)) checked @endif> 
+                        <input class="form-check-input" type="radio" name="queue_control" id="check-no" value="0" @if (isset($rule->queue_control) and ($rule->queue_control === 0)) checked @elseif ((old('queue_control') != null) and (old('fixarip') == 0)) checked @endif>
                         <label class="form-check-label" for="check-no">Não</label>
                     </div>
                 </div>
@@ -47,14 +47,30 @@
                     <br>
                     <input type="number" name="quota" value="{{old('quota',$rule->quota)}}">
                 </div>
-
+                <div class="form-group">
+                    <label class="required"><b>Tipo da quota</b></label>
+                    <select class="form-control" name="quota_type">
+                        <option value="" selected="">Selecione uma opção </option>
+                        @foreach($rule::quota_type_options() as $type)
+                            @if (old('quota_type') == '')
+                                <option value="{{ $type }}" {{ ($rule->quota_type == $type) ? 'selected':'' }}>
+                                    {{ $type }}
+                                </option>
+                            @else
+                                <option value="{{ $type }}" {{ (old('quota_type') == $type) ? 'selected' : '' }}>
+                                    {{ $type }}
+                                </option>
+                            @endif
+                        @endforeach
+                    </select>
+                </div>
                 <div class="form-group">
                     <label for="" class=""><b>Categorias permitidas: </b></label>
                     <small> Se nenhuma opção for selecionada, as impressoras nessa regra estão liberadas para todos </small>
 
                     @foreach($rule::categories() as $category)
                         <div class="form-check">
-                            <input class="form-check-input" name="categories[]" type="checkbox" value="{{$category}}" 
+                            <input class="form-check-input" name="categories[]" type="checkbox" value="{{$category}}"
 
                                 @if(in_array($category, $rule->categories))
                                     checked

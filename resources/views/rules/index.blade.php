@@ -26,6 +26,7 @@
                     <th width="20%">Controle da fila para autorização de impressões</th>
                     <th width="20%">Período da quota</th>
                     <th widht="20%">Quota</th>
+                    <th widht="20%">Tipo da quota</th>
                     <th widht="20%">Restrito para</th>
                     <th widht="20%">Ações</th>
                     <th widht="20%">Visualizar regra</th>
@@ -44,6 +45,7 @@
                         </td>
                         <td>{{ $rule->quota_period }}</td>
                         <td>{{ $rule->quota }}</td>
+                        <td>{{ $rule->quota_type }}</td>
                         <td>{{ $rule->categories ? implode(", ", $rule->categories) : "Sem restrições" }}</td>
                         <td>
                             <div id="actions">
@@ -53,7 +55,7 @@
                                     @method('delete')
                                     <button type="submit" onclick="return confirm('Tem certeza que deseja excluir?');" style="background-color: transparent; border: none;">
                                         <a><i class="fas fa-trash" color="#007bff "id="i-trash"></i></a>
-                                    </button>    
+                                    </button>
                                 </form>
                             </div>
                         </td>
@@ -61,7 +63,7 @@
                             <a href="/rules/{{ $rule->id }}"><button class="btn btn-primary" type="button">Regra</button></a>
                         </td>
                     </tr>
-                @empty     
+                @empty
                     <tr>
                         <td colspan="6">Não há regras cadastradas.</td>
                     </tr>
