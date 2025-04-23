@@ -1,4 +1,4 @@
-# Quotas
+# Impressoras
 
 Sistema desenvolvido em *Laravel* para gestão de impressões no contexto da Universidade de São Paulo.
 
@@ -14,45 +14,10 @@ Após a impressora responder:
 4) Se não pode, status "Cancelado"
 
 ## Dependências
-Pacotes do Debian 11:
-  - ghostscript
-  - icc-profiles
-  - libgs9-common
-  - parallel
-  - pdftk
-  - poppler-utils
-  - texlive-extra-utils
+Vide [Dockerfile](Dockerfile).
 
-## Como rodar com docker?
-```sh
-# build
-docker build -t impressoras .
-
-# run
-docker run --rm --name impressoras --env-file=envfile impressoras
-
-# migrations (rodar pelo menos na primeira vez)
-docker exec -it impressoras php artisan migrate
-
-# chave
-# se precisar criar a chave, rode abaixo, preencha o .env e reinicie o container
-docker exec -it impressoras php artisan key:generate --show
-```
-
-## Deploy básico para desenvolvimento
-```sh
-    composer install
-    php artisan migrate
-    php artisan vendor:publish --provider="Uspdev\UspTheme\ServiceProvider" --tag=assets --force
-    php artisan key:generate
-```
-
-## Configurações do CUPS
-
-É necessário um servidor CUPS com:
-  - impressoras instaladas preferencialmente usando IPP;
-  - ser acessível pela instância onde rodará o docker;
-  - ter um usuário com acesso às impressoras.
+## Deployment
+Vide [deployment.md](deployment.md).
 
 # Informações sobre os Models
 [Informações sobre os Models](models.md)
