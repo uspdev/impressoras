@@ -34,10 +34,11 @@ class Printing extends Model
      * @param string  $user    N.USP
      * @param Printer $printer objeto Printer
      * @param string  $period  Mensal ou diário
+     * @param string  $type    Páginas ou Folhas
      *
      * @return int quantidade de impressões para o contexto
      */
-    public static function getPrintingsQuantities($user = null, $printer = null, $period = null)
+    public static function getPrintingsQuantities($user = null, $printer = null, $period = null, $type = null)
     {
         $query = DB::table('printings');
         $query->where('printings.latest_status', 'print_success');
@@ -65,7 +66,17 @@ class Printing extends Model
             $query->whereDate('printings.created_at', Carbon::today());
         }
 
-        return $query->sum(DB::raw('printings.pages*printings.copies'));
+        // somente impressões de páginas ou de folhas
+        if ($printer && $printer->rule && !empty($type))
+            $query->whereExists(function ($subQuery) use ($type) {
+                $subQuery->select(DB::raw(1))
+                    ->from('printers')
+                    ->join('rules', 'printers.rule_id', '=', 'rules.id')
+                    ->join('printings', 'printings.printer_id', '=', 'printers.id')
+                    ->where('rules.quota_type', $type);
+            });
+
+        return $query->sum(DB::raw('printings.' . (($type ?? 'Páginas') == 'Páginas' ? 'pages' : 'sheets') . '*printings.copies'));
     }
 
     public function getNomeAttribute() {
@@ -74,6 +85,6 @@ class Printing extends Model
             return Pessoa::nomeCompleto($codpes);
         } else {
             return '';
-        } 
+        }
     }
 }

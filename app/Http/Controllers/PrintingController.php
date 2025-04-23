@@ -31,9 +31,12 @@ class PrintingController extends Controller
                                     return $query->where('filename','LIKE',"%{$request->search}%");
                                 })
                                 ->paginate(5);
-        $quantities['Mensal'] = Printing::getPrintingsQuantities($user->codpes, null, 'Mensal');
-        $quantities['Diário'] = Printing::getPrintingsQuantities($user->codpes, null, 'Diário');
-        $quantities['Total'] = Printing::getPrintingsQuantities($user->codpes);
+        $quantities['Mensal_Páginas'] = Printing::getPrintingsQuantities($user->codpes, null, 'Mensal', 'Páginas');
+        $quantities['Diário_Páginas'] = Printing::getPrintingsQuantities($user->codpes, null, 'Diário', 'Páginas');
+        $quantities['Total_Páginas'] = Printing::getPrintingsQuantities($user->codpes, null, null, 'Páginas');
+        $quantities['Mensal_Folhas'] = Printing::getPrintingsQuantities($user->codpes, null, 'Mensal', 'Folhas');
+        $quantities['Diário_Folhas'] = Printing::getPrintingsQuantities($user->codpes, null, 'Diário', 'Folhas');
+        $quantities['Total_Folhas'] = Printing::getPrintingsQuantities($user->codpes, null, null, 'Folhas');
         $auth = true;
 
         \UspTheme::activeUrl('/printings');

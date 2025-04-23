@@ -28,6 +28,7 @@ class RuleRequest extends FormRequest
             'queue_control' => 'required',
             'quota_period' => 'nullable',
             'quota' => 'nullable|integer|min:0|required_with:quota_period',
+            'quota_type' => 'nullable',
             'categories' => 'nullable',
         ];
     }

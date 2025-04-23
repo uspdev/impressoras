@@ -20,6 +20,14 @@ class Rule extends Model
         ];
     }
 
+    public static function quota_type_options()
+    {
+        return [
+            'Páginas',
+            'Folhas',
+        ];
+    }
+
     public static function categories()
     {
         $c = [];

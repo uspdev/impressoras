@@ -12,7 +12,7 @@
                 <tr>
                     <th width="20%">Nome</th>
                     <th width="20%">Local</th>
-                    <th width="20%">Páginas impressas</th>
+                    <th width="20%">Impressões</th>
                 </tr>
             </thead>
             <tbody>
@@ -24,7 +24,11 @@
                             </div>
                         </td>
                         <td>{{ $printer->location ?? '' }}</td>
-                        <td>{{ $printer->used(\Auth::user()) }} de {{ $printer->rule ? $printer->rule->quota : ''}}</td>
+                        <td>
+                            @if ($printer->rule)
+                                {{ $printer->used(\Auth::user()) }} de {{ $printer->rule ? $printer->rule->quota : ''}} {{ $printer->rule->quota_type }}
+                            @endif
+                        </td>
                     </tr>
                 @empty
                     <tr>
