@@ -48,9 +48,8 @@ class Printer extends Model
         if (!empty($this->rule))
         {
             $period = $this->rule->quota_period;
-            $type = $this->rule->quota_type;
             if (!empty($period)) {
-                return Printing::getPrintingsQuantities($user->codpes, $this, $period, $type);
+                return Printing::getPrintingsQuantities($user->codpes, $this, $period);
             }
         }
         return;

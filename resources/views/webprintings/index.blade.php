@@ -24,11 +24,7 @@
                             </div>
                         </td>
                         <td>{{ $printer->location ?? '' }}</td>
-                        <td>
-                            @if ($printer->rule)
-                                {{ $printer->used(\Auth::user()) }} de {{ $printer->rule ? $printer->rule->quota : ''}} {{ $printer->rule->quota_type }}
-                            @endif
-                        </td>
+                        <td>{{ $printer->used(\Auth::user()) }} de {{ $printer->rule ? $printer->rule->quota : ''}}</td>
                     </tr>
                 @empty
                     <tr>

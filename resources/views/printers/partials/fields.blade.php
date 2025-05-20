@@ -58,8 +58,7 @@
                 @endcan
                 <th>Usuário</th>
                 <th>Data</th>
-                <th width="5%">Páginas</th>
-                <th width="5%">Folhas</th>
+                <th width="5%">Impressões</th>
                 <th width="5%">Cópias</th>
                 <th>Tamanho</th>
                 <th>Arquivo</th>
@@ -77,7 +76,6 @@
                     @endcan
                     <td>{{ \Carbon\Carbon::CreateFromFormat('Y-m-d H:i:s', $printing->created_at)->format('d/m/Y H:i') }} </td>
                     <td>{{ $printing->pages }}</td>
-                    <td>{{ $printing->sheets }}</td>
                     <td>{{ $printing->copies }}</td>
                     <td>{{ round((float)$printing->filesize/1024) }} KB</td>
                     <td>{{ $printing->filename }}</td>

@@ -85,17 +85,13 @@ class WebprintingController extends Controller
         $filename = explode('.pdf',$filename);
         $filename = mb_substr($filename[0],0,64).'.pdf';
 
-        $sheets = null;
-        // se existir regra do tipo "Folhas", na tabela printings gravamos no campo sheets ao invés de no campo pages
-        if (!empty($printer->rule) && ($printer->rule->quota_type == "Folhas")) {
-            $sheets = ($request->sides == 'one-sided' ? $pages : ceil($pages/2));
-            $pages = null;
-        }
+        // se existir regra do tipo "Folhas", na tabela printings gravamos no campo pages as folhas ao invés das páginas
+        if (!empty($printer->rule) && ($printer->rule->quota_type == "Folhas"))
+            $pages = ($request->sides == 'one-sided' ? $pages : ceil($pages/2));
 
         $data = [
             "user" => $user->codpes,
             "pages" => $pages,
-            "sheets" => $sheets,
             "copies" => $request->copies,
             "printer_id" => $printer->id,
             "jobid" => 0,
@@ -121,9 +117,7 @@ class WebprintingController extends Controller
             if (!empty($quota_period)) {
                 // as impressoras que participam da mesma regra
                 $quantities = $printer->used($user);
-                $quota_type = $printer->rule->quota_type ?? 'Páginas';
-                $printing_quantity = ($quota_type == 'Páginas' ? $printing->pages : $printing->sheets) * $printing->copies;
-                $out_of_quota = ($quantities + $printing_quantity) > $printer->rule->quota;
+                $out_of_quota = ($quantities + $printing->pages*$printing->copies) > $printer->rule->quota;
                 if ($out_of_quota) {
                     Status::createStatus('cancelled_user_out_of_quota', $printing);
                     \UspTheme::activeUrl('/printings');
