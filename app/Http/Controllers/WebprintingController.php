@@ -121,7 +121,9 @@ class WebprintingController extends Controller
             if (!empty($quota_period)) {
                 // as impressoras que participam da mesma regra
                 $quantities = $printer->used($user);
-                $out_of_quota = ($quantities + (($printer->rule->quota_type ?? 'Páginas') == 'Páginas' ? $printing->pages : $printing->sheets) ?? 0 * $printing->copies) > $printer->rule->quota;
+                $quota_type = $printer->rule->quota_type ?? 'Páginas';
+                $printing_quantity = ($quota_type == 'Páginas' ? $printing->pages : $printing->sheets) * $printing->copies;
+                $out_of_quota = ($quantities + $printing_quantity) > $printer->rule->quota;
                 if ($out_of_quota) {
                     Status::createStatus('cancelled_user_out_of_quota', $printing);
                     \UspTheme::activeUrl('/printings');
