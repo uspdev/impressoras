@@ -22,20 +22,6 @@ Vide [deployment.md](deployment.md).
 # Informações sobre os Models
 [Informações sobre os Models](models.md)
 
-# Guidelines para o desenvolvimento
-
-- Escrever o código em inglês.
-
-# limpar banco na unha
-
-Para limpar banco:
-```
-     DELETE FROM printings WHERE created_at < '2020-03-08 08:00:00';
-```
-
-    delete from status;
-    delete from printings;
-
 
 ################
 ## Utilização ##
@@ -68,3 +54,19 @@ Com a implantação do sistema "impressoras", o fluxo de impressão deixa de ser
 - os monitores são definidos pelas tabelas BENEFICIOALUCONCEDIDO e BENEFICIOALUNO do Replicado, ou em variável de configuração no .env;
 - tudo a que um monitor tem acesso, os admins também têm acesso;
 - no cadastro da regra, pode-se ligar ou desligar a obrigatoriedade de ter autorização manual por parte dos monitores para cada solicitação de impressão.
+
+
+Tarefinhas:
+
+- relacionamento entre usuario e impressao com chave estrangeira
+- Levar a contabilização do model Printing para uma Action
+- relatórios (conversar hoje)
+
+- Juntar o WebprintingController com o PrintingContoller
+- Corrigir o wsfoto na fila de autorização quando o usuário é local
+- Mover a lógica do usuário local para a biblioteca senhaunica-socialite (Ricardo)
+- melhorar lógica de contabilização da contagem 
+- um botão para monitores mandarem um PDF de teste para a impressora (para ver se a impressora funciona mesmo)
+- contabilização por folha e não por página (caso da Psicologia)
+- Laravel 12
+- tratar melhor o retorno do cups (capturar o status da impressão)
