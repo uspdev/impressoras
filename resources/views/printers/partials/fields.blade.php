@@ -17,7 +17,7 @@
                 <form action="/printers/{{ $printer->id }} " method="post">
                     @csrf
                     @method('delete')
-                    <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza?');">Apagar</button> 
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza?');">Apagar</button>
                 </form>
             </td>
             <td>
@@ -55,10 +55,10 @@
                             </div>
                         </div>
                     </form>
-                @endcan 
+                @endcan
                 <th>Usuário</th>
                 <th>Data</th>
-                <th width="5%">Páginas</th>
+                <th width="5%">Impressões</th>
                 <th width="5%">Cópias</th>
                 <th>Tamanho</th>
                 <th>Arquivo</th>

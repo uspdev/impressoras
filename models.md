@@ -12,8 +12,9 @@ Algumas informações incompletas sobre nossos models. Falta, por exemplo, infor
 
 - name [str]: Nome da regra
 - queue_control [bool]: controle da fila para autorização de impressões ativado ou não
-- quota_period [str]: tipo de quota: diária ou mensal
+- quota_period [str]: período de quota: diária ou mensal
 - quota [int]: quantidade de quota disponível para o período
+- quota_type [str]: tipo de quota: páginas ou folhas
 - categories [str]: categorias autorizadas para a impressão
 
 ### Model Statusdelete from status;

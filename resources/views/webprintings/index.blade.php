@@ -12,7 +12,7 @@
                 <tr>
                     <th width="20%">Nome</th>
                     <th width="20%">Local</th>
-                    <th width="20%">Páginas impressas</th>
+                    <th width="20%">Impressões</th>
                 </tr>
             </thead>
             <tbody>

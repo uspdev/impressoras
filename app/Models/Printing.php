@@ -74,6 +74,6 @@ class Printing extends Model
             return Pessoa::nomeCompleto($codpes);
         } else {
             return '';
-        } 
+        }
     }
 }

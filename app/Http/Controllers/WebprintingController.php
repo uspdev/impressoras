@@ -85,6 +85,10 @@ class WebprintingController extends Controller
         $filename = explode('.pdf',$filename);
         $filename = mb_substr($filename[0],0,64).'.pdf';
 
+        // se existir regra do tipo "Folhas", na tabela printings gravamos no campo pages as folhas ao invés das páginas
+        if (!empty($printer->rule) && ($printer->rule->quota_type == "Folhas"))
+            $pages = ($request->sides == 'one-sided' ? $pages : ceil($pages/2));
+
         $data = [
             "user" => $user->codpes,
             "pages" => $pages,
