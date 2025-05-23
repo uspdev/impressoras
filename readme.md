@@ -58,15 +58,11 @@ Com a implantação do sistema "impressoras", o fluxo de impressão deixa de ser
 
 Tarefinhas:
 
-- relacionamento entre usuario e impressao com chave estrangeira
 - Levar a contabilização do model Printing para uma Action
 - relatórios (conversar hoje)
-
 - Juntar o WebprintingController com o PrintingContoller
-- Corrigir o wsfoto na fila de autorização quando o usuário é local
 - Mover a lógica do usuário local para a biblioteca senhaunica-socialite (Ricardo)
 - melhorar lógica de contabilização da contagem 
 - um botão para monitores mandarem um PDF de teste para a impressora (para ver se a impressora funciona mesmo)
-- contabilização por folha e não por página (caso da Psicologia)
 - Laravel 12
 - tratar melhor o retorno do cups (capturar o status da impressão)

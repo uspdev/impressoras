@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Printing;
 use App\Models\Printer;
 use App\Models\Status;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Rawilk\Printing\Facades\Printing as CupsPrinting;
 use Illuminate\Support\Facades\Storage;
@@ -25,15 +26,15 @@ class PrintingController extends Controller
         // printings
         $this->authorize('logado');
         $user = \Auth::user();
-        $printings = Printing::where('user', '=', $user->codpes)
+        $printings = Printing::where('user_id', '=', $user->id)
                                 ->latest()
                                 ->when($request->search, function($query) use($request){
                                     return $query->where('filename','LIKE',"%{$request->search}%");
                                 })
                                 ->paginate(5);
-        $quantities['Mensal'] = Printing::getPrintingsQuantities($user->codpes, null, 'Mensal');
-        $quantities['Diário'] = Printing::getPrintingsQuantities($user->codpes, null, 'Diário');
-        $quantities['Total'] = Printing::getPrintingsQuantities($user->codpes);
+        $quantities['Mensal'] = Printing::getPrintingsQuantities($user, null, 'Mensal');
+        $quantities['Diário'] = Printing::getPrintingsQuantities($user, null, 'Diário');
+        $quantities['Total'] = Printing::getPrintingsQuantities($user);
         $auth = true;
 
         \UspTheme::activeUrl('/printings');
@@ -48,11 +49,12 @@ class PrintingController extends Controller
     public function show(Request $request){
         $this->authorize('monitor');
 
+        $users = User::where('codpes','LIKE', "%$request->search%")->get();
         $printings = Printing::orderBy('id', 'DESC');
 
         if(isset($request->search)) {
             $printings = $printings->where('filename','LIKE',"%{$request->search}%")
-                                    ->Orwhere('user', 'LIKE', "%{$request->search}%");
+                                    ->orWhereIn('user_id', $users->pluck('id')->toArray());
         }
 
         if(isset($request->status)) {

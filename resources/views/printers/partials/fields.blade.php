@@ -72,7 +72,7 @@
             @foreach ($printings_all as $printing)
                 <tr>
                     @can('admin')
-                        <td>{{ $printing->user }} - {{ $printing->nome }}</td>
+                        <td>{{ $printing->user->codpes }} - {{ $printing->user->name }}</td>
                     @endcan
                     <td>{{ \Carbon\Carbon::CreateFromFormat('Y-m-d H:i:s', $printing->created_at)->format('d/m/Y H:i') }} </td>
                     <td>{{ $printing->pages }}</td>

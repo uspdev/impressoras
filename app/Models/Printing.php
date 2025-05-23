@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Uspdev\Replicado\Pessoa;
+use App\Models\User;
 
 class Printing extends Model
 {
@@ -37,14 +38,14 @@ class Printing extends Model
      *
      * @return int quantidade de impressões para o contexto
      */
-    public static function getPrintingsQuantities($user = null, $printer = null, $period = null)
+    public static function getPrintingsQuantities(User $user = null, $printer = null, $period = null)
     {
         $query = DB::table('printings');
         $query->where('printings.latest_status', 'print_success');
 
         // somente as impressões do usuário em questão
         if ($user) {
-            $query->where('printings.user', $user);
+            $query->where('printings.user_id', $user->id);
         }
 
         if ($printer) {
@@ -68,12 +69,8 @@ class Printing extends Model
         return $query->sum(DB::raw('printings.pages*printings.copies'));
     }
 
-    public function getNomeAttribute() {
-        $codpes = (int) $this->user;
-        if(!empty($codpes)){
-            return Pessoa::nomeCompleto($codpes);
-        } else {
-            return '';
-        }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

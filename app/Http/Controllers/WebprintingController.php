@@ -90,7 +90,7 @@ class WebprintingController extends Controller
             $pages = ($request->sides == 'one-sided' ? $pages : ceil($pages/2));
 
         $data = [
-            "user" => $user->codpes,
+            "user_id" => $user->id,
             "pages" => $pages,
             "copies" => $request->copies,
             "printer_id" => $printer->id,

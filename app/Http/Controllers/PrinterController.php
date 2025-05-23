@@ -7,6 +7,7 @@ use App\Models\Printer;
 use App\Models\Printing;
 use Illuminate\Http\Request;
 use App\Services\PhotoService;
+use App\Models\User;
 
 class PrinterController extends Controller
 {
@@ -46,12 +47,14 @@ class PrinterController extends Controller
     {
 
         $this->authorize('admin');
+        $users = User::where('codpes','LIKE', "%$request->search%")->get();
 
         $query = Printing::where('printer_id', $printer->id);
+        
         $query->when($request->search, function ($q) use ($request) {
             return $q->where( function ($q) use ($request) {
                 return $q->orWhere('filename', 'LIKE', "%$request->search%")
-                         ->orWhere('user', 'LIKE', "%$request->search%");
+                         ->orWhereIn('user_id', $users->pluck('id')->toArray());
             });
         });
         $printings_all = $query->orderBy('id', 'DESC')->paginate();
@@ -105,25 +108,6 @@ class PrinterController extends Controller
         return redirect('/printers');
     }
 
-    /* TODO: Esse método, a principio pode ser deletado
-    public function printer_queue(Printer $printer)
-    {
-        $this->authorize('monitor');
-
-        $printings = $printer->printings()->paginate(10);
-        $quantities['Mensal'] = Printing::getPrintingsQuantities(null, $printer, 'Mensal');
-        $quantities['Diário'] = Printing::getPrintingsQuantities(null, $printer, 'Diário');
-        $quantities['Total'] = Printing::getPrintingsQuantities(null, $printer);
-
-        return view('fila.fila', [
-            'printings' => $printings,
-            'name' => $printer->name,
-            'quantities' => $quantities,
-            'auth' => false,
-        ]);
-    }
-    */
-
     public function authorization_queue(Printer $printer, PhotoService $photos, Request $request)
     {
         $this->authorize('monitor');
@@ -137,7 +121,10 @@ class PrinterController extends Controller
         $fotos = array();
 
         foreach($printings as $printing){
-            $fotos[$printing->user] = $photos->obterFoto($printing->user);
+            // Como a função obterFoto espera um inteiro, fizemos um cast do campo
+            // $printing->user->codpes para inteiro para contemplar o caso de usuários
+            // locais, que possuem username no campo codpes
+            $fotos[$printing->user->id] = $photos->obterFoto((int)$printing->user->codpes);
         }
 
         $printings_queue = Printing::where('printer_id', '=', $printer->id)

@@ -18,7 +18,7 @@
     @forelse ($printings as $printing)
       <tr>
       <td>
-        {{ $printing->user }} - {{ $printing->nome }}
+        {{ $printing->user->codpes }} - {{ $printing->user->name }}
       </td>
       <td>{{ \Carbon\Carbon::CreateFromFormat('Y-m-d H:i:s', $printing->created_at)->format('d/m/Y H:i') }} </td>
       <td>{{ $printing->pages }}</td>
@@ -26,7 +26,7 @@
       <td>{{ round((float)$printing->filesize/1024) }} KB</td>
       <td>{{ $printing->filename }}</td>
           <td>
-            <img src="data:image/png;base64, {{ $fotos[$printing->user] }} " width="170px" height="220px"/>
+            <img src="data:image/png;base64, {{ $fotos[$printing->user->id] }} " width="170px" height="220px"/>
           </td>
           <td>
             <div id="actions">
@@ -67,7 +67,7 @@
       <tbody>
         @foreach ($printings_queue as $printing)
           <tr>
-            <td>{{ $printing->user }} - {{ $printing->nome }}</td>
+            <td>{{ $printing->user->codpes }} - {{ $printing->user->name }}</td>
             <td>{{ \Carbon\Carbon::CreateFromFormat('Y-m-d H:i:s', $printing->created_at)->format('d/m/Y H:i') }} </td>
             <td>{{ $printing->pages }}</td>
             <td>{{ $printing->copies }}</td>
