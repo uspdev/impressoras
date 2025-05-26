@@ -48,7 +48,7 @@
                             <div class="d-grid gap-2 d-md-block">
                                 @can('admin')
                                     <a href="/printers/{{ $printer->id }}"><button class="btn btn-primary" type="button">Impressora</button></a>
-                                @endcan    
+                                @endcan
                                 @can('monitor')
                                     @if ($printer->rule)
                                         @if ($printer->rule->queue_control)
@@ -66,13 +66,14 @@
                         <td>
                             <div id="actions">
                                 <a href="/printers/{{$printer->id}}/edit"><i class="fas fa-edit"></i></a>
-                                <form method="POST" action="/printers/{{ $printer->id }}">
+                                <form method="POST" action="/printers/{{ $printer->id }}" style="margin-right: 24px;">
                                     @csrf
                                     @method('delete')
                                     <button type="submit" onclick="return confirm('Tem certeza que deseja excluir?');" style="background-color: transparent; border: none;">
                                         <a><i class="fas fa-trash" color="#007bff" id="i-trash"></i></a>
-                                    </button>    
+                                    </button>
                                 </form>
+                            <a href="/printers/{{$printer->id}}/printtest" title="Imprimir página de teste"><i class="fas fa-print"></i></a>
                             </div>
                         </td>
                         @endcan

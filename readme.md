@@ -56,12 +56,13 @@ Com a implantação do sistema "impressoras", o fluxo de impressão deixa de ser
 - no cadastro da regra, pode-se ligar ou desligar a obrigatoriedade de ter autorização manual por parte dos monitores para cada solicitação de impressão.
 
 
-Tarefinhas:
+################
+## Tarefinhas ##
+################
 
 - relatórios (conversar hoje)
 - Ter uam opção de desativar/ativar a impressora 
 - Mover a lógica do usuário local para a biblioteca senhaunica-socialite (Ricardo)
 - melhorar lógica de contabilização da contagem 
-- um botão para monitores mandarem um PDF de teste para a impressora (para ver se a impressora funciona mesmo)
 - Laravel 12
 - tratar melhor o retorno do cups (capturar o status da impressão)

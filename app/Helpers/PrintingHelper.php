@@ -187,6 +187,9 @@ class PrintingHelper
         $query = DB::table('printings');
         $query->where('printings.latest_status', 'print_success');
 
+        // não contabiliza impressões de teste
+        $query->where('printings.filepath_original', 'NOT LIKE', '%public/printtest.pdf');
+
         // somente as impressões do usuário em questão
         if ($user) {
             $query->where('printings.user_id', $user->id);

@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PrintingHelper;
 use App\Http\Requests\PrinterRequest;
+use App\Jobs\PrintingJob;
 use App\Models\Printer;
 use App\Models\Printing;
+use App\Models\Status;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use App\Services\PhotoService;
 use App\Models\User;
 
@@ -50,7 +54,7 @@ class PrinterController extends Controller
         $users = User::where('codpes','LIKE', "%$request->search%")->get();
 
         $query = Printing::where('printer_id', $printer->id);
-        
+
         $query->when($request->search, function ($q) use ($request) {
             return $q->where( function ($q) use ($request) {
                 return $q->orWhere('filename', 'LIKE', "%$request->search%")
@@ -148,6 +152,49 @@ class PrinterController extends Controller
             'name' => $printer->name,
             'fotos' => $fotos,
             'printings_queue' => $printings_queue
-            ]);
-        }
+        ]);
+    }
+
+    public function printTest(Printer $printer)
+    {
+        $this->authorize('monitor');
+        $user = \Auth::user();
+
+        // metadados do arquivo
+        $filepath = public_path('printtest.pdf');
+        $filesize = File::size($filepath);
+
+        // preaccounting
+        $pdfinfo = PrintingHelper::pdfinfo($filepath);
+
+        $data = [
+            "user_id" => $user->id,
+            "pages" => 1,
+            "copies" => 1,
+            "printer_id" => $printer->id,
+            "jobid" => 0,
+            "host" => "127.0.0.1",
+            "filename" => "printtest.pdf",
+            "filesize" => $filesize,
+            "sides" => "one-sided",
+            "start_page" => 1,
+            "end_page" => 1,
+            "shrink" => false,
+            "filepath_original" => $filepath,
+            "pages_per_sheet" => 1
+        ];
+
+        // Aqui não temos ainda o jobid de verdade
+        $printing = Printing::create($data);
+        Status::createStatus('processing_pdf', $printing);
+
+        // imprimindo
+        PrintingJob::dispatch($printing);
+
+        request()->session()->flash('alert-success', 'Teste de impressão enviado com sucesso.');
+        \UspTheme::activeUrl('/printers');
+        return view('printers.index', [
+            'printers' => Printer::all(),
+        ]);
+    }
 }

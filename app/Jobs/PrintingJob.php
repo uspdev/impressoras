@@ -75,7 +75,7 @@ class PrintingJob implements ShouldQueue
             $this->printing->save();
             Status::createStatus('pdf_processed_successfully', $this->printing);
         }
-        
+
         // Enviando para impressora
         if(!empty($this->printing->filepath_processed)) {
             // Podemos mandar para impressão
@@ -96,7 +96,7 @@ class PrintingJob implements ShouldQueue
         }
 
         // deletando arquivos
-        if(!empty($this->printing->filepath_original)) {
+        if (!empty($this->printing->filepath_original) && !str_ends_with($this->printing->filepath_original, 'public/printtest.pdf')) {
             File::delete($this->printing->filepath_original);
         }
 
