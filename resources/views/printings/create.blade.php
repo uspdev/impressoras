@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <form method="POST" action="/webprintings/{{ $printer->id }}" enctype="multipart/form-data">
+    <form method="POST" action="/printings/print/{{ $printer->id }}" enctype="multipart/form-data">
         @csrf
         <div class="card">
 

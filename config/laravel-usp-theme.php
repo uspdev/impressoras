@@ -36,7 +36,7 @@ return [
     'menu' => [
         [
             'text' => 'Enviar impressão',
-            'url' => '/webprintings',
+            'url' => '/printings/print',
             'can' => 'logado',
         ],
         [
