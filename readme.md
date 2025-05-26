@@ -63,6 +63,5 @@ Tarefinhas:
 - Juntar o WebprintingController com o PrintingContoller
 - Mover a lógica do usuário local para a biblioteca senhaunica-socialite (Ricardo)
 - melhorar lógica de contabilização da contagem 
-- um botão para monitores mandarem um PDF de teste para a impressora (para ver se a impressora funciona mesmo)
 - Laravel 12
 - tratar melhor o retorno do cups (capturar o status da impressão)

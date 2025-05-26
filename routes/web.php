@@ -36,6 +36,7 @@ Route::resource('/printers', PrinterController::class);
 Route::get('/printers/queue/{printer}', [PrinterController::class, 'printer_queue']);
 Route::get('/printers/auth_queue/{printer}', [PrinterController::class, 'authorization_queue']);
 Route::get('/printers/{printer}', [PrinterController::class, 'show']);
+Route::get('/printers/{printer}/printtest', [PrinterController::class, 'printTest']);
 
 // webprintings
 Route::get('/webprintings', [WebprintingController::class, 'index']);
