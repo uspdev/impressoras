@@ -20,7 +20,7 @@
                     <tr>
                         <td>
                             <div class="d-grid gap-2 d-md-block">
-                                <a href="/webprintings/{{ $printer->id }}"><button class="btn btn-primary col-sm-4" type="button">{{ $printer->name }}</button></a>
+                                <a href="/printings/print/{{ $printer->id }}"><button class="btn btn-primary col-sm-4" type="button">{{ $printer->name }}</button></a>
                             </div>
                         </td>
                         <td>{{ $printer->location ?? '' }}</td>

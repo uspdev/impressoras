@@ -7,7 +7,6 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PrinterController;
 use App\Http\Controllers\PrintingController;
 use App\Http\Controllers\RuleController;
-use App\Http\Controllers\WebprintingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +22,10 @@ use App\Http\Controllers\WebprintingController;
 // Printings
 Route::get('/', [IndexController::class, 'index'])->name('home');
 
+Route::get('/printings/print', [PrintingController::class, 'listPrinters']);
+Route::get('/printings/print/{printer}', [PrintingController::class, 'create']);
+Route::post('/printings/print/{printer}', [PrintingController::class, 'store']);
+
 Route::get('/all-printings', [PrintingController::class, 'show']);
 Route::get('/printings', [PrintingController::class, 'index']);
 Route::get('/printings/admin', [PrintingController::class, 'admin']);
@@ -36,11 +39,6 @@ Route::resource('/printers', PrinterController::class);
 Route::get('/printers/queue/{printer}', [PrinterController::class, 'printer_queue']);
 Route::get('/printers/auth_queue/{printer}', [PrinterController::class, 'authorization_queue']);
 Route::get('/printers/{printer}', [PrinterController::class, 'show']);
-
-// webprintings
-Route::get('/webprintings', [WebprintingController::class, 'index']);
-Route::get('/webprintings/{printer}', [WebprintingController::class, 'create']);
-Route::post('/webprintings/{printer}', [WebprintingController::class, 'store']);
 
 // Rules
 Route::resource('/rules', RuleController::class);

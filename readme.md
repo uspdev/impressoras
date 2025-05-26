@@ -60,7 +60,6 @@ Tarefinhas:
 
 - Levar a contabilização do model Printing para uma Action
 - relatórios (conversar hoje)
-- Juntar o WebprintingController com o PrintingContoller
 - Mover a lógica do usuário local para a biblioteca senhaunica-socialite (Ricardo)
 - melhorar lógica de contabilização da contagem 
 - um botão para monitores mandarem um PDF de teste para a impressora (para ver se a impressora funciona mesmo)
