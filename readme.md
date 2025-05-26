@@ -58,7 +58,6 @@ Com a implantação do sistema "impressoras", o fluxo de impressão deixa de ser
 
 Tarefinhas:
 
-- Levar a contabilização do model Printing para uma Action
 - relatórios (conversar hoje)
 - Juntar o WebprintingController com o PrintingContoller
 - Mover a lógica do usuário local para a biblioteca senhaunica-socialite (Ricardo)

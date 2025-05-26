@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use App\Helpers\PrintingHelper;
 use App\Models\Printing;
 use App\Models\User;
 use Spatie\Permission\Models\Permission;
@@ -49,7 +50,7 @@ class Printer extends Model
         {
             $period = $this->rule->quota_period;
             if (!empty($period)) {
-                return Printing::getPrintingsQuantities($user, $this, $period);
+                return PrintingHelper::getPrintingsQuantities($user, $this, $period);
             }
         }
         return;
