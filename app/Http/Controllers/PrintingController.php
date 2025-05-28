@@ -125,7 +125,7 @@ class PrintingController extends Controller
         $this->authorize('logado');
         $printers = [];
 
-        foreach (Printer::all() as $p) {
+        foreach (Printer::where('active', 1)->get() as $p) {
             if ($p->allows(\Auth::user())) {
                 array_push($printers, $p);
             }

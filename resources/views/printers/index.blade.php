@@ -35,6 +35,7 @@
                     @can('admin')
                     <th width="10%">Nome de Máquina</th>
                     <th width="5%">Tipo</th>
+                    <th width="5%">Ativa</th>
                     <th width="15%">Regra</th>
                     <th width="15%">Ações</th>
                     @endcan
@@ -62,6 +63,7 @@
                         @can('admin')
                         <td>{{ $printer->machine_name }}</td>
                         <td>@if($printer->color) Colorida @else Preto e Branca @endif</td>
+                        <td>@if($printer->active) Sim @else Não @endif</td>
                         <td>{{ $printer->rule->name ?? '' }}</td>
                         <td>
                             <div id="actions">
