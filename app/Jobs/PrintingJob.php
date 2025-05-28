@@ -37,9 +37,14 @@ class PrintingJob implements ShouldQueue
      */
     public function handle()
     {
-        $pdfinfo = PrintingHelper::pdfinfo($this->printing->filepath_original);
+        // Se o arquivo não foi completamento salvo no filesystem, interrompemos o processamento
+        if(!PrintingHelper::isFileCompletelyWritten($this->printing->filepath_original)) {
+            Status::createStatus('failed_in_process_pdf', $this->printing);
+            return ;
+        }
 
         if (!empty($this->printing->start_page)) {
+            $pdfinfo = PrintingHelper::pdfinfo($this->printing->filepath_original);
             // trata possível erro de preenchimento
             $end = min($pdfinfo['pages'], $this->printing->end_page);
             $filepath_pdfjam = PrintingHelper::pdfjam(
@@ -58,42 +63,45 @@ class PrintingJob implements ShouldQueue
             );
         }
 
-        // salvando caminho filepath_pdfjam
+        // Se o arquivo não do jam não foi criado, interrompemos o processamento
         if(empty($filepath_pdfjam)) {
             Status::createStatus('failed_in_process_pdf', $this->printing);
-        } else {
-            $this->printing->filepath_pdfjam = $filepath_pdfjam;
-            $this->printing->save();
+            return ;
         }
 
-        // salvando caminho filepath_processed processado com ghostscript
+        // salvando caminho filepath_pdfjam
+        $this->printing->filepath_pdfjam = $filepath_pdfjam;
+        $this->printing->save();
+
+        // salvando caminho do arquivo final processado
         $filepath_processed = PrintingHelper::pdfx($this->printing->filepath_pdfjam, $this->printing->printer->color);
+
+        // Se falhou a geração do arquivo final, interrompemos o processamento
         if(empty($filepath_processed) ) {
             Status::createStatus('failed_in_process_pdf', $this->printing);
-        } else {
-            $this->printing->filepath_processed = $filepath_processed;
-            $this->printing->save();
-            Status::createStatus('pdf_processed_successfully', $this->printing);
+            return;
         }
+
+        // Se deu certo o arquivo processado, registramos o arquivo final
+        $this->printing->filepath_processed = $filepath_processed;
+        $this->printing->save();
+        Status::createStatus('pdf_processed_successfully', $this->printing);
 
         // Enviando para impressora
-        if(!empty($this->printing->filepath_processed)) {
-            // Podemos mandar para impressão
-            Status::createStatus('sent_to_printer_queue', $this->printing);
+        Status::createStatus('sent_to_printer_queue', $this->printing);
 
-            $id = 'ipp://'.config('printing.drivers.cups.ip').':631/printers/' . $this->printing->printer->machine_name;
+        $id = 'ipp://'.config('printing.drivers.cups.ip').':631/printers/' . $this->printing->printer->machine_name;
 
-            $printJob = CupsPrinting::newPrintTask()
-                ->printer($id)
-                ->jobTitle($this->printing->filename)
-                ->sides($this->printing->sides)
-                ->copies($this->printing->copies)
-                ->file($this->printing->filepath_processed)
-                ->send();
-            $this->printing->jobid = $printJob->id();
-            $this->printing->save();
-            Status::createStatus('print_success', $this->printing);
-        }
+        $printJob = CupsPrinting::newPrintTask()
+            ->printer($id)
+            ->jobTitle($this->printing->filename)
+            ->sides($this->printing->sides)
+            ->copies($this->printing->copies)
+            ->file($this->printing->filepath_processed)
+            ->send();
+        $this->printing->jobid = $printJob->id();
+        $this->printing->save();
+        Status::createStatus('print_success', $this->printing);
 
         // deletando arquivos
         if (!empty($this->printing->filepath_original) && !str_ends_with($this->printing->filepath_original, 'public/printtest.pdf')) {

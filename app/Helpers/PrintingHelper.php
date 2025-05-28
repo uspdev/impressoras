@@ -215,4 +215,29 @@ class PrintingHelper
 
         return $query->sum(DB::raw('printings.pages*printings.copies'));
     }
+
+    // função para verificar se o arquivo estável
+    public static function isFileCompletelyWritten(string $path, int $checkIntervalMs = 500, int $retries = 5): bool
+    {
+        
+        if (!file_exists($path)) {
+            return false;
+        }
+
+        $lastSize = filesize($path);
+
+        for ($i = 0; $i < $retries; $i++) {
+            usleep($checkIntervalMs * 1000);
+
+            clearstatcache(true, $path);
+            $currentSize = filesize($path);
+            if ($currentSize === $lastSize) {
+                return true; // Tamanho estável
+            }
+
+            $lastSize = $currentSize;
+        }
+        
+        return false; // Não ficou estável no tempo definido
+    }
 }
