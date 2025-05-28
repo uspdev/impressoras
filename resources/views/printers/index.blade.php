@@ -32,6 +32,7 @@
                     <th width="15%">Nome</th>
                     <th width="15%">Acessar fila</th>
                     <th width="15%">Localização</th>
+                    <th width="15%">Teste de Impressão</th>
                     @can('admin')
                     <th width="10%">Nome de Máquina</th>
                     <th width="5%">Tipo</th>
@@ -59,6 +60,7 @@
                             </div>
                         </td>
                         <td>{{ $printer->location ?? '' }}</td>
+                        <td><a href="/printers/{{$printer->id}}/printtest" title="Imprimir página de teste"><i class="fas fa-print"></i></a></td>
                         @can('admin')
                         <td>{{ $printer->machine_name }}</td>
                         <td>@if($printer->color) Colorida @else Preto e Branca @endif</td>
@@ -73,7 +75,6 @@
                                         <a><i class="fas fa-trash" color="#007bff" id="i-trash"></i></a>
                                     </button>
                                 </form>
-                            <a href="/printers/{{$printer->id}}/printtest" title="Imprimir página de teste"><i class="fas fa-print"></i></a>
                             </div>
                         </td>
                         @endcan
