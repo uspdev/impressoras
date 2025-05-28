@@ -188,7 +188,7 @@ class PrintingHelper
         $query->where('printings.latest_status', 'print_success');
 
         // não contabiliza impressões de teste
-        $query->where('printings.filepath_original', 'NOT LIKE', '%public/printtest.pdf');
+        $query->where('printings.filepath_original', 'NOT LIKE', '%/printtest%.pdf');
 
         // somente as impressões do usuário em questão
         if ($user) {
@@ -219,7 +219,7 @@ class PrintingHelper
     // função para verificar se o arquivo estável
     public static function isFileCompletelyWritten(string $path, int $checkIntervalMs = 500, int $retries = 5): bool
     {
-        
+
         if (!file_exists($path)) {
             return false;
         }
@@ -237,7 +237,7 @@ class PrintingHelper
 
             $lastSize = $currentSize;
         }
-        
+
         return false; // Não ficou estável no tempo definido
     }
 }
