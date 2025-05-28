@@ -28,7 +28,7 @@
 
                 <div class="form-check">
                     <input type="checkbox" class="form-check-input" id="active" name="active" value="1"
-                        @if( old('active',$printer->active) == '1' ) checked @endif />
+                        @if( old('active') === null ? true : old('active', $printer->active) == '1' ) checked @endif />
                     <label class="form-check-label" for="color">Ativa</label>
                 </div>
                 <br>
