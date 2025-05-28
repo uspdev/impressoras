@@ -8,8 +8,10 @@ use App\Jobs\PrintingJob;
 use App\Models\Printer;
 use App\Models\Printing;
 use App\Models\Status;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use App\Services\PhotoService;
 use App\Models\User;
 
@@ -169,8 +171,22 @@ class PrinterController extends Controller
         $this->authorize('monitor');
         $user = \Auth::user();
 
+        // campos no conteúdo do arquivo
+        $data_hora = now();
+        $fields = [
+            'autor_codpes' => $user->codpes,
+            'autor_nome' => $user->name,
+            'data_hora' => $data_hora->format('d/m/Y H:i:s'),
+            'impressora' => $printer->name,
+        ];
+
+        // preenche o arquivo com os valores dos campos
+        $pdf = Pdf::loadView('printings.printtest_template', $fields);
+
         // metadados do arquivo
-        $filepath = public_path('printtest.pdf');
+        $filename = 'printtest_' . $data_hora->format('Ymd_His') . '.pdf';
+        $filepath = storage_path('app/' . $filename);
+        file_put_contents($filepath, $pdf->output());    // grava o arquivo em disco
         $filesize = File::size($filepath);
 
         // preaccounting
@@ -183,7 +199,7 @@ class PrinterController extends Controller
             "printer_id" => $printer->id,
             "jobid" => 0,
             "host" => "127.0.0.1",
-            "filename" => "printtest.pdf",
+            "filename" => $filename,
             "filesize" => $filesize,
             "sides" => "one-sided",
             "start_page" => 1,
