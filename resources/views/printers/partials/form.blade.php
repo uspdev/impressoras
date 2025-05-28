@@ -20,9 +20,16 @@
                 </div>
 
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="color" name="color" value="1" 
+                    <input type="checkbox" class="form-check-input" id="color" name="color" value="1"
                         @if( old('color',$printer->color) == '1' ) checked @endif />
                     <label class="form-check-label" for="color">Impressora Colorida</label>
+                </div>
+                <br>
+
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="active" name="active" value="1"
+                        @if( old('active',$printer->active) == '1' ) checked @endif />
+                    <label class="form-check-label" for="color">Ativa</label>
                 </div>
                 <br>
 
@@ -42,7 +49,7 @@
                             @else
                                  <option value="{{$rule->id}}" {{ (old('rule_id')) ? 'selected' : '' }}>
                                     {{ $rule->name }}
-                                 </option> 
+                                 </option>
                             @endif
                         @endforeach
                     </select>

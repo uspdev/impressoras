@@ -61,7 +61,6 @@ Com a implantação do sistema "impressoras", o fluxo de impressão deixa de ser
 ################
 
 - relatórios (conversar hoje)
-- Ter uam opção de desativar/ativar a impressora 
 - Mover a lógica do usuário local para a biblioteca senhaunica-socialite (Ricardo)
 - melhorar lógica de contabilização da contagem 
 - Laravel 12
