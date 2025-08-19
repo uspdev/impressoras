@@ -74,7 +74,7 @@ class PrintingJob implements ShouldQueue
         $this->printing->save();
 
         // salvando caminho do arquivo final processado
-        $filepath_processed = PrintingHelper::pdfx($this->printing->filepath_pdfjam, $this->printing->printer->color);
+        $filepath_processed = PrintingHelper::pdftocairo($this->printing->filepath_pdfjam, $this->printing->printer->color);
 
         // Se falhou a geração do arquivo final, interrompemos o processamento
         if(empty($filepath_processed) ) {

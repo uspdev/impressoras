@@ -101,14 +101,14 @@ class PrintingHelper
     }
 
     // precisa refatorar
-    public static function pdfx($file, $color) {
+    public static function pdftocairo($file, $color) {
         $pdftocairo = "/usr/bin/pdftocairo";
 
         if (!File::exists($pdftocairo)) {
             throw new \Exception("Instalar pdftocairo: apt install poppler-utils.");
         }
 
-        $pdf = File::dirname($file) . "/" . File::name($file) . "pdfx.pdf";
+        $pdf = File::dirname($file) . "/" . File::name($file) . "pdftocairo.pdf";
 
         $timeout = (int) config('impressoras.gs_timeout');
         $process = new Process([
