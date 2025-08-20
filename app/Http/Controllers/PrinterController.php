@@ -84,19 +84,9 @@ class PrinterController extends Controller
     {
         $this->authorize('admin');
 
-        $tosave = false;
-        if(!isset($request->color)){
-            $printer->color = 0;
-            $tosave = true;
-        }
-
-        if(!isset($request->active)){
-            $printer->active = 0;
-            $tosave = true;
-        }
-
-        if ($tosave)
-            $printer->save();
+        $printer->color = isset($request->color);
+        $printer->active = isset($request->active);
+        $printer->save();
 
         $printer->update($request->validated());
 
