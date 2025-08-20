@@ -107,7 +107,7 @@ class PrintingJob implements ShouldQueue
         Status::createStatus('print_success', $this->printing);
 
         // deletando arquivos
-        if (!empty($this->printing->filepath_original) && !str_ends_with($this->printing->filepath_original, 'public/printtest.pdf')) {
+        if (!empty($this->printing->filepath_original)) {
             File::delete($this->printing->filepath_original);
         }
 

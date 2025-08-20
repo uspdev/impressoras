@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.2 || ^8.1",
+        "barryvdh/laravel-dompdf": "*",
         "doctrine/dbal": "^3.1",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^8.0",
@@ -17,8 +18,8 @@
         "rap2hpoutre/laravel-log-viewer": "^1.7",
         "smalot/cups-ipp": "^0.5.0",
         "spatie/laravel-package-tools": "^1.12",
-        "uspdev/laravel-usp-faker": "^1.0",
         "uspdev/laravel-printing": "^1.0.2",
+        "uspdev/laravel-usp-faker": "^1.0",
         "uspdev/laravel-usp-theme": "^2.0",
         "uspdev/replicado": "^1.5",
         "uspdev/senhaunica-socialite": "4.3.8",
