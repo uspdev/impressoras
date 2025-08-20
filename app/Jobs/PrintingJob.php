@@ -43,12 +43,26 @@ class PrintingJob implements ShouldQueue
             return ;
         }
 
+        // processamento inicial com pdftocairo
+        $filepath_processed = PrintingHelper::pdftocairo($this->printing->filepath_original, $this->printing->printer->color);
+
+        // Se falhou a geração do arquivo, interrompemos o processamento
+        if(empty($filepath_processed) ) {
+            Status::createStatus('failed_in_process_pdf', $this->printing);
+            return;
+        }
+
+        // Se deu certo o arquivo processado, registramos em filepath_processed
+        $this->printing->filepath_processed = $filepath_processed;
+        $this->printing->save();
+
+        // pdfjam, principalmente para n-up
         if (!empty($this->printing->start_page)) {
-            $pdfinfo = PrintingHelper::pdfinfo($this->printing->filepath_original);
+            $pdfinfo = PrintingHelper::pdfinfo($this->printing->filepath_processed);
             // trata possível erro de preenchimento
             $end = min($pdfinfo['pages'], $this->printing->end_page);
             $filepath_pdfjam = PrintingHelper::pdfjam(
-                $this->printing->filepath_original,
+                $this->printing->filepath_processed,
                 $this->printing->shrink,
                 $this->printing->pages_per_sheet,
                 $this->printing->start_page,
@@ -57,7 +71,7 @@ class PrintingJob implements ShouldQueue
         }
         else {
             $filepath_pdfjam = PrintingHelper::pdfjam(
-                $this->printing->filepath_original,
+                $this->printing->filepath_processed,
                 $this->printing->shrink,
                 $this->printing->pages_per_sheet
             );
@@ -73,18 +87,7 @@ class PrintingJob implements ShouldQueue
         $this->printing->filepath_pdfjam = $filepath_pdfjam;
         $this->printing->save();
 
-        // salvando caminho do arquivo final processado
-        $filepath_processed = PrintingHelper::pdfx($this->printing->filepath_pdfjam, $this->printing->printer->color);
-
-        // Se falhou a geração do arquivo final, interrompemos o processamento
-        if(empty($filepath_processed) ) {
-            Status::createStatus('failed_in_process_pdf', $this->printing);
-            return;
-        }
-
-        // Se deu certo o arquivo processado, registramos o arquivo final
-        $this->printing->filepath_processed = $filepath_processed;
-        $this->printing->save();
+        // atualiza estado do job
         Status::createStatus('pdf_processed_successfully', $this->printing);
 
         // Enviando para impressora
@@ -97,7 +100,7 @@ class PrintingJob implements ShouldQueue
             ->jobTitle($this->printing->filename)
             ->sides($this->printing->sides)
             ->copies($this->printing->copies)
-            ->file($this->printing->filepath_processed)
+            ->file($this->printing->filepath_pdfjam)
             ->send();
         $this->printing->jobid = $printJob->id();
         $this->printing->save();
