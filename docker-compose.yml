@@ -46,7 +46,7 @@ services:
       - MYSQL_PASSWORD=${DB_PASSWORD}
 
   impressoras:
-    image: uspdev/impressoras:2.4.0
+    image: uspdev/impressoras:2.5.1
     restart: always
     env_file: .env
     volumes:
