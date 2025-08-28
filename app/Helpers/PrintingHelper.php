@@ -81,6 +81,7 @@ class PrintingHelper
         $pdf = File::dirname($file) . "/" . File::name($file) . "pdfjam.pdf";
         $command = [
             $pdfjam, $mode,
+            "--preamble", "\pdfinclusioncopyfonts=1",
             "--a4paper",
             "--nup", $nup,
             "--scale", $scale,
