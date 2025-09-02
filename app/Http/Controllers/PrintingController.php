@@ -32,7 +32,7 @@ class PrintingController extends Controller
                                 ->when($request->search, function($query) use($request){
                                     return $query->where('filename','LIKE',"%{$request->search}%");
                                 })
-                                ->where('filepath_original', 'NOT LIKE', '%public/printtest.pdf')    // descarta impressões de teste
+                                ->where('filepath_original', 'NOT LIKE', '%/printtest%.pdf')    // descarta impressões de teste
                                 ->paginate(5);
         $quantities['Mensal'] = PrintingHelper::getPrintingsQuantities($user, null, 'Mensal');
         $quantities['Diario'] = PrintingHelper::getPrintingsQuantities($user, null, 'Diário');
@@ -53,7 +53,7 @@ class PrintingController extends Controller
 
         $users = User::where('codpes','LIKE', "%$request->search%")->get();
         $printings = Printing::orderBy('id', 'DESC')
-                             ->where('filepath_original', 'NOT LIKE', '%public/printtest.pdf');    // descarta impressões de teste
+                             ->where('filepath_original', 'NOT LIKE', '%/printtest%.pdf');    // descarta impressões de teste
 
         if(isset($request->search)) {
             $printings = $printings->where('filename','LIKE',"%{$request->search}%")
