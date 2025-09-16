@@ -60,6 +60,11 @@ return [
             'can' => 'admin',
         ],
         [
+            'text' => 'Monitores',
+            'url' => '/assistants',
+            'can' => 'gerencia_monitores_locais',
+        ],
+        [
             'text' => 'Usuários locais',
             'url' => '/local',
             'can' => 'admin',

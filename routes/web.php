@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AssistantController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\HelpController;
 use App\Http\Controllers\LocalUserController;
@@ -52,6 +53,9 @@ Route::post('/login/local', [LoginController::class, 'login']);
 Route::resource('/local', LocalUserController::class)->parameters([
     'local' => 'user'
 ]);
+
+// assistants
+Route::resource('/assistants', AssistantController::class);
 
 // help
 Route::get('/help/raster', [HelpController::class, 'raster']);
