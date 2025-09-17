@@ -71,10 +71,24 @@
 
                 <div class="row">
                     <div class="col-sm-4">
-                        <button type="submit" class="btn btn-block btn-primary"> Enviar </button>
+                        <button type="submit" id="submit-button" class="btn btn-block btn-primary"> Enviar </button>
                     </div>
                 </div>
         </div>
 
     </form>
+@endsection
+
+@section('javascripts_bottom')
+    <script>
+        $(document).ready(function () {
+            $('form').on('submit', function (e) {
+                if ($('#submit-button').prop('disabled')) {
+                    e.preventDefault();
+                    return;
+                }
+                $('#submit-button').prop('disabled', true).text('Enviando...');
+            });
+        });
+    </script>
 @endsection
