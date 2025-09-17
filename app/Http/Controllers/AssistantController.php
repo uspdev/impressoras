@@ -11,7 +11,7 @@ use Spatie\Permission\Models\Permission;
 
 class AssistantController extends Controller
 {
-    function index()
+    public function index()
     {
         $this->authorize('admin');
 
@@ -59,7 +59,7 @@ class AssistantController extends Controller
         ]);
     }
 
-    function create()
+    public function create()
     {
         $this->authorize('admin');
 
@@ -69,7 +69,7 @@ class AssistantController extends Controller
         ]);
     }
 
-    function store(Request $request)
+    public function store(Request $request)
     {
         $this->authorize('admin');
 
@@ -83,7 +83,7 @@ class AssistantController extends Controller
         return redirect('/assistants');
     }
 
-    function destroy(Assistant $assistant)
+    public function destroy(Assistant $assistant)
     {
         $this->authorize('admin');
 
