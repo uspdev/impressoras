@@ -15,3 +15,6 @@ yarn-error.log
 /public/vendor/
 resources/ISOuncoated.icc
 resources/PDFX_def.ps
+
+# DDEV
+.ddev

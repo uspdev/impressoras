@@ -1,12 +1,12 @@
 FROM php:8.3-apache
 
+ENV DEBIAN_FRONTEND=noninteractive
+
 # packages
 RUN sed -i 's|main|main non-free|' /etc/apt/sources.list.d/debian.sources && apt-get update && apt-get install -y \
     freetds-bin \
     freetds-dev \
-    ghostscript \
     icc-profiles \
-    libgs9-common \
     poppler-utils \
     texlive-extra-utils \
     parallel \
@@ -53,10 +53,17 @@ RUN composer install --no-interaction --no-dev --no-autoloader
 # impressoras
 USER root
 COPY --chown=www-data . .
+RUN mkdir -p storage/logs \
+    && mkdir -p storage/framework/cache \
+    && mkdir -p storage/framework/sessions \
+    && mkdir -p storage/framework/views \
+    && chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R ug+rwx storage bootstrap/cache
+
 USER www-data
 RUN composer dump-autoload
 
-CMD ["./serve.sh"]
+CMD ["./deploy/bin/serve.sh"]
 
 # source:
 # [1] https://www.digitalocean.com/community/tutorials/how-to-install-and-set-up-laravel-with-docker-compose-on-ubuntu-22-04
