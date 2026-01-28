@@ -63,5 +63,4 @@ Com a implantação do sistema "impressoras", o fluxo de impressão deixa de ser
 - relatórios (conversar hoje)
 - Mover a lógica do usuário local para a biblioteca senhaunica-socialite (Ricardo)
 - melhorar lógica de contabilização da contagem 
-- Laravel 12
 - tratar melhor o retorno do cups (capturar o status da impressão)
