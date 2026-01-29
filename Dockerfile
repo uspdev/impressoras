@@ -6,7 +6,6 @@ RUN sed -i 's|main|main non-free|' /etc/apt/sources.list.d/debian.sources && apt
     freetds-dev \
     ghostscript \
     icc-profiles \
-    libgs9-common \
     poppler-utils \
     texlive-extra-utils \
     parallel \
