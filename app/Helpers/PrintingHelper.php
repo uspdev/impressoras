@@ -214,7 +214,7 @@ class PrintingHelper
             $query->whereDate('printings.created_at', Carbon::today());
         }
 
-        return $query->sum(DB::raw('printings.pages*printings.copies'));
+        return $query->sum(DB::raw('CASE WHEN printings.jobid != 0 THEN printings.pages*printings.copies ELSE 0 END'));
     }
 
     // função para verificar se o arquivo estável
