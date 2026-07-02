@@ -18,8 +18,10 @@ class ReplicadoTemp
                 AND t2.codbnfalu = 32
                 AND t1.codslamon = $codslamon
                 ";
-
+        // Manda esse método para replicado
+        return [];
         $result = DB::fetchAll($query);
+        
 
         if(!empty($result)) return array_column($result,'codpes');
         return [];

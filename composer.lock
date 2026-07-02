@@ -8515,21 +8515,21 @@
         },
         {
             "name": "uspdev/replicado",
-            "version": "1.27.0",
+            "version": "1.27.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/uspdev/replicado.git",
-                "reference": "e7148e2fb3c7e2b5fd350fd68ea3de6fbad2e421"
+                "reference": "2feec97a58b92b108e74eba83f61d29fee69a472"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/uspdev/replicado/zipball/e7148e2fb3c7e2b5fd350fd68ea3de6fbad2e421",
-                "reference": "e7148e2fb3c7e2b5fd350fd68ea3de6fbad2e421",
+                "url": "https://api.github.com/repos/uspdev/replicado/zipball/2feec97a58b92b108e74eba83f61d29fee69a472",
+                "reference": "2feec97a58b92b108e74eba83f61d29fee69a472",
                 "shasum": ""
             },
             "require": {
                 "ext-pdo_dblib": "*",
-                "illuminate/collections": "^8 || ^9 || ^10 || ^11 || ^12",
+                "illuminate/collections": "^8 || ^9 || ^10 || ^11 || ^12 || ^13",
                 "monolog/monolog": "^2 || ^3",
                 "php": "^7 || ^8",
                 "uspdev/cache": "^1"
@@ -8558,9 +8558,9 @@
             "homepage": "https://github.com/uspdev/replicado",
             "support": {
                 "issues": "https://github.com/uspdev/replicado/issues",
-                "source": "https://github.com/uspdev/replicado/tree/1.27.0"
+                "source": "https://github.com/uspdev/replicado/tree/1.27.12"
             },
-            "time": "2025-11-05T18:20:28+00:00"
+            "time": "2026-05-13T14:04:10+00:00"
         },
         {
             "name": "uspdev/senhaunica-socialite",
