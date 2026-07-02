@@ -17,3 +17,4 @@ resources/ISOuncoated.icc
 resources/PDFX_def.ps
 /.ddev/
 
+.phpunit.cache
