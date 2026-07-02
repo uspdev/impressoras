@@ -42,19 +42,19 @@ jobs:
           done
 
       - name: Install Composer dependencies
-        run: docker compose exec -T {{ env.SERVICE_NAME }} composer install --no-interaction --prefer-dist
+        run: docker compose exec -T ${{ env.SERVICE_NAME }} composer install --no-interaction --prefer-dist
 
       - name: Generate APP_KEY
-        run: docker compose exec -T {{ env.SERVICE_NAME }} php artisan key:generate
+        run: docker compose exec -T ${{ env.SERVICE_NAME }} php artisan key:generate
 
       - name: Run migrations
-        run: docker compose exec -T {{ env.SERVICE_NAME }} php artisan migrate --force
+        run: docker compose exec -T ${{ env.SERVICE_NAME }} php artisan migrate --force
 
       - name: Install ChromeDriver
-        run: docker compose exec -T {{ env.SERVICE_NAME }} php artisan dusk:chrome-driver --detect
+        run: docker compose exec -T ${{ env.SERVICE_NAME }} php artisan dusk:chrome-driver --detect
 
       - name: Run Dusk
-        run: docker compose exec -T {{ env.SERVICE_NAME }} php artisan dusk --without-tty
+        run: docker compose exec -T ${{ env.SERVICE_NAME }} php artisan dusk --without-tty
 
       - name: Show logs on failure
         if: failure()
