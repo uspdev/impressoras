@@ -24,6 +24,11 @@ services:
       MYSQL_USER: impressoras
       MYSQL_PASSWORD: impressoras
       MYSQL_ROOT_PASSWORD: impressoras
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
     networks:
       - impressoras-network
 
