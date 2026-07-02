@@ -19,18 +19,14 @@ jobs:
         run: |
           echo "127.0.0.1 auth.local" | sudo tee -a /etc/hosts
 
+      - name: Set UID/GID
+        run: |
+          echo "UID=$(id -u)" >> $GITHUB_ENV
+          echo "GID=$(id -g)" >> $GITHUB_ENV
+
       - name: Build and start containers
         run: docker compose up -d --build
 
-      - name: Debug permissions
-        run: |
-          docker compose exec -u root -T impressoras sh -c '
-            id
-            ls -ld /var/www/html
-            ls -la /var/www/html
-            touch /var/www/html/teste
-          '
-          
       - name: Wait for MariaDB
         run: |
           until [ "$(docker inspect -f '{{.State.Health.Status}}' $(docker compose ps -q mariadb))" = "healthy" ]; do
