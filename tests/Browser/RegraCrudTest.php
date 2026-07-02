@@ -16,10 +16,10 @@ class RegraCrudTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->visit('/')
                 ->clickLink('Entrar')
-                ->waitFor('#loginUsuario') # Espera a página de login carregar
+                ->waitFor('#loginUsuario') # Importante: Espera a página de login carregar
                 ->typeSlowly('loginUsuario', '1111')
                 ->press('Login')
-                ->waitFor('Sair') # Espera a página de login carregar
+                ->waitFor('.login_logout_link') # Importante: Espera a página de retornada carregar
                 ->assertSee('Regras');
         });
     }
