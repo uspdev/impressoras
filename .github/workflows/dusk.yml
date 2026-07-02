@@ -15,6 +15,10 @@ jobs:
       - name: Create .env
         run: cp .env.example .env
 
+      - name: Add auth.local to hosts to senhaunica-faker works properly
+        run: |
+          echo "127.0.0.1 auth.local" | sudo tee -a /etc/hosts
+
       - name: Build and start containers
         run: docker compose up -d --build
 
@@ -24,9 +28,9 @@ jobs:
             sleep 2
           done
 
-      - name: Generate APP_KEY
-        run: docker compose exec -T impressoras composer install
-
+      - name: Install Composer dependencies
+        run: docker compose exec -T impressoras composer install --no-interaction --prefer-dist
+        
       - name: Generate APP_KEY
         run: docker compose exec -T impressoras php artisan key:generate
 
