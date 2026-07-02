@@ -13,7 +13,17 @@ Após a impressora responder:
  3.2) status "Problema"
 4) Se não pode, status "Cancelado"
 
-## 
+## Subindo ambiente de desenvolvimento:
+
+    docker compose up --build
+    cp .env.example .env
+    docker exec -it -it impressoras composer install
+    docker exec -it -it impressoras php artisan key:generate
+
+Os seguintes serviços vão subir:
+
+- servidor cups com user admin e senha admin em [http://localhost:8631][http://localhost:8631]
+- servidor spdf para processamento de arquivos em [http://localhost:8090][http://localhost:8090]
 
 ## Deployment
 Vide [deployment.md](deployment.md).
