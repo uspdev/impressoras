@@ -8,6 +8,9 @@ jobs:
   dusk:
     runs-on: ubuntu-latest
 
+    env:
+      SERVICE_NAME: impressoras
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,24 +32,32 @@ jobs:
 
       - name: Wait for MariaDB
         run: |
-          until [ "$(docker inspect -f '{{.State.Health.Status}}' $(docker compose ps -q mariadb))" = "healthy" ]; do
-            sleep 1
+          for i in {1..40}; do
+            if docker compose exec -T mariadb mariadb -u{{ env.SERVICE_NAME }} -p{{ env.SERVICE_NAME }} -e "SELECT 1;" &> /dev/null; then
+              echo "MariaDB is ready"
+              exit 0
+            fi
+            echo "Waiting for MariaDB..."
+            sleep 2
           done
 
+          echo "MariaDB failed to start"
+          exit 1
+
       - name: Install Composer dependencies
-        run: docker compose exec -T impressoras composer install --no-interaction --prefer-dist
+        run: docker compose exec -T {{ env.SERVICE_NAME }} composer install --no-interaction --prefer-dist
 
       - name: Generate APP_KEY
-        run: docker compose exec -T impressoras php artisan key:generate
+        run: docker compose exec -T {{ env.SERVICE_NAME }} php artisan key:generate
 
       - name: Run migrations
-        run: docker compose exec -T impressoras php artisan migrate --force
+        run: docker compose exec -T {{ env.SERVICE_NAME }} php artisan migrate --force
 
       - name: Install ChromeDriver
-        run: docker compose exec -T impressoras php artisan dusk:chrome-driver --detect
+        run: docker compose exec -T {{ env.SERVICE_NAME }} php artisan dusk:chrome-driver --detect
 
       - name: Run Dusk
-        run: docker compose exec -T impressoras php artisan dusk --without-tty
+        run: docker compose exec -T {{ env.SERVICE_NAME }} php artisan dusk --without-tty
 
       - name: Show logs on failure
         if: failure()
