@@ -15,6 +15,13 @@ jobs:
       - name: Create .env
         run: cp .env.example .env
 
+      - name: Add auth.local to hosts to senhaunica-faker works properly
+        run: |
+          echo "127.0.0.1 auth.local" | sudo tee -a /etc/hosts
+
+      - name: Build and start containers
+        run: docker compose up -d --build
+
       - name: Debug permissions
         run: |
           docker compose exec -u root -T impressoras sh -c '
@@ -23,14 +30,7 @@ jobs:
             ls -la /var/www/html
             touch /var/www/html/teste
           '
-
-      - name: Add auth.local to hosts to senhaunica-faker works properly
-        run: |
-          echo "127.0.0.1 auth.local" | sudo tee -a /etc/hosts
-
-      - name: Build and start containers
-        run: docker compose up -d --build
-
+          
       - name: Wait for MariaDB
         run: |
           until [ "$(docker inspect -f '{{.State.Health.Status}}' $(docker compose ps -q mariadb))" = "healthy" ]; do
