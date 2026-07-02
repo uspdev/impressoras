@@ -25,6 +25,9 @@ jobs:
           done
 
       - name: Generate APP_KEY
+        run: docker compose exec -T impressoras composer install
+
+      - name: Generate APP_KEY
         run: docker compose exec -T impressoras php artisan key:generate
 
       - name: Run migrations
