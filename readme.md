@@ -17,13 +17,14 @@ Após a impressora responder:
 
     docker compose up --build
     cp .env.example .env
-    docker exec -it -it impressoras composer install
-    docker exec -it -it impressoras php artisan key:generate
+    docker exec -it impressoras composer install
+    docker exec -it impressoras php artisan key:generate
+    docker exec -it impressoras php artisan migrate
 
 Os seguintes serviços vão subir:
 
 - servidor cups com user admin e senha admin em [http://localhost:8631][http://localhost:8631]
-- servidor spdf para processamento de arquivos em [http://localhost:8090][http://localhost:8090]
+- servidor selenium para ver os testes rodando (senha: secret) [http://localhost:7900][http://localhost:7900]
 
 ## Deployment
 Vide [deployment.md](deployment.md).
