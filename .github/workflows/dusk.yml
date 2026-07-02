@@ -30,11 +30,8 @@ jobs:
       - name: Wait for MariaDB
         run: |
           until [ "$(docker inspect -f '{{.State.Health.Status}}' $(docker compose ps -q mariadb))" = "healthy" ]; do
-            sleep 2
+            sleep 1
           done
-
-      - name: git safe.directory
-        run: docker compose exec -T impressoras git config --global --add safe.directory /var/www/html
 
       - name: Install Composer dependencies
         run: docker compose exec -T impressoras composer install --no-interaction --prefer-dist
@@ -44,6 +41,9 @@ jobs:
 
       - name: Run migrations
         run: docker compose exec -T impressoras php artisan migrate --force
+
+      - name: Install ChromeDriver
+        run: docker compose exec -T impressoras php artisan dusk:chrome-driver --detect
 
       - name: Run Dusk
         run: docker compose exec -T impressoras php artisan dusk --without-tty
