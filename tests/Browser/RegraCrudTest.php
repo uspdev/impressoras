@@ -19,6 +19,7 @@ class RegraCrudTest extends DuskTestCase
                 ->waitFor('#loginUsuario') # Espera a página de login carregar
                 ->typeSlowly('loginUsuario', '1111')
                 ->press('Login')
+                ->waitFor('Sair') # Espera a página de login carregar
                 ->assertSee('Regras');
         });
     }
