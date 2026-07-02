@@ -22,13 +22,6 @@ jobs:
         run: |
           echo "127.0.0.1 auth.local" | sudo tee -a /etc/hosts
 
-      - name: Verify if auth.local was added to hosts
-        run: |
-          grep -q "127.0.0.1 auth.local" /etc/hosts && echo "Sucesso: Host adicionado!" || (echo "Erro: Host não encontrado!" && exit 1)
-
-      - name: Test ping to auth.local
-        run: ping -c 3 auth.local
-
       - name: Set UID/GID
         run: |
           echo "UID=$(id -u)" >> $GITHUB_ENV

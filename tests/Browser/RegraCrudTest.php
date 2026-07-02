@@ -16,6 +16,7 @@ class RegraCrudTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->visit('/')
                 ->clickLink('Entrar')
+                ->waitFor('#loginUsuario') # Espera a página de login carregar
                 ->typeSlowly('loginUsuario', '1111')
                 ->press('Login')
                 ->assertSee('Regras');
