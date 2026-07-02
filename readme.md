@@ -13,8 +13,7 @@ Após a impressora responder:
  3.2) status "Problema"
 4) Se não pode, status "Cancelado"
 
-## Dependências
-Vide [Dockerfile](Dockerfile).
+## 
 
 ## Deployment
 Vide [deployment.md](deployment.md).

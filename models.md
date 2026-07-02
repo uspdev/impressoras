@@ -1,7 +1,6 @@
 ## Informações sobre os Models
 Algumas informações incompletas sobre nossos models. Falta, por exemplo, informações sobre métodos.
 
-
 ### Model Printer
 
 - name [str]: Nome da impressora
