@@ -29,8 +29,13 @@ jobs:
 
       - name: Wait for MariaDB
         run: |
-          until [ "$(docker inspect -f '{{.State.Health.Status}}' $(docker compose ps -q mariadb))" = "healthy" ]; do
-            sleep 1
+          for i in {1..40}; do
+            if docker compose exec -T mariadb mariadb -uimpressoras -pimpressoras -e "SELECT 1;" &> /dev/null; then
+              echo "MariaDB is ready"
+              exit 0
+            fi
+            echo "Waiting for MariaDB..."
+            sleep 2
           done
 
       - name: Install Composer dependencies
