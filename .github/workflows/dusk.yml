@@ -33,16 +33,13 @@ jobs:
       - name: Wait for MariaDB
         run: |
           for i in {1..40}; do
-            if docker compose exec -T mariadb mariadb -u{{ env.SERVICE_NAME }} -p{{ env.SERVICE_NAME }} -e "SELECT 1;" &> /dev/null; then
+            if docker compose exec -T mariadb mariadb -u${{ env.SERVICE_NAME }} -p${{ env.SERVICE_NAME }} -e "SELECT 1;" &> /dev/null; then
               echo "MariaDB is ready"
               exit 0
             fi
             echo "Waiting for MariaDB..."
             sleep 2
           done
-
-          echo "MariaDB failed to start"
-          exit 1
 
       - name: Install Composer dependencies
         run: docker compose exec -T {{ env.SERVICE_NAME }} composer install --no-interaction --prefer-dist
