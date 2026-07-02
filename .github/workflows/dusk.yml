@@ -20,15 +20,9 @@ jobs:
 
       - name: Wait for MariaDB
         run: |
-          for i in {1..30}; do
-            docker compose exec -T mariadb mysqladmin ping \
-              -hlocalhost \
-              -uimpressoras \
-              -pimpressoras \
-              --silent && exit 0
+          until [ "$(docker inspect -f '{{.State.Health.Status}}' $(docker compose ps -q mariadb))" = "healthy" ]; do
             sleep 2
           done
-          exit 1
 
       - name: Generate APP_KEY
         run: docker compose exec -T impressoras php artisan key:generate
