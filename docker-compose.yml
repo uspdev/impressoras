@@ -55,7 +55,7 @@ services:
       - '8631:631'
     environment:
       - CUPS_ADMIN=admin
-      - CUPS_PASSWORD=senha
+      - CUPS_PASSWORD=admin
     networks:
       - impressoras-network
 
