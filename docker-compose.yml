@@ -51,13 +51,13 @@ services:
           - auth.local
 
   cups:
-    image: olbat/cupsd:latest
+    image: olbat/cupsd:stable-2026-08-03
     container_name: impressoras_cups
     ports:
       - '8631:631'
     environment:
-      - CUPS_ADMIN=admin
-      - CUPS_PASSWORD=admin
+      - CUPS_ADMIN=print
+      - CUPS_PASSWORD=print
     networks:
       - impressoras-network
 
