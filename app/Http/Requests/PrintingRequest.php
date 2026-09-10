@@ -37,7 +37,7 @@ class PrintingRequest extends FormRequest
         ];
     }
 
-    /* 03/10/2023 - Thiago: Acho que não é mais necessário depois que saímos do tea4cups 
+    /* 03/10/2023 - Thiago: Acho que não é mais necessário depois que saímos do tea4cups
     public function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json([
@@ -47,3 +47,4 @@ class PrintingRequest extends FormRequest
             ]));
     }
     */
+}

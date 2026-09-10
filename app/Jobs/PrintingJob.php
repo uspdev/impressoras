@@ -93,16 +93,17 @@ class PrintingJob implements ShouldQueue
         // Enviando para impressora
         Status::createStatus('sent_to_printer_queue', $this->printing);
 
-        $id = 'ipp://'.config('printing.drivers.cups.ip').':631/printers/' . $this->printing->printer->machine_name;
+        $id = 'ipp://' . env('CUPS_SERVER_IP') . ':' . env('CUPS_SERVER_PORT', 631) . '/printers/' . $this->printing->printer->machine_name;
 
         $printJob = CupsPrinting::newPrintTask()
             ->printer($id)
             ->jobTitle($this->printing->filename)
             ->sides($this->printing->sides)
             ->copies($this->printing->copies)
+            ->contentType('application/pdf')
             ->file($this->printing->filepath_pdfjam)
             ->send();
-        $this->printing->jobid = $printJob->id();
+        $this->printing->jobid = (int) basename($printJob->id());
         $this->printing->save();
         Status::createStatus('print_success', $this->printing);
 
