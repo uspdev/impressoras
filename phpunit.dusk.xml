@@ -9,7 +9,9 @@
          backupStaticProperties="false">
     <testsuites>
         <testsuite name="Browser Test Suite">
-            <directory suffix="Test.php">./tests/Browser</directory>
+            <file>./tests/Browser/IndexTest.php</file>
+            <file>./tests/Browser/RegraCrudTest.php</file>
+            <file>./tests/Browser/ImpressoraCrudTest.php</file>
         </testsuite>
     </testsuites>
 </phpunit>

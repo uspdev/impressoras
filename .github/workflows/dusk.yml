@@ -26,6 +26,19 @@ jobs:
       - name: Build and start containers
         run: docker compose up -d --build
 
+      - name: Wait for CUPS printer
+        run: |
+          for i in {1..30}; do
+            if docker compose exec -T cups lpstat -v 2>/dev/null | grep -q ImpressoraTesteDusk001; then
+              echo "CUPS printer is ready"
+              exit 0
+            fi
+            echo "Waiting for CUPS..."
+            sleep 2
+          done
+          docker compose logs cups
+          exit 1
+
       - name: Wait for MariaDB
         run: |
           for i in {1..40}; do

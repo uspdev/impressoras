@@ -16,5 +16,5 @@ yarn-error.log
 resources/ISOuncoated.icc
 resources/PDFX_def.ps
 /.ddev/
-
+.env.dusk.local
 .phpunit.cache

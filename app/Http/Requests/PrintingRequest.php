@@ -47,3 +47,4 @@ class PrintingRequest extends FormRequest
             ]));
     }
     */
+}
