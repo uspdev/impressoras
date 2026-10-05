@@ -55,6 +55,9 @@ services:
     container_name: impressoras_cups
     ports:
       - '8631:631'
+    volumes:
+      - ./docker/cups/init-printers.sh:/init-printers.sh:ro
+    entrypoint: ["/bin/sh", "/init-printers.sh"]
     environment:
       - CUPS_ADMIN=print
       - CUPS_PASSWORD=print
